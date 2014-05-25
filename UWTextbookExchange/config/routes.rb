@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  get 'auth/login'
+
   get 'get_book/create'
 
   get 'get_book/read'
