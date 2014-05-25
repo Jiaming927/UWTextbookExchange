@@ -1,16 +1,26 @@
 Rails.application.routes.draw do
+  get 'get_book/create'
+
+  get 'get_book/read'
+
+  get 'get_book/update'
+
+  get 'get_book/delete'
+
   #get 'init/new'
 
-  get 'init/create'
+ # get 'init/create'
 
-  get 'init/index'
+ # get 'init/index'
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 
   # You can have the root of your site routed with "root"
   root 'init#index'
-
+  match "init/create",
+	:to => "init#create",
+	:via => :get
   match ':controller(/:action(/:id))', :via => [:get, :post]
 
   # Example of regular route:
