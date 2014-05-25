@@ -27,8 +27,6 @@
     <!-- Top Navigation Bar -->
     <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
       <div class="container-fluid">
-       <!-- Brand and toggle get grouped for better mobile display -->
-       <div class="navbar-header">
         <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
          <span class="sr-only">Toggle navigation</span>
          <span class="icon-bar"></span>
@@ -101,17 +99,16 @@
 
 <!-- Main Search Center -->
 <div class="jumbotron center" id="main-search-area">
-    <form class="form-signin" role="search">
-      <!-- Nav. Search Field for Department and Class -->
-      <div class="form-group nav-search">
-       <input id="main-search-department-field" type="text" class="form-control" placeholder="Department">
-       <input id="main-search-class-field" type="text" class="form-control" placeholder="Class">
-   </div>
 
-   <button id="main-search-find-btn" type="submit" class="btn btn-custom-light-blue">Find</button>
-   <button id="main-search-post-btn" type="submit" class="btn btn-custom-light-orange">Post</button>
+<%= form_for(:course, :url=>{:controller =>'GetBook', :action => 'read'}, html:{class: "form-signin", role: "search"}) do |f| %>
+	<div class="form-group nav-search">
+	<%= f.text_field(:department, :placeholder => "Department", class: "form-control", id: "main-search-department-field") %>
+	<%= f.text_field(:class, :placeholder => "Class", class: "form-control", id: "main-search-class-field") %>
+	 </div>
 
-</form>
+	<%= submit_tag("Find", id: "main-search-find-btn", class: "btn btn-custom-light-blue", :name => 'find')%>
+	 <%= submit_tag("Post", id: "main-search-post-btn", class: "btn btn-custom-light-orange", :name => 'post') %>
+<% end %>
 </div>
 
 <!-- SignUp button Form -->
