@@ -22,13 +22,16 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
     <!-- Include all compiled plugins (below), or include individual files as needed -->
     <script src="js/bootstrap.min.js"></script>
+    
+    <script src="js/email.vali.js"></script>
+
 
     <div class="container">
         <div class="row">
             <div class="col-xs-12 col-sm-12 col-md-4 well well-sm" id="signup-box">
                 <legend><a href="#"><i class="glyphicon glyphicon-user"></i></a> Sign up!</legend>
 
-                <form action="#" method="post" class="form" role="form">
+                <form action="#" method="post" class="form" role="form" id="sign-form">
                     <div class="row">
 
                         <div class="col-xs-6 col-md-6" id="firstname-box">
@@ -39,8 +42,9 @@
                             <input class="form-control" name="lastname" placeholder="Last Name" type="text" required />
                         </div>
 
-                        <input class="form-control" name="youremail" placeholder="Your UW Email" type="email" required />
-                        <input class="form-control" name="reenteremail" placeholder="Re-enter UW Email" type="email" required />
+                        <input class="form-control" name="youremail" placeholder="Your UW Email" type="email" id="youremail" required />
+                        <input class="form-control" name="reenteremail" placeholder="Re-enter UW Email" type="email" id="reenteremail" required />
+
 
                         <input class="form-control" name="password" placeholder="New Password" type="password" required />
                         <input class="form-control" name="reenterpassword" placeholder="Re-enter Password" type="password" required />
