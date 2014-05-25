@@ -1,5 +1,6 @@
 class GetBookController < ApplicationController
-  def create
+ layout false 
+ def create
   end
 
   def read

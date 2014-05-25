@@ -1,5 +1,6 @@
 class InitController < ApplicationController
-  def index
+ layout false 
+ def index
   end
 
   def create
