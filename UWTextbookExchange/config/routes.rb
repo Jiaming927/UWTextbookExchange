@@ -1,4 +1,8 @@
 Rails.application.routes.draw do
+  #get 'init/new'
+
+  get 'init/create'
+
   get 'init/index'
 
   # The priority is based upon order of creation: first created -> highest priority.
@@ -6,6 +10,8 @@ Rails.application.routes.draw do
 
   # You can have the root of your site routed with "root"
   root 'init#index'
+
+  match ':controller(/:action(/:id))', :via => [:get, :post]
 
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'
