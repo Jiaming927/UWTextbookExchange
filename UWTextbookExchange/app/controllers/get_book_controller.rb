@@ -10,7 +10,7 @@ class GetBookController < ApplicationController
 		redirect_to(:action => 'update')
 	end
 	
-	courseName = params[:course]["department"]
+	courseName = params[:course]["department"].upcase
 	courseName <<  params[:course]["class"]
 	
 	@courseInfo = CourseToBook.where(:course => courseName).first
