@@ -1,13 +1,14 @@
 Rails.application.routes.draw do
-  get 'auth/login'
+  #devise_for :installs
+  # get 'auth/login'
 
-  get 'get_book/create'
+  # get 'get_book/create'
 
-  get 'get_book/read'
+  # get 'get_book/read'
 
-  get 'get_book/update'
+  # get 'get_book/update'
 
-  get 'get_book/delete'
+  # get 'get_book/delete'
 
   #get 'init/new'
 
