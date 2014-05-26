@@ -55,7 +55,7 @@
             <li><a href="#">One more separated link</a></li>
           </ul>
         </li> -->
-      </ul>
+   </ul>
 
       <!-- Preference Dropdown -->
       <ul class="nav navbar-nav navbar-right">
@@ -71,10 +71,42 @@
             </li>
         </ul>
 
+<!--
+This is the test for login
+-->
+<ul class="nav navbar-nav">
 
+<div class = "notice">
 
+<% if !flash[:notice].blank? %>
+	<%= flash[:notice] %>
+<% end %>
+
+</div>
+</ul>
+
+<!--
+end of test
+-->
 
         <!-- Login Form -->
+        <%= form_for(:user, :url=>{:controller =>'auth', :action => 'attempt_login'}, html:{class: "navbar-form navbar-right", role: "form"}) do |f| %>
+		  <div class="form-group">
+		  <%= f.email_field(:username, :placeholder => "Username", class: "form-control", id: "exampleInputEmail2") %>
+		   </div>
+		   
+		   <div class="form-group">
+		  <%= f.password_field(:password, :placeholder => "Password", class: "form-control", id: "exampleInputPassword2") %>
+		   </div>
+		<div class="checkbox">
+		   <label><%= f.check_box(:remember) %> Remember me</label>
+		</div>  
+		<%= submit_tag("Sign in", class: "btn-sm btn-default")%>
+	  <% end %>
+
+
+<!--
+
         <form class="navbar-form navbar-right" role="form">
          <div class="form-group">
             <label class="sr-only" for="usernameInput">Username</label>
@@ -91,6 +123,7 @@
       </div>
       <button type="submit" class="btn-sm btn-default">Sign in</button>
   </form>
+-->
 
 </div><!-- /.navbar-collapse -->
 </div><!-- /.container-fluid -->
