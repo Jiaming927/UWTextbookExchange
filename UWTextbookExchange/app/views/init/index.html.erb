@@ -66,7 +66,10 @@
                     <li><a href="#">Personal Settings</a></li>
 
                     <li class="divider"></li>
-                    <li><a href="#">Logout</a></li>
+		<li>
+		<%= link_to('Logout', {:controller => 'init', :action => 'logout'}) %>
+		</li>
+                   <!-- <li><a href="#">Logout</a></li>-->
                 </ul>
             </li>
         </ul>
@@ -76,13 +79,22 @@ This is the test for login
 -->
 <ul class="nav navbar-nav">
 
-<div class = "notice">
+<div class = "login_info">
 
-<% if !flash[:notice].blank? %>
-	<%= flash[:notice] %>
+<% if !flash[:login].blank? %>
+	<%= flash[:login] %>
 <% end %>
 
 </div>
+
+<div class = "notice">
+
+<% if !flash[:notice].blank? %>
+        <%= flash[:notice] %>
+<% end %>
+
+</div>
+
 </ul>
 
 <!--
@@ -90,7 +102,7 @@ end of test
 -->
 
         <!-- Login Form -->
-        <%= form_for(:user, :url=>{:controller =>'auth', :action => 'attempt_login'}, html:{class: "navbar-form navbar-right", role: "form"}) do |f| %>
+        <%= form_for(:user, :url=>{:controller =>'init', :action => 'attempt_login'}, html:{class: "navbar-form navbar-right", role: "form"}) do |f| %>
 		  <div class="form-group">
 		  <%= f.email_field(:username, :placeholder => "Username", class: "form-control", id: "exampleInputEmail2") %>
 		   </div>
