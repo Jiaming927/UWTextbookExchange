@@ -1,7 +1,7 @@
 class SignupController < ApplicationController
 	def attempt_signup
-		if params[:username].present? && params[password].present? && params[:email].present?
-			&& params[:user_id]
+		if params[:username].present? && params[:password].present? && params[:email].present?
+	#		&& params[:user_id]
 			@info = User.where(:username => params[:username]).first
 			if !info
 				@newUser = User.new
@@ -11,11 +11,12 @@ class SignupController < ApplicationController
 				@newUser.password = params[password]
 				@newUser.book_number = "0"
 				@newUser.saved
-				render :json => { error: false message: "Success!"}
+		#	render :json => { error: false message: "Success!"}
 			else 
-				render :json => { error: true, message: "Username taken" }
+			#	render :json => { error: true, message: "Username taken" }
 			end
 		else 
-			render :json => { error: true, message: "Not enough info given" }
+		#		render :json => { error: true, message: "Not enough info given" }
+		end
 	end
 end
