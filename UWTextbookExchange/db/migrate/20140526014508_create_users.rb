@@ -1,5 +1,6 @@
 class CreateUsers < ActiveRecord::Migration
   def up
+    drop_table :users
     create_table :users do |t|
       t.string :username, null: false
       t.string :first_name, limit: 25
