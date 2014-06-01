@@ -7,6 +7,16 @@ class CreateCourses < ActiveRecord::Migration
       t.text :book3, limit: 100
       t.text :book4, limit: 100
       t.text :book5, limit: 100
+      t.text :book6, limit: 100
+      t.text :book7, limit: 100
+      t.text :book8, limit: 100
+      t.text :book9, limit: 100
+      t.text :book10, limit: 100
+      t.text :book11, limit: 100
+      t.text :book12, limit: 100
+      t.text :book13, limit: 100
+      t.text :book14, limit: 100
+      t.text :book15, limit: 100
       t.timestamps
     end
   end

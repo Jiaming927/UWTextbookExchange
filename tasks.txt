@@ -1,0 +1,5 @@
+Get page
+Put page
+Initialize database (Adding everything)
+Sign up process
+Deploy on AWS
