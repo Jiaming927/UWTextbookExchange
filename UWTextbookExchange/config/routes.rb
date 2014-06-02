@@ -1,7 +1,7 @@
 Rails.application.routes.draw do
   #devise_for :installs
   # get 'auth/login'
-
+  get '/signup' => "init#signup"
   # get 'get_book/create'
 
   # get 'get_book/read'

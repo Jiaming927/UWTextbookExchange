@@ -2,7 +2,6 @@ class AuthController < ApplicationController
 #	skip_before_filter :verify_authenticity_token
 	before_action :confirm_login
 	def attempt_login
-#	@success = nil		
 		if params[:user]["username"].present? && params[:user]["password"].present?
 			temp = User.where(:username =>params[:user]["username"]).first
 		    	if temp	
@@ -10,8 +9,6 @@ class AuthController < ApplicationController
 				if !info
 					flash[:notice] = "Wrong username or password"
 				else
-				#	@success = true
-					flash[:notice] = info["name"]
 					session[:username] = info["name"] 
 					session[:user_id] = info["id"]
 					cookies[:username] = info["name"]

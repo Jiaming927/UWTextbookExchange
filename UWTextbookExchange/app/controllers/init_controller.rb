@@ -1,17 +1,27 @@
 class InitController < ApplicationController
  layout false 
- before_action :confirm_login
+ before_action :confirm_login, :except => [:signup, :attempt_signup, :attemp_login]
  
  def index
   end
 
-  def create
-	#@test = User.new(:first_name => "testtest", :last_name => "testtest", :email => "test@uw.edu")
-      #@test.save 
+  def signup	
   end
 
+  def attempt_signup
+	
+  end
+
+
         def attempt_login
-#       @success = nil
+		if params[:user]["remember"] == '1'
+			cookies[:last_input] =  {:value => params[:user]["username"], :expires => 7.day.from_now}
+			cookies[:remember] = params[:user]["remember"]
+		else
+			cookies.delete(:remember)
+			cookies.delete(:last_input)
+			cookies[:last_input] = params[:user]["username"]
+		end
                 if params[:user]["username"].present? && params[:user]["password"].present?
                         temp = User.where(:username =>params[:user]["username"]).first
                         if temp
@@ -19,12 +29,9 @@ class InitController < ApplicationController
                                 if !info
                                         flash[:notice] = "Wrong username or password"
                                 else
-                                #       @success = true                                   
-				#	flash[:login] = info.username
-                                        session[:username] = info.username
+					session[:username] = info.username
                                         session[:user_id] = info.id
-                                        cookies[:username] = info.username
-                                        #redirect_to(:controller => 'init', :action => 'index')
+                                       	cookies[:username] = info.username
                                 end
                         else
                                 flash[:notice] = "Wrong username or password"
@@ -45,7 +52,6 @@ class InitController < ApplicationController
         end
 
         def logout
-                #session[:username] = nil
 		session.delete(:username)
 		session.delete(:user_id)
 		cookies.delete(:username)

@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Sign Up</title>
+
+    <!-- Bootstrap -->
+<link href="//netdna.bootstrapcdn.com/bootswatch/3.1.1/simplex/bootstrap.min.css" rel="stylesheet">    
+<%= stylesheet_link_tag('signup', :media => 'all') %>
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+<!--[if lt IE 9]>
+<script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+<script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+<![endif]-->
+</head>
+<body>
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+   <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script> 
+<%= javascript_include_tag('validate') %>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-12 col-sm-12 col-md-4 well well-sm" id="signup-box">
+                <legend><a href="#"><i class="glyphicon glyphicon-user"></i></a> Sign up!</legend>
+
+        <%= form_for(:newuser, :url=>{:controller =>'init', :action => 'attempt_signup'}, html:{id: "sign-form", class: "form", role: "form"}) do |f| %>
+                    <div class="row">
+                          <div class="col-xs-6 col-md-6" id="firstname-box">
+                             <%= f.text_field(:firstname, :placeholder => "First Name", class: "form-control",  :autofocus=>true, :required => true) %>
+                        </div>
+
+                        <div class="col-xs-6 col-md-6"  id="lastname-box">
+                             <%= f.text_field(:lastname, :placeholder => "Last Name", class: "form-control",  :required => true) %>
+                        </div>
+			<%= f.email_field(:youremail, :placeholder => "Your UW Email", class: "form-control", id: "youremail",  :required => true) %>
+			<%= f.email_field(:reenteremail, :placeholder => "Re-enter UW Email", class: "form-control", id: "reenteremail",  :required => true) %>
+
+		  <%= f.password_field(:password, :placeholder => "New Password", class: "form-control",  :required => true) %>
+		  <%= f.password_field(:reenterpassword, :placeholder => "Re-enter Password", class: "form-control",  :required => true) %>
+
+			</div>
+			
+		<br />
+		 <label><%=f.check_box(:terms, :required => true) %> I agree with the <a href="#">Terms and Conditions</a>.</label>
+
+                <br />
+                <%= submit_tag("Sign up",id: "submit-button", class: "btn btn-block btn-custom-light-blue")%>
+	<% end %>	
+
+    </div>
+</div>
+</div>
+
+
+</body>
+</html>

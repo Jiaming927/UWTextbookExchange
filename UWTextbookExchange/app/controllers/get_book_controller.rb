@@ -8,7 +8,8 @@ class GetBookController < ApplicationController
 	    	 flash[:notice] = params[:course]["department"]
 		redirect_to(:action => 'update')
 	else
-	
+		cookies[:last_dep] = params[:course]["department"]
+		cookies[:last_class] = params[:course]["class"]	
 		courseName = params[:course]["department"].upcase
 		courseName <<  params[:course]["class"]
 	
