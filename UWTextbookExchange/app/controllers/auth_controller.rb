@@ -29,7 +29,6 @@ class AuthController < ApplicationController
 	def confirm_login
 		if session[:user_id] && session[:username] && cookies[:username]
 			flash[:notice] = cookies[:username]
-		
 		else
 			flash[:notice] = "Not yet login"
 		end

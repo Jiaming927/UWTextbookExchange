@@ -15,6 +15,7 @@ ActiveRecord::Schema.define(version: 20140526014551) do
 
   create_table "books", force: true do |t|
     t.text     "book_title", limit: 50,  null: false
+    t.text     "author",     limit: 50
     t.text     "book1",      limit: 100
     t.text     "book2",      limit: 100
     t.text     "book3",      limit: 100

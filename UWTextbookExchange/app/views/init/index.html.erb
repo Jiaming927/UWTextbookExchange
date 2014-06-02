@@ -102,7 +102,7 @@ This is the test for login
 <!--
 end of test
 -->
-
+<% if !session[:user_id] || !session[:username] || !cookies[:username] %>
         <!-- Login Form -->
         <%= form_for(:user, :url=>{:controller =>'init', :action => 'attempt_login'}, html:{class: "navbar-form navbar-right", role: "form"}) do |f| %>
 		  <div class="form-group">
@@ -117,7 +117,7 @@ end of test
 		</div>  
 		<%= submit_tag("Sign in", class: "btn-sm btn-default")%>
 	  <% end %>
-
+<% end %>
 
 <!--
 
@@ -163,18 +163,5 @@ end of test
                 <form class="form" role="form">
                     <button type="submit" class="btn-sm btn-info" id="signup-btn">SignUp</button>
                 </form>
-
-
-
-
-
-
-
-
-
-
-
-
-<!--<script src="application.js"></script>-->
 </body>
 </html>

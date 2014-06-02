@@ -2,6 +2,7 @@ class CreateBooks < ActiveRecord::Migration
   def up
     create_table :books do |t|
       t.text :book_title, null: false, limit:50
+      t.text :author, limit:50
       t.text :book1, limit: 100
       t.text :book2, limit: 100
       t.text :book3, limit: 100
