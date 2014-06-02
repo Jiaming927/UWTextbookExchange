@@ -519,28 +519,6 @@ ActiveRecord::Schema.define(version: 20140526014551) do
     t.datetime "updated_at"
   end
 
-  create_table "books_to_users", force: true do |t|
-    t.text     "book"
-    t.string   "user1"
-    t.string   "user2"
-    t.string   "user3"
-    t.string   "user4"
-    t.string   "user5"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  create_table "course_to_books", force: true do |t|
-    t.string   "course"
-    t.text     "book1"
-    t.text     "book2"
-    t.text     "book3"
-    t.text     "book4"
-    t.text     "book5"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
   create_table "courses", force: true do |t|
     t.string   "course_name", limit: 20,  null: false
     t.text     "book1",       limit: 100
