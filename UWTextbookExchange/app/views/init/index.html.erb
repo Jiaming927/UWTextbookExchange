@@ -59,6 +59,7 @@
         </li> -->
    </ul>
 
+<% if session[:user_id] && session[:username] && cookies[:username] %>
       <!-- Preference Dropdown -->
       <ul class="nav navbar-nav navbar-right">
 
@@ -75,6 +76,7 @@
                 </ul>
             </li>
         </ul>
+<% end %>
 
 <!--
 This is the test for login
