@@ -40,8 +40,8 @@
 			<%= f.email_field(:youremail, :placeholder => "Your UW Email", class: "form-control", id: "youremail",  :required => true) %>
 			<%= f.email_field(:reenteremail, :placeholder => "Re-enter UW Email", class: "form-control", id: "reenteremail",  :required => true) %>
 
-		  <%= f.password_field(:password, :placeholder => "New Password", class: "form-control",  :required => true) %>
-		  <%= f.password_field(:reenterpassword, :placeholder => "Re-enter Password", class: "form-control",  :required => true) %>
+		  <%= f.password_field(:password, :placeholder => "New Password",name: "password", class: "form-control",  :required => true) %>
+		  <%= f.password_field(:reenterpassword, :placeholder => "Re-enter Password",name: "reenterpassword", class: "form-control",  :required => true) %>
 
 			</div>
 			
