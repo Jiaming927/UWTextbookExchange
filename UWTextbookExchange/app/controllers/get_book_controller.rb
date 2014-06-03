@@ -15,7 +15,7 @@ class GetBookController < ApplicationController
 	
 		@courseInfo = Course.where(:course_name => courseName).first
 		if !@courseInfo
-		   flash[:notice] = "no book found, check  your input"
+		   flash[:notice] = "Oops.. Misspell anything?"
 		  redirect_to(:controller => 'init', :action =>'index')
 		end
 	end

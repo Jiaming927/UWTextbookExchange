@@ -98,16 +98,15 @@ body {
   border-color: #f49600 #f49600 hsl(37, 100%, 48%);
   color: #fff !important;
   text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.00);
-  -webkit-font-s
+  -webkit-font-smoothing: antialiased;
 }
 
 .notice {
-	float:left;
-	padding: 10px;
+	margin: 10px;
 }
 
 .login_info {
-	padding: 10px;
 	float:right;
+	margin: 0px;
 }
 

@@ -27,7 +27,7 @@
         <div class="row">
             <div class="col-xs-12 col-sm-12 col-md-4 well well-sm" id="signup-box">
                 <legend><a href="#"><i class="glyphicon glyphicon-user"></i></a> Sign up!</legend>
-
+<div id="message" hidden="true"> </div>
         <%= form_for(:newuser, :url=>{:controller =>'init', :action => 'attempt_signup'}, html:{id: "sign-form", class: "form", role: "form"}) do |f| %>
                     <div class="row">
                           <div class="col-xs-6 col-md-6" id="firstname-box">
@@ -40,8 +40,8 @@
 			<%= f.email_field(:youremail, :placeholder => "Your UW Email", class: "form-control", id: "youremail",  :required => true) %>
 			<%= f.email_field(:reenteremail, :placeholder => "Re-enter UW Email", class: "form-control", id: "reenteremail",  :required => true) %>
 
-		  <%= f.password_field(:password, :placeholder => "New Password",name: "password", class: "form-control",  :required => true) %>
-		  <%= f.password_field(:reenterpassword, :placeholder => "Re-enter Password",name: "reenterpassword", class: "form-control",  :required => true) %>
+		  <%= f.password_field(:password, :placeholder => "New Password", class: "form-control",  :required => true) %>
+		  <%= f.password_field(:reenterpassword, :placeholder => "Re-enter Password", class: "form-control",  :required => true) %>
 
 			</div>
 			
