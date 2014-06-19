@@ -27,6 +27,19 @@
         <div class="row">
             <div class="col-xs-12 col-sm-12 col-md-4 well well-sm" id="signup-box">
                 <legend><a href="#"><i class="glyphicon glyphicon-user"></i></a> Sign up!</legend>
+<% if !flash[:exist].blank? %>
+	<div id="exist">
+	Email already exist, <%= link_to("log in?", {:controller => 'init', :action => 'index'}) %>
+	</div>
+<script type="text/javascript">
+window.onload = function(){
+	document.getElementById("newuser_firstname").value = "<%=flash[:first_name]%>";
+	document.getElementById("newuser_lastname").value = "<%=flash[:last_name]%>";
+	document.getElementById("youremail").value = "<%=flash[:email]%>";
+        document.getElementById("reenteremail").value = "<%=flash[:email]%>";
+}
+</script>
+<% end %>
 <div id="message" hidden="true"> </div>
         <%= form_for(:newuser, :url=>{:controller =>'init', :action => 'attempt_signup'}, html:{id: "sign-form", class: "form", role: "form"}) do |f| %>
                     <div class="row">

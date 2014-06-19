@@ -11,6 +11,7 @@ class InitController < ApplicationController
   	  end
   end
 
+
   def attempt_signup
   	if !session[:user_id] || !session[:username] || !cookies[:username] || !cookies[:firstname]
 	 	first_name = params[:newuser]["firstname"].strip
@@ -33,12 +34,26 @@ class InitController < ApplicationController
 
 			if presentall && same && validemail && validpswd && chk
 				#success save to database
-				redirect_to(:controller => 'init', :action => 'index')
+				user = User.new({:username => email1, :first_name => first_name, :last_name => last_name, :email => email1, :password => pswd1})
+				user = user.save
+				if user
+					redirect_to(:controller => 'init', :action => 'index')
+				else
+					flash[:exist] = "yes"
+					flash[:first_name] =  first_name
+                                        flash[:last_name] =  last_name
+                                        flash[:email] =  email1
+					redirect_to(:controller => 'init', :action => 'signup')
+				end
+			else
+				redirect_to(:controller => 'init', :action => 'signup')
 			end
+		else
+			redirect_to(:controller => 'init', :action => 'signup')
 		end
-		redirect_to(:controller => 'init', :action => 'signup')
+	else
+		 redirect_to(:controller => 'init', :action => 'signup')
 	end
-	redirect_to(:controller => 'init', :action => 'index')
   end
 
 

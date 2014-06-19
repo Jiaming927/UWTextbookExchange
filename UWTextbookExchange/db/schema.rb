@@ -542,12 +542,12 @@ ActiveRecord::Schema.define(version: 20140526014551) do
   end
 
   create_table "users", force: true do |t|
-    t.string   "username",                    null: false
-    t.string   "first_name",      limit: 25
-    t.string   "last_name",       limit: 50
-    t.string   "email",           limit: 100, null: false
-    t.string   "password_digest",             null: false
-    t.integer  "book_number"
+    t.string   "username",                                null: false
+    t.string   "first_name",      limit: 25,              null: false
+    t.string   "last_name",       limit: 50,              null: false
+    t.string   "email",           limit: 100,             null: false
+    t.string   "password_digest",                         null: false
+    t.integer  "book_number",                 default: 0
     t.datetime "created_at"
     t.datetime "updated_at"
   end
