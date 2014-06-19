@@ -99,10 +99,14 @@
 		  <%= f.password_field(:password, :placeholder => "Password", class: "form-control", id: "exampleInputPassword2") %>
 		   </div>
 		<div class="checkbox">
-		<% if cookies[:remember].present? && cookies[:remember] == '1' %>
-		   <label><%=f.check_box(:remember, checked: true) %> Remember me</label>
-		<% else %>
-		    <label><%=f.check_box(:remember) %> Remember me</label>	
+		<% if cookies[:remember].present? && cookies[:remember] == '1' %>		   
+       <label for="user_remember">
+         <%=f.check_box(:remember, checked: true) %> Remember me
+       </label>
+		<% else %>		    	
+        <label for="user_remember">
+          <%=f.check_box(:remember) %> Remember me
+        </label>
 		<% end %>
 		</div>  
 		<%= submit_tag("Sign in", class: "btn-sm btn-default")%>
