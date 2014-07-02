@@ -64,6 +64,9 @@ body {
 	border-radius: 2px;
 	color: #FFF;
 	background: rgba(0,0,0,0.66);
+	position: fixed;
+	left: 5%;
+	bottom: 5%;
 }
 
 
