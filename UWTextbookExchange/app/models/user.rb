@@ -39,8 +39,8 @@ validate :password_complexity
   end
 
   def password_complexity
-    if password.present? && !(/[A-Z]/.match(password) && /[a-z]/.match(password) && /[0-9]/.match(password))
-      errors.add :password, ": Password must include at least one lowercase letter, one uppercase letter, and one digit"
+    if password.present? && !(password.bytesize >= 8 && password.bytesize <= 20 && /[A-Z]/.match(password) && /[a-z]/.match(password) && /[0-9]/.match(password))
+      errors.add :password, ": Password must be 8 to 20 characters and include at least one lowercase letter, one uppercase letter, and one digit"
     end
   end
 end
