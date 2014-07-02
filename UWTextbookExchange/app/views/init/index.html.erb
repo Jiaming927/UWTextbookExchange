@@ -56,62 +56,73 @@
         </li> -->
    </ul>
 
-<% if session[:user_id] && session[:username] && cookies[:username] %>
+
       <!-- Preference Dropdown -->
       <ul class="nav navbar-nav navbar-right">
 
              <li class="dropdown">
                  <a href="#" class="dropdown-toggle" data-toggle="dropdown">Preference <b class="caret"></b></a>
                  <ul class="dropdown-menu">
+                 <% if user_signed_in? %>
                     <li><a href="#">Personal Settings</a></li>
 
                     <li class="divider"></li>
-		<li>
-		<%= link_to('Logout', {:controller => 'init', :action => 'logout'}) %>
-		</li>
+
+                		<li>
+                		<%= link_to('Logout', destroy_user_session_path) %>
+                		</li>
+
+                <% else %>
+                    <%- if devise_mapping.recoverable? && controller_name != 'passwords' && controller_name != 'registrations' %>
+                      <li><%= link_to "Forgot your password?", new_password_path(resource_name) %></li>
+                    <% end -%>
+
+                    <%- if devise_mapping.confirmable? && controller_name != 'confirmations' %>
+                      <li><%= link_to "Didn't receive confirmation instructions?", new_confirmation_path(resource_name) %></li>
+                    <% end -%>
+
+                    <%- if devise_mapping.lockable? && resource_class.unlock_strategy_enabled?(:email) && controller_name != 'unlocks' %>
+                      <li><%= link_to "Didn't receive unlock instructions?", new_unlock_path(resource_name) %></li>
+                    <% end -%>
+                <% end %>
                 </ul>
             </li>
         </ul>
-<% end %>
+
 
 <% if !flash[:notice].blank? %>
 <div class = "notice">
         <%= flash[:notice] %>
 </div>
 <% end %>
-
-<% if !flash[:login].blank? %>
-<div class = "login_info">
-	<%= flash[:login] %>
-</div>
+<% if user_signed_in? %>
+  <div class = "login_info">
+    <%= current_user.email %>
+  </div>
 <% end %>
 
 
 
-<% if !session[:user_id] || !session[:username] || !cookies[:username] %>
+<% if !user_signed_in? %>
         <!-- Login Form -->
-        <%= form_for(:user, :url=>{:controller =>'init', :action => 'attempt_login'}, html:{class: "navbar-form navbar-right", role: "form"}) do |f| %>
-		  <div class="form-group">
-		  <%= f.email_field(:username, :placeholder => "Username", class: "form-control", id: "exampleInputEmail2", value: cookies[:last_input]) %>
-		   </div>
-		   
-		   <div class="form-group">
-		  <%= f.password_field(:password, :placeholder => "Password", class: "form-control", id: "exampleInputPassword2") %>
-		   </div>
-		<div class="checkbox">
-		<% if cookies[:remember].present? && cookies[:remember] == '1' %>		   
-       <label for="user_remember">
-         <%=f.check_box(:remember, checked: true) %> Remember me
-       </label>
-		<% else %>		    	
-        <label for="user_remember">
-          <%=f.check_box(:remember) %> Remember me
-        </label>
-		<% end %>
-		</div>  
-		<%= submit_tag("Sign in", class: "btn-sm btn-default")%>
-	  <% end %>
-<% end %>
+      <%= form_for(resource, as: resource_name, url: session_path(resource_name), html:{class: "navbar-form navbar-right", role: "form"}) do |f| %>
+      <div class="form-group">
+        <%= f.email_field :email, autofocus: true, placeholder: "Email", class: "form-control", id: "exampleInputEmail2"%>
+      </div>
+
+      <div class="form-group">
+          <%= f.password_field :password,placeholder: "password", autocomplete: "off", class: "form-control", id: "exampleInputPassword2" %>
+      </div>
+
+        <% if devise_mapping.rememberable? -%>
+        <div class="checkbox">
+          <div><%= f.check_box :remember_me %> <%= f.label :remember_me %></div>
+        </div>
+        <% end -%>
+
+        <%= f.submit "Sign in" , class: "btn-sm btn-default" %>
+      <% end %>
+ <% end %>
 
 
 </div><!-- /.navbar-collapse -->
@@ -119,6 +130,7 @@
 </nav>
 
 <!-- Main BackGround Image  -->
+
 <img src="http://cdn8.openculture.com/wp-content/uploads/2014/04/intelligent-books-to-read.jpg" class="img-responsive" alt="Responsive image" id="main-background-img">
 
 <!-- Main Search Center -->
@@ -135,10 +147,15 @@
 </div>
 
 <!-- SignUp button Form -->
-<% if !session[:user_id] || !session[:username] || !cookies[:username] || !cookies[:firstname] %>
-                <form class="form" action="/signup" role="form">
+<% if !user_signed_in? %>
+    <% if devise_mapping.registerable? && controller_name != 'registrations' %>
+              <%= form_tag({:controller => new_registration_path(resource_name)}, :method => "get") do %>                   
+              
                     <button type="submit" class="btn-sm btn-info" id="signup-btn">SignUp</button>
-                </form>
+              <% end %>
+    <% end %>
+                    
+
 <% end %>
 </body>
 </html>

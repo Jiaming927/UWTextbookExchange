@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140526014551) do
+ActiveRecord::Schema.define(version: 20140622133308) do
 
   create_table "books", force: true do |t|
     t.text     "book_title", limit: 50,  null: false
@@ -542,14 +542,26 @@ ActiveRecord::Schema.define(version: 20140526014551) do
   end
 
   create_table "users", force: true do |t|
-    t.string   "username",                                null: false
-    t.string   "first_name",      limit: 25,              null: false
-    t.string   "last_name",       limit: 50,              null: false
-    t.string   "email",           limit: 100,             null: false
-    t.string   "password_digest",                         null: false
-    t.integer  "book_number",                 default: 0
+    t.string   "email",                  default: "", null: false
+    t.string   "encrypted_password",     default: "", null: false
+    t.string   "reset_password_token"
+    t.datetime "reset_password_sent_at"
+    t.datetime "remember_created_at"
+    t.integer  "sign_in_count",          default: 0,  null: false
+    t.datetime "current_sign_in_at"
+    t.datetime "last_sign_in_at"
+    t.string   "current_sign_in_ip"
+    t.string   "last_sign_in_ip"
+    t.string   "confirmation_token"
+    t.datetime "confirmed_at"
+    t.datetime "confirmation_sent_at"
+    t.string   "unconfirmed_email"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  add_index "users", ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true
+  add_index "users", ["email"], name: "index_users_on_email", unique: true
+  add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
 
 end
