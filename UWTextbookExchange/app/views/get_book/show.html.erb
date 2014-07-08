@@ -4,19 +4,26 @@
 	<h1><%=@bookinfo.book_title %></h1>
 	<div>Author: <%= @bookinfo.author %></div>
 	<div>Course: <%=link_to(@bookinfo.course_name, {:controller =>'GetBook', :action => 'find', :coursename => @bookinfo.course_name}) %> </div>
-	<%= link_to('Post', {:controller => 'GetBook',:action => 'postto',:course => @bookinfo.course_name,:book => @bookinfo.book_title}) %></li>
+	<% if user_signed_in? %>
+		<%= link_to('Post', {:controller => 'GetBook',:action => 'postto',:course => @bookinfo.course_name,:book => @bookinfo.book_title}) %></li>
+	<% end %>
 	<% if @bookinfo.number > 0 %>
 		<% if @bookinfo.number == 1 %>
 			<% @has = 'has' %>
 		<% else %>
 			<% @has = 'have' %>
 		<% end %>
-		<h2><%= pluralize(@bookinfo.number, 'person') %> <%= @has %> the book</h2>
-		<div>
-			<% for i in 1..@bookinfo.number %>
-				<% ownuser = "user" + i.to_s %>
-				<%= @bookinfo.read_attribute(ownuser.to_sym)%> &nbsp;				
-			<% end %>
-		</div>
+
+			<h2><%= pluralize(@bookinfo.number, 'person') %> <%= @has %> the book</h2>
+		<% if user_signed_in? %>
+			<div>
+				<% for i in 1..@bookinfo.number %>
+					<% ownuser = "user" + i.to_s %>
+					<%= @bookinfo.read_attribute(ownuser.to_sym)%> &nbsp;				
+				<% end %>
+			</div>
+		<% else %>
+			<div><%=link_to('Sign in', :controller => new_session_path(resource_name)) %> or <%=link_to('Sign up', :controller => new_registration_path(resource_name)) %> to see who has it.</div>
+		<% end %>
 	<% end %>
 <% end %>
