@@ -1,4 +1,11 @@
 <%= link_to("Home", root_url) %>
+
+<% if !flash[:postmessage].blank? %>
+<div class = "notice">
+        <%= flash[:postmessage] %>
+</div>
+<% end %>
+
 <h1>Search Result for <%= @courseInfo.course_name %></h1>
 <% @courseInfo.attributes.each do |attr_name, attr_value| %>
 <ol>
