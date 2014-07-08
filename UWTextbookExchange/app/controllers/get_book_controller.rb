@@ -2,20 +2,24 @@ class GetBookController < ApplicationController
  layout false 
  before_filter :authenticate_user!, :except => [:find, :show]
   def find
-	session[:last_dep] = params[:course]["department"].strip
-	session[:last_class] = params[:course]["class"].strip
-	@courseName = params[:course]["department"].strip.upcase
-	@courseName <<  params[:course]["class"].strip
+	if params[:course]
+		session[:last_dep] = params[:course]["department"].strip
+		session[:last_class] = params[:course]["class"].strip
+		@courseName = params[:course]["department"].strip.upcase
+		@courseName <<  params[:course]["class"].strip
 
-	if params[:post]
-	    	 flash[:notice] = params[:course]["department"]
-		redirect_to(:action => 'post')
-	else	
-		@courseInfo = Course.where(:course_name => @courseName).first
-		if !@courseInfo
-		  flash[:notice] = "Oops.. Misspell anything?"
-		  redirect_to(:controller => 'init', :action =>'index')
+		if params[:post]
+		    	 flash[:notice] = params[:course]["department"]
+			redirect_to(:action => 'post')
+		else	
+			@courseInfo = Course.where(:course_name => @courseName).first
+			if !@courseInfo
+			  flash[:notice] = "Oops.. Misspell anything?"
+			  redirect_to(:controller => 'init', :action =>'index')
+			end
 		end
+	else
+		redirect_to(:controller => 'init', :action =>'index')
 	end
   end
 
@@ -28,12 +32,14 @@ class GetBookController < ApplicationController
   end
 
   def post
-	@courseName = session[:last_dep].strip.upcase
-	@courseName <<  session[:last_class].strip
-	@courseInfo = Course.where(:course_name => @courseName).first
-	if !@courseInfo
-	  flash[:notice] = "Oops.. Misspell anything?"
-	  redirect_to(:controller => 'init', :action =>'index')
+	if session[:last_dep] && session[:last_class]
+		@courseName = session[:last_dep].strip.upcase
+		@courseName <<  session[:last_class].strip
+		@courseInfo = Course.where(:course_name => @courseName).first
+		if !@courseInfo
+		  flash[:notice] = "Oops.. Misspell anything?"
+		  redirect_to(:controller => 'init', :action =>'index')
+		end
 	end
   end
 

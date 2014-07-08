@@ -3,7 +3,9 @@
 <% @courseInfo.attributes.each do |attr_name, attr_value| %>
 <ol>
   <% if attr_name != "id" && attr_name != "course_name" && attr_name != "number" && attr_name != "created_at" && attr_name != "updated_at" && attr_value != nil %>
-    <li><%= attr_value %></li>
+		<li><%= link_to(attr_value, {:controller => 'GetBook',
+					:action => 'show',
+					:book => attr_value}) %></li>
   <% end %>
 </ol>
 <% end %>
