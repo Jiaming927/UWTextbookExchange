@@ -14,9 +14,7 @@ Books you owned: <%= @Userbook.own %>
 	<ol>
 	<% for i in 1..@Userbook.own %>
 		<% owncolumn = "ownedbook" + i.to_s %>
-		<li><%= link_to(@Userbook.read_attribute(owncolumn.to_sym), {:controller => 'GetBook',
-										 :action => 'show',
-										 :book => @Userbook.read_attribute(owncolumn.to_sym)}) %></li>
+		<li><%= link_to(@Userbook.read_attribute(owncolumn.to_sym), {:controller => 'GetBook', :action => 'show', :book => @Userbook.read_attribute(owncolumn.to_sym)}) %></li>
 	<% end %>
 	</ol>
 	

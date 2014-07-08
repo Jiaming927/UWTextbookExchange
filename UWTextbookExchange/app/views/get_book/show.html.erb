@@ -26,4 +26,9 @@
 			<div><%=link_to('Sign in', :controller => new_session_path(resource_name)) %> or <%=link_to('Sign up', :controller => new_registration_path(resource_name)) %> to see who has it.</div>
 		<% end %>
 	<% end %>
+<% else %>
+	<div>Sorry, no one has posted this book yet.</div>
+	<% if !user_signed_in? %>
+		<div><%=link_to('Sign in', :controller => new_session_path(resource_name)) %> or <%=link_to('Sign up', :controller => new_registration_path(resource_name)) %> to post it.</div>
+	<% end %>
 <% end %>

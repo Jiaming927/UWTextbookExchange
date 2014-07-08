@@ -3,6 +3,7 @@ class GetBookController < ApplicationController
  before_filter :authenticate_user!, :except => [:find, :show]
   def find
 	if params["coursename"]
+		session[:coursename] = params["coursename"]
 		@courseName = params["coursename"].strip.upcase
 		@courseInfo = Course.where(:course_name => @courseName).first
 		if !@courseInfo
@@ -14,6 +15,7 @@ class GetBookController < ApplicationController
 		session[:last_class] = params[:course]["class"].strip
 		@courseName = params[:course]["department"].strip.upcase
 		@courseName <<  params[:course]["class"].strip
+		session[:coursename] = @courseName
 
 		if params[:post]
 		    	 flash[:notice] = params[:course]["department"]
@@ -32,17 +34,16 @@ class GetBookController < ApplicationController
 
   def show
 	if params[:book]
-		@bookinfo = Book.where(:book_title => params[:book].strip).first
+		@showbookname = params[:book].strip
+		@bookinfo = Book.where(:book_title => @showbookname).first
 	else
 		redirect_to(:controller => 'init', :action =>'index')
 	end
   end
 
   def post
-	if session[:last_dep] && session[:last_class]
-		@courseName = session[:last_dep].strip.upcase
-		@courseName <<  session[:last_class].strip
-		@courseInfo = Course.where(:course_name => @courseName).first
+	if session[:coursename]
+		@courseInfo = Course.where(:course_name => session[:coursename]).first
 		if !@courseInfo
 		  flash[:notice] = "Oops.. Misspell anything?"
 		  redirect_to(:controller => 'init', :action =>'index')
