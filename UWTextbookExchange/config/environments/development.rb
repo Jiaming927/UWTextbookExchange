@@ -14,12 +14,12 @@ Rails.application.configure do
   config.action_controller.perform_caching = false
 
   # Don't care if the mailer can't send.
-  config.action_mailer.default_url_options = { :host => '5.231.68.144:3000' } 
+    config.action_mailer.default_url_options = { :host => '5.231.68.144' } 
   config.action_mailer.delivery_method = :smtp 
 config.action_mailer.smtp_settings = {
   address: "smtp.gmail.com",
   port: 587,
-  domain: "5.231.68.144:3000",
+  domain: 'tebook.net',
   authentication: "plain",
   enable_starttls_auto: true,
   user_name: ENV["GMAIL_USERNAME"],

@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Personal Information</title>
+</head>
+
+<body>
+<%= link_to("Home", root_url) %>
+<h1>Personal Information</h1>
+Email: <%= current_user.email %>
+<br />
+Books you own: 
+
+<br />
+
+Books you borrow:
+
+<br />
+
+<%= link_to("Change Password", edit_user_registration_path) %>
+
+<h3>Disable my account</h3>
+
+<p><%= button_to "Disable my account", registration_path(resource_name), data: { confirm: "Are you sure?" }, method: :delete %></p>
+
+</body>
+
+</html>

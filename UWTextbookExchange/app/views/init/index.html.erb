@@ -60,7 +60,7 @@
 		<% if user_signed_in? %>
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">Preference <b class="caret"></b></a>
                     <ul class="dropdown-menu">                
-                    <li><a href="#">Personal Settings</a></li>
+                    <li><%= link_to('Personal Settings', {:controller =>'init', :action => 'personal'}) %></li>
                     <li class="divider"></li>
                	    <li><%= link_to('Logout', destroy_user_session_path) %></li>
                 <% else %>
@@ -104,7 +104,7 @@
       </div>
 
       <div class="form-group">
-          <%= f.password_field :password,placeholder: "password", autocomplete: "off", class: "form-control", id: "exampleInputPassword2" %>
+          <%= f.password_field :password,placeholder: "Password", autocomplete: "off", class: "form-control", id: "exampleInputPassword2" %>
       </div>
 
         <% if devise_mapping.rememberable? -%>
@@ -128,7 +128,7 @@
 
 <!-- Main Search Center -->
 <div class="jumbotron center" id="main-search-area">
- <%= form_for(:course, :url=>{:controller =>'GetBook', :action => 'read'}, html:{class: "form-signin", role: "search"}) do |f| %>
+ <%= form_for(:course, :url=>{:controller =>'GetBook', :action => 'find'}, html:{class: "form-signin", role: "search"}) do |f| %>
   <div class="form-group nav-search">
   <%= f.text_field(:department, :placeholder => "Department", class: "form-control", id: "main-search-department-field", value: cookies[:last_dep]) %>
   <%= f.text_field(:class, :placeholder => "Class", class: "form-control", id: "main-search-class-field", value: cookies[:last_class]) %>
