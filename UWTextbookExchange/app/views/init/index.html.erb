@@ -130,8 +130,8 @@
 <div class="jumbotron center" id="main-search-area">
  <%= form_for(:course, :url=>{:controller =>'GetBook', :action => 'find'}, html:{class: "form-signin", role: "search"}) do |f| %>
   <div class="form-group nav-search">
-  <%= f.text_field(:department, :placeholder => "Department", class: "form-control", id: "main-search-department-field", value: cookies[:last_dep]) %>
-  <%= f.text_field(:class, :placeholder => "Class", class: "form-control", id: "main-search-class-field", value: cookies[:last_class]) %>
+  <%= f.text_field(:department, :placeholder => "Department", class: "form-control", id: "main-search-department-field", value: session[:last_dep]) %>
+  <%= f.text_field(:class, :placeholder => "Class", class: "form-control", id: "main-search-class-field", value: session[:last_class]) %>
    </div>
 
   <%= submit_tag("Find", id: "main-search-find-btn", class: "btn btn-custom-light-blue", :name => 'find')%>

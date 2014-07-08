@@ -1,12 +1,13 @@
-<h1>Search Result</h1>
+<%= link_to("Home", root_url) %>
+<h1>Search Result for <%= @courseInfo.course_name %></h1>
 <% @courseInfo.attributes.each do |attr_name, attr_value| %>
-  <% if attr_name != "id" && attr_name != "created_at" && attr_name != "updated_at" && attr_value != nil %>
-    <div>
-      <%= attr_name %>: <%= attr_value %>  <%= link_to('Post', {:controller => 'GetBook'
-								:action => 'postto'
-								:course => @courseName
+<ol>
+  <% if attr_name != "id" && attr_name != "course_name" && attr_name != "number" && attr_name != "created_at" && attr_name != "updated_at" && attr_value != nil %>
+    <li><%= attr_value %>  <%= link_to('Post', {:controller => 'GetBook',
+								:action => 'postto',
+								:course => @courseInfo.course_name,
 								:book => attr_value
-								}) %>
-    </div>
+								}) %></li>
   <% end %>
+</ol>
 <% end %>

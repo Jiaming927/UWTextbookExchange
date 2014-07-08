@@ -523,7 +523,8 @@ ActiveRecord::Schema.define(version: 20140708035956) do
   end
 
   create_table "courses", force: true do |t|
-    t.string   "course_name", limit: 20,  null: false
+    t.string   "course_name", limit: 20,              null: false
+    t.integer  "number",                  default: 0, null: false
     t.text     "book1",       limit: 100
     t.text     "book2",       limit: 100
     t.text     "book3",       limit: 100
