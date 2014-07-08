@@ -2,7 +2,14 @@ class GetBookController < ApplicationController
  layout false 
  before_filter :authenticate_user!, :except => [:find, :show]
   def find
-	if params[:course]
+	if params["coursename"]
+		@courseName = params["coursename"].strip.upcase
+		@courseInfo = Course.where(:course_name => @courseName).first
+		if !@courseInfo
+		  flash[:notice] = "Oops.. Misspell anything?"
+		  redirect_to(:controller => 'init', :action =>'index')
+		end
+	elsif params[:course]
 		session[:last_dep] = params[:course]["department"].strip
 		session[:last_class] = params[:course]["class"].strip
 		@courseName = params[:course]["department"].strip.upcase
