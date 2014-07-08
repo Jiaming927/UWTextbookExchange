@@ -2,6 +2,7 @@ class CreateCourses < ActiveRecord::Migration
   def up
     create_table :courses do |t|
       t.string :course_name, null: false, limit:20
+      t.integer :number, null: false, :default => 0
       t.text :book1, limit: 100
       t.text :book2, limit: 100
       t.text :book3, limit: 100
