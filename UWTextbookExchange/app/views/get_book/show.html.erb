@@ -1,0 +1,20 @@
+<% if @bookinfo %>
+	<h1><%=@bookinfo.book_title %></h1>
+	<div>Author: <%= @bookinfo.author %></div>
+	<div>Course: <%= @bookinfo.course_name %> </div>
+	<% if @bookinfo.number > 0 %>
+		<% if @bookinfo.number == 1 %>
+			<% @has = 'has' %>
+		<% else %>
+			<% @has = 'have' %>
+		<% end %>
+		<h2><%= pluralize(@bookinfo.number, 'person') %> <%= @has %> the book</h2>
+		<div>
+			<% for i in 1..@bookinfo.number %>
+				<% ownuser = "user" + i.to_s %>
+				<%= @bookinfo.read_attribute(ownuser.to_sym)%> &nbsp;
+				
+			<% end %>
+		</div>
+	<% end %>
+<% end %>
