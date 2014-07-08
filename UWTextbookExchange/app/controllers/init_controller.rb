@@ -6,5 +6,6 @@ class InitController < ApplicationController
  end
 
  def personal
+	@Userbook = Userbooks.where(:email => current_user.email).first
  end
 end

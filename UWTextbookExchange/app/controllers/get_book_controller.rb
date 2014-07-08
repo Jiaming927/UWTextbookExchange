@@ -43,8 +43,7 @@ class GetBookController < ApplicationController
 		end
 
 		@userbook_edit.own = @userbook_edit.own + 1
-		@userbookcolumn = "ownedbook"
-		@userbookcolumn << @userbook_edit.own.to_s
+		@userbookcolumn = "ownedbook" + @userbook_edit.own.to_s
 		@userbook_edit.assign_attributes({@userbookcolumn.to_sym => bookname})
 		if @userbook_edit.save
 			# update books
@@ -56,8 +55,7 @@ class GetBookController < ApplicationController
 				@book_edit.course_name = course
 			end
 			@book_edit.number = @book_edit.number + 1
-			@usercolumn = "user"
-			@usercolumn << @book_edit.number.to_s
+			@usercolumn = "user" + @book_edit.number.to_s
 			@book_edit.assign_attributes({@usercolumn.to_sym => current_user.email})
 			if @book_edit.save
 				#success
