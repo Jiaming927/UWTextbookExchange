@@ -12,7 +12,33 @@
 
   <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
   <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+<script type="text/javascript">
+function openWin(sWindowURL,sWindowName,iWidth,iHeight)
+{
+	if (iWidth > screen.width) {
+		iWidth = screen.width * .75;
+	}
+	if (iHeight > screen.height) {
+		iHeight = screen.height * .85;
+	}
 
+	popupWindow = open
+			(	sWindowURL,
+				sWindowName,
+				"resizable=no"
+					+	",scrollbars=yes"
+					+	",toolbar=no"
+					+	",location=no"
+					+	",directories=no"
+					+	",status=no"
+					+	",menubar=no"
+					+	",width=" + iWidth
+					+	",height=" + iHeight
+					+	",top="+((screen.height-iHeight)/2)
+					+	",left="+((screen.width-iWidth)/2)
+			);
+}
+</script>
 </head>
 <body>
 
@@ -130,8 +156,10 @@
 <div class="jumbotron center" id="main-search-area">
  <%= form_for(:course, :url=>{:controller =>'GetBook', :action => 'find'}, html:{class: "form-signin", role: "search"}) do |f| %>
   <div class="form-group nav-search">
-  <%= f.text_field(:department, :placeholder => "Department", class: "form-control", id: "main-search-department-field", value: session[:last_dep]) %>
-  <%= f.text_field(:class, :placeholder => "Class", class: "form-control", id: "main-search-class-field", value: session[:last_class]) %>
+  <%= f.text_field(:department, :placeholder => "Curriculum Abbreviation(Eg: MATH)", class: "form-control", id: "main-search-department-field", value: session[:last_dep]) %>
+  <a style="color:white;" href="http://www.washington.edu/students/reg/curricabbr.html" onclick="javascript:openWin('http://www.washington.edu/students/reg/curricabbr.html','w_help',540,400);return false" target="_HELP">Curriculum
+Abbreviation List</a>
+  <%= f.text_field(:class, :placeholder => "Course Number", class: "form-control", id: "main-search-class-field", value: session[:last_class]) %>
    </div>
 
   <%= submit_tag("Find", id: "main-search-find-btn", class: "btn btn-custom-light-blue", :name => 'find')%>
