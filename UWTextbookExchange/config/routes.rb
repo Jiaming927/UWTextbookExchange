@@ -4,8 +4,15 @@ Rails.application.routes.draw do
     get 'resend', :to => 'devise/confirmations#new'
     get 'passreset', :to => 'devise/passwords#new'  
   end
+
+  match 'find', to: 'get_book#find', :via => [:get, :post]
+  match 'show', to: 'get_book#show', :via => [:get]
+  match 'post', to: 'get_book#post', :via => [:get]
+  match 'postto', to: 'get_book#postto', :via => [:get]
   
+  match 'personal', to: 'init#personal', :via => [:get]
+
   root :to => "init#index"
   match ':controller(/:action(/:id))', :via => [:get, :post]
-  match "*path", to: redirect("/"), via: :all
+  #match "*path", to: redirect("/"), via: :all
 end

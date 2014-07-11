@@ -86,7 +86,7 @@ function openWin(sWindowURL,sWindowName,iWidth,iHeight)
 		<% if user_signed_in? %>
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">Preference <b class="caret"></b></a>
                     <ul class="dropdown-menu">                
-                    <li><%= link_to('Personal Settings', {:controller =>'init', :action => 'personal'}) %></li>
+                    <li><%= link_to('Personal Settings', 'personal') %></li>
                     <li class="divider"></li>
                	    <li><%= link_to('Logout', destroy_user_session_path) %></li>
                 <% else %>
@@ -151,7 +151,7 @@ function openWin(sWindowURL,sWindowName,iWidth,iHeight)
 
 <!-- Main Search Center -->
 <div class="jumbotron center" id="main-search-area">
- <%= form_for(:course, :url=>{:controller =>'GetBook', :action => 'find'}, html:{class: "form-signin", role: "search"}) do |f| %>
+ <%= form_for(:course, :url=>'find', html:{class: "form-signin", role: "search"}) do |f| %>
   <div class="form-group nav-search">
   <%= f.text_field(:department, :placeholder => "Curriculum Abbreviation(Eg: MATH)", class: "form-control", id: "main-search-department-field", value: session[:last_dep]) %>
   <a style="color:white;" href="http://www.washington.edu/students/reg/curricabbr.html" onclick="javascript:openWin('http://www.washington.edu/students/reg/curricabbr.html','w_help',540,400);return false" target="_HELP">Curriculum

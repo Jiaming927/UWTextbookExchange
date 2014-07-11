@@ -3,9 +3,9 @@
 <% if @bookinfo %>
 	<h1><%=@bookinfo.book_title %></h1>
 	<div>Author: <%= @bookinfo.author %></div>
-	<div>Course: <%=link_to(@bookinfo.course_name, {:controller =>'GetBook', :action => 'find', :coursename => @bookinfo.course_name}) %> </div>
+	<div>Course: <a href="<%=root_url%>find?coursename=<%=@bookinfo.course_name%>"><%=@bookinfo.course_name%></a></div>
 	<% if user_signed_in? %>
-		<%= link_to('Post', {:controller => 'GetBook',:action => 'postto',:course => @bookinfo.course_name,:book => @bookinfo.book_title}) %></li>
+		<a href="<%=root_url%>postto?course=<%=@bookinfo.course_name%>&book=<%=@bookinfo.book_title%>">Post</a>
 	<% end %>
 	<% if @bookinfo.number > 0 %>
 		<% if @bookinfo.number == 1 %>

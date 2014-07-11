@@ -8,7 +8,7 @@ class GetBookController < ApplicationController
 		@courseInfo = Course.where(:course_name => @courseName).first
 		if !@courseInfo
 		  flash[:notice] = "Oops.. Misspell anything?"
-		  redirect_to(:controller => 'init', :action =>'index')
+		  redirect_to(root_url)
 		end
 	elsif params[:course]
 		session[:last_dep] = params[:course]["department"].strip
@@ -19,16 +19,16 @@ class GetBookController < ApplicationController
 
 		if params[:post]
 		    	 flash[:notice] = params[:course]["department"]
-			redirect_to(:action => 'post')
+			redirect_to('/post')
 		else	
 			@courseInfo = Course.where(:course_name => @courseName).first
 			if !@courseInfo
 			  flash[:notice] = "Oops.. Misspell anything?"
-			  redirect_to(:controller => 'init', :action =>'index')
+			  redirect_to(root_url)
 			end
 		end
 	else
-		redirect_to(:controller => 'init', :action =>'index')
+		redirect_to(root_url)
 	end
   end
 
@@ -37,7 +37,7 @@ class GetBookController < ApplicationController
 		@showbookname = params[:book].strip
 		@bookinfo = Book.where(:book_title => @showbookname).first
 	else
-		redirect_to(:controller => 'init', :action =>'index')
+		redirect_to(root_url)
 	end
   end
 
@@ -46,7 +46,7 @@ class GetBookController < ApplicationController
 		@courseInfo = Course.where(:course_name => session[:coursename]).first
 		if !@courseInfo
 		  flash[:notice] = "Oops.. Misspell anything?"
-		  redirect_to(:controller => 'init', :action =>'index')
+		  redirect_to(root_url)
 		end
 	end
   end
@@ -93,7 +93,7 @@ class GetBookController < ApplicationController
 				if @book_edit.save
 					#success
 					flash[:postmessage] = bookname + " is posted successfully."
-					return 	redirect_to(:controller => 'GetBook', :action =>'post')
+					return 	redirect_to('/post')
 				end
 
 				# failed to redirect
@@ -108,7 +108,7 @@ class GetBookController < ApplicationController
 		else
 			flash[:postmessage] = "You have already had that book."
 		end
-	end	
-	redirect_to(:controller => 'GetBook', :action =>'post')
+	end
+	redirect_to('/post')
   end
 end
