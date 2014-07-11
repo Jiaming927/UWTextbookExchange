@@ -2,6 +2,17 @@
 <html>
 <head>
 	<title>Personal Information</title>
+<script>
+window.onload = function(){
+	document.getElementById("cancelbutton").onclick = confirmcancel;
+}
+
+function confirmcancel(evt){
+	if (!confirm('Are you sure you cancel your account? Everything will lost.')) {
+		evt.preventDefault();   		
+	}	 	
+}
+</script>
 </head>
 
 <body>
@@ -36,7 +47,7 @@ Books you borrowed: <%= @Userbook.borrow %>
 
 <h3>Disable my account</h3>
 
-<p><%= button_to "Disable my account", registration_path(resource_name), data: { confirm: "Are you sure?" }, method: :delete %></p>
+<p><%= button_to "Disable my account", registration_path(resource_name), method: :delete, id: 'cancelbutton' %></p>
 
 </body>
 
