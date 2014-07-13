@@ -15,6 +15,34 @@
 <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
 <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
 <![endif]-->
+<script type="text/javascript">
+function openWin(sWindowURL,sWindowName,iWidth,iHeight)
+{
+	if (iWidth > screen.width) {
+		iWidth = screen.width * .75;
+	}
+	if (iHeight > screen.height) {
+		iHeight = screen.height * .85;
+	}
+
+	popupWindow = open
+			(	sWindowURL,
+				sWindowName,
+				"resizable=no"
+					+	",scrollbars=yes"
+					+	",toolbar=no"
+					+	",location=no"
+					+	",directories=no"
+					+	",status=no"
+					+	",menubar=no"
+					+	",width=" + iWidth
+					+	",height=" + iHeight
+					+	",top="+((screen.height-iHeight)/2)
+					+	",left="+((screen.width-iWidth)/2)
+			);
+}
+</script>
+
 </head>
 <body>
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
@@ -41,7 +69,7 @@
 	    <%= f.password_field :password_confirmation, autocomplete: "off" , :placeholder => "Re-enter Password", class: "form-control",  :required => true %>
 </div>
 
-		 <label><input type="checkbox" id="agree" required> I agree with the <a href="#">Terms and Conditions</a>. </input></label>
+		 <label><input type="checkbox" id="agree" required> I agree with the <a href="terms" onclick="javascript:openWin('terms','terms',540,400);return false">Terms and Conditions</a>. </input></label>
 
 	  <div><%= f.submit "Sign up" ,id: "submit-button", class: "btn btn-block btn-custom-light-blue" %></div>
 <% end %>

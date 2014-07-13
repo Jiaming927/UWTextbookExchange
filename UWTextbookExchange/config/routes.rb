@@ -14,5 +14,5 @@ Rails.application.routes.draw do
 
   root :to => "init#index"
   match ':controller(/:action(/:id))', :via => [:get, :post]
-  #match "*path", to: redirect("/"), via: :all
+  match "*path", to: redirect("/"), via: :all
 end
