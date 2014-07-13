@@ -1,6 +1,6 @@
 class InitController < ApplicationController
  layout false 
- before_filter :authenticate_user!, :except => [:index]
+ before_filter :authenticate_user!, :except => [:index, :terms]
 
  def index
  end
@@ -8,4 +8,8 @@ class InitController < ApplicationController
  def personal
 	@Userbook = Userbooks.where(:email => current_user.email).first
  end
+
+ def terms
+ end
+
 end

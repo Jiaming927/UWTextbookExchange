@@ -11,6 +11,7 @@ Rails.application.routes.draw do
   match 'postto', to: 'get_book#postto', :via => [:get]
   
   match 'personal', to: 'init#personal', :via => [:get]
+  match 'terms', to: 'init#terms', :via => [:get]
 
   root :to => "init#index"
   match ':controller(/:action(/:id))', :via => [:get, :post]
