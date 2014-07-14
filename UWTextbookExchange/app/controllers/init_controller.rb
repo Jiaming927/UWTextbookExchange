@@ -106,7 +106,7 @@ class InitController < ApplicationController
 					@Tradedbook.assign_attributes({tradecolumn.to_sym => bookname})
 					if @Tradedbook.save
 						#success
-						flash[:editbookmessage] = bookname + " is posted successfully."
+						flash[:editbookmessage] = bookname + " is successfully traded."
 						return 	redirect_to('/personal')
 					end
 					# failed to redirect
