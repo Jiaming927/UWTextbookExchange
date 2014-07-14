@@ -36,6 +36,9 @@ class GetBookController < ApplicationController
 	if params[:book]
 		@showbookname = params[:book].strip
 		@bookinfo = Book.where(:book_title => @showbookname).first
+		if params[:course]
+			@showcoursename = params[:course].strip
+		end
 	else
 		redirect_to(root_url)
 	end

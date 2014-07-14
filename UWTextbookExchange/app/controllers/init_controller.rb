@@ -54,7 +54,10 @@ class InitController < ApplicationController
 				lastcolumn = "ownedbook" + @userbook_edit.own.to_s
 				@userbook_edit.assign_attributes({lastcolumn.to_sym => nil})
 				@userbook_edit.own = @userbook_edit.own - 1
-				if !@userbook_edit.save
+				
+				if @userbook_edit.save
+					delete_from_user(bookname)					
+				else
 					# database error
 				end
 			end
@@ -104,8 +107,8 @@ class InitController < ApplicationController
 					@Tradedbook.traded = @Tradedbook.traded + 1
 					tradecolumn = "tradedbook" + @Tradedbook.traded.to_s
 					@Tradedbook.assign_attributes({tradecolumn.to_sym => bookname})
-					if @Tradedbook.save
-						#success
+					if @Tradedbook.save && delete_from_user(bookname)
+						#success						
 						flash[:editbookmessage] = bookname + " is successfully traded."
 						return 	redirect_to('/personal')
 					end
@@ -137,65 +140,67 @@ class InitController < ApplicationController
  def resume
 	if params[:book]
 		bookname = params[:book].strip
-
-		#delete from Usertraded database
-		@Tradedbook = Usertraded.where(:email => current_user.email).first
-		index = nil
-		if @Tradedbook
-			for i in 1..@Tradedbook.traded			
-				thiscolumn = "tradedbook" + i.to_s
-				if @Tradedbook.read_attribute(thiscolumn.to_sym) == bookname
-					index = i
-					break
+		@Userbook = Userbooks.where(:email => current_user.email).first
+		if @Userbook.own != 15
+			#delete from Usertraded database
+			@Tradedbook = Usertraded.where(:email => current_user.email).first
+			index = nil
+			if @Tradedbook
+				for i in 1..@Tradedbook.traded			
+					thiscolumn = "tradedbook" + i.to_s
+					if @Tradedbook.read_attribute(thiscolumn.to_sym) == bookname
+						index = i
+						break
+					end
 				end
-			end
-			if index
-
-				for i in index..(@Tradedbook.traded-1)
-					owncolumn = "tradedbook" + i.to_s
-					nextcolumn = "tradedbook" + (i+1).to_s
-					nextvalue = @Tradedbook.read_attribute(nextcolumn.to_sym)
-					@Tradedbook.assign_attributes({owncolumn.to_sym => nextvalue})
-				end
-				lastcolumn = "tradedbook" + @Tradedbook.traded.to_s
-				@Tradedbook.assign_attributes({lastcolumn.to_sym => nil})
-				@Tradedbook.traded = @Tradedbook.traded - 1
-				if !@Tradedbook.save
-					# database error
-					return redirect_to('/personal')
-				else
-					# add to Userbooks database
-					@Userbook = Userbooks.where(:email => current_user.email).first
-					if !@Userbook
-						@Userbook= Userbooks.new
-						@Userbook.email = current_user.email
+				if index
+					for i in index..(@Tradedbook.traded-1)
+						owncolumn = "tradedbook" + i.to_s
+						nextcolumn = "tradedbook" + (i+1).to_s
+						nextvalue = @Tradedbook.read_attribute(nextcolumn.to_sym)
+						@Tradedbook.assign_attributes({owncolumn.to_sym => nextvalue})
 					end
-					@Userbook.own = @Userbook.own + 1
-					usercolumn = "ownedbook" + @Userbook.own.to_s
-					@Userbook.assign_attributes({usercolumn.to_sym => bookname})
-					if @Userbook.save
-						#success
-						flash[:editbookmessage] = bookname + " is back on sale."
-						return 	redirect_to('/personal')
-					end
-					# failed to redirect
-					# retrieve database
-					@Tradedbook.traded = @Tradedbook.traded + 1
-
-					for i in @Tradedbook.traded..(index+1)
-						thiscolumn = "tradedbook" + i.to_s
-						prevcolumn = "tradedbook" + (i-1).to_s
-						prevvalue = @Tradedbook.read_attribute(prevcolumn.to_sym)
-						@Tradedbook.assign_attributes({thiscolumn.to_sym => prevvalue})
-					end
-					thiscolumn = "tradedbook" + index
-					@Tradedbook.assign_attributes({thiscolumn.to_sym => bookname})
+					lastcolumn = "tradedbook" + @Tradedbook.traded.to_s
+					@Tradedbook.assign_attributes({lastcolumn.to_sym => nil})
+					@Tradedbook.traded = @Tradedbook.traded - 1
 					if !@Tradedbook.save
-						# retrieve error
+						# database error
+						return redirect_to('/personal')
+					else
+						# add to Userbooks database						
+						if !@Userbook
+							@Userbook= Userbooks.new
+							@Userbook.email = current_user.email
+						end
+						@Userbook.own = @Userbook.own + 1
+						usercolumn = "ownedbook" + @Userbook.own.to_s
+						@Userbook.assign_attributes({usercolumn.to_sym => bookname})
+						if @Userbook.save && add_to_user(bookname)
+							#success						
+							flash[:editbookmessage] = bookname + " is back on sale."
+							return 	redirect_to('/personal')
+						end
+						# failed to redirect
+						# retrieve database
+						@Tradedbook.traded = @Tradedbook.traded + 1
+
+						for i in @Tradedbook.traded..(index+1)
+							thiscolumn = "tradedbook" + i.to_s
+							prevcolumn = "tradedbook" + (i-1).to_s
+							prevvalue = @Tradedbook.read_attribute(prevcolumn.to_sym)
+							@Tradedbook.assign_attributes({thiscolumn.to_sym => prevvalue})
+						end
+						thiscolumn = "tradedbook" + index
+						@Tradedbook.assign_attributes({thiscolumn.to_sym => bookname})
+						if !@Tradedbook.save
+							# retrieve error
+						end
 					end
+					
 				end
-				
 			end
+		else
+			flash[:editbookmessage] = "You cannot post more than 15 books. Please unlist some of them"
 		end
 		return redirect_to('/personal')
 	else
@@ -209,25 +214,25 @@ class InitController < ApplicationController
 		#delete from Tradedbook database
 		@Tradedbook = Usertraded.where(:email => current_user.email).first
 		index = nil
-		if @Usertraded
-			for i in 1..@Usertraded.traded			
+		if @Tradedbook
+			for i in 1..@Tradedbook.traded			
 				thiscolumn = "tradedbook" + i.to_s
-				if @Usertraded.read_attribute(thiscolumn.to_sym) == bookname
+				if @Tradedbook.read_attribute(thiscolumn.to_sym) == bookname
 					index = i
 					break
 				end
 			end
 			if index
-				for i in index..(@Usertraded.traded-1)
+				for i in index..(@Tradedbook.traded-1)
 					thiscolumn = "tradedbook" + i.to_s
 					nextcolumn = "tradedbook" + (i+1).to_s
-					nextvalue = @userbook_edit.read_attribute(nextcolumn.to_sym)
-					@Usertraded.assign_attributes({thiscolumn.to_sym => nextvalue})
+					nextvalue = @Tradedbook.read_attribute(nextcolumn.to_sym)
+					@Tradedbook.assign_attributes({thiscolumn.to_sym => nextvalue})
 				end
-				lastcolumn = "tradedbook" + @Usertraded.traded.to_s
-				@Usertraded.assign_attributes({lastcolumn.to_sym => nil})
-				@Usertraded.traded = @Usertraded.traded - 1
-				if !@Usertraded.save
+				lastcolumn = "tradedbook" + @Tradedbook.traded.to_s
+				@Tradedbook.assign_attributes({lastcolumn.to_sym => nil})
+				@Tradedbook.traded = @Tradedbook.traded - 1
+				if !@Tradedbook.save
 					# database error
 				end
 			end
@@ -237,6 +242,56 @@ class InitController < ApplicationController
 	else
 		return redirect_to(root_url)
 	end
+ end
+
+ def delete_from_user(bookname)
+	@book = Book.where(:book_title => bookname).first
+	if @book
+		index = nil
+		for i in 1..@book.number
+			thiscolumn = "user" + i.to_s
+			if @book.read_attribute(thiscolumn.to_sym) == current_user.email
+				index = i
+				break
+			end
+		end
+		if index
+			for i in index..(@book.number-1)
+				thiscolumn = "user" + i.to_s
+				nextcolumn = "user" + (i+1).to_s
+				nextvalue = @book.read_attribute(nextcolumn.to_sym)
+				@book.assign_attributes({thiscolumn.to_sym => nextvalue})
+			end
+			lastcolumn = "user" + @book.number.to_s
+			@book.assign_attributes({lastcolumn.to_sym => nil})
+			@book.number = @book.number - 1
+			return @book.save
+		end
+	end
+	return @book
+ end
+ 
+ def add_to_user(bookname)
+	@book = Book.where(:book_title => bookname).first
+	if @book
+		if @book.number == 500
+			#overflow
+			@book.number = @book.number - 1
+			for i in 1..499
+				prevcolumn = "user" + i.to_s
+				nextcolumn = "user" + (i+1).to_s
+				nextvalue = @book.read_attribute(nextcolumn.to_sym)
+				@book.assign_attributes({prevcolumn.to_sym => nextvalue})
+			end
+			@book.assign_attributes({:user500 => nil})
+		end
+
+		@book.number = @book.number + 1
+		@usercolumn = "user" + @book.number.to_s
+		@book.assign_attributes({@usercolumn.to_sym => current_user.email})
+		return @book.save
+	end
+	return @book
  end
 
 end
