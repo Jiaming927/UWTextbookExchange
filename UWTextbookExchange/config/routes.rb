@@ -12,6 +12,8 @@ Rails.application.routes.draw do
   
   match 'personal', to: 'init#personal', :via => [:get]
   match 'terms', to: 'init#terms', :via => [:get]
+  match 'traded', to: 'init#traded', :via => [:get]
+  match 'unlist', to: 'init#unlist', :via => [:get]
 
   root :to => "init#index"
   match ':controller(/:action(/:id))', :via => [:get, :post]

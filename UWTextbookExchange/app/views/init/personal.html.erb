@@ -17,6 +17,13 @@ function confirmcancel(evt){
 
 <body>
 <%= link_to("Home", root_url) %>
+
+<% if !flash[:editbookmessage].blank? %>
+<div class = "notice">
+        <%= flash[:editbookmessage] %>
+</div>
+<% end %>
+
 <h1>Personal Information</h1>
 Email: <%= current_user.email %>
 <br />
@@ -26,9 +33,21 @@ Books you owned: <%= @Userbook.own %>
 	<% for i in 1..@Userbook.own %>
 		<% owncolumn = "ownedbook" + i.to_s %>
 		<li><a href="<%=root_url%>show?book=<%=@Userbook.read_attribute(owncolumn.to_sym)%>"><%=@Userbook.read_attribute(owncolumn.to_sym)%></a></li>
+		<a href="<%=root_url%>traded?book=<%=@Userbook.read_attribute(owncolumn.to_sym)%>">Traded</a>
+		<a href="<%=root_url%>unlist?book=<%=@Userbook.read_attribute(owncolumn.to_sym)%>">unlist</a>
 	<% end %>
 	</ol>
 	
+<% end %>
+<br />
+Books traded: <%= @Tradedbook.traded %>
+<% if (@Tradedbook.traded > 0) %>
+	<ol>
+	<% for i in 1..@Tradedbook.traded %>
+		<% tradedcolumn = "tradedbook" + i.to_s %>
+		<li><a href="<%=root_url%>show?book=<%=@Tradedbook.read_attribute(tradedcolumn.to_sym)%>"><%=@Tradedbook.read_attribute(tradedcolumn.to_sym)%></a></li>
+	<% end %>
+	</ol>	
 <% end %>
 
 <br />
