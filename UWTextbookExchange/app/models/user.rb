@@ -6,12 +6,16 @@ class User < ActiveRecord::Base
 
 validate :email_exist
 validate :email_match
+validate :email_unique
+
+validate :username_exist
+validate :username_unique
 
 validate :password_conformation
 validate :password_exist
 validate :password_complexity
 
-
+  
 
   def email_exist
 	if !email.strip.present?
@@ -22,6 +26,26 @@ validate :password_complexity
   def email_match
 	if !(/@uw.edu$/.match(email.strip))
 		errors.add :email,  ": Please use valid UW email address"
+	end
+  end
+
+  def email_unique
+	user = User.where(:email => email.strip).first
+	if user
+		errors.add :email, ": Email already exist"
+	end
+  end
+
+  def username_exist
+	if !username.strip.present?
+		errors.add :username, ": Username cannot be blank"
+	end
+  end
+
+  def username_unique
+	user = User.where(:username => username.strip).first
+	if user
+		errors.add :username, ": Username already exist"
 	end
   end
 

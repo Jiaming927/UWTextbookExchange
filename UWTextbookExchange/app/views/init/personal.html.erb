@@ -39,6 +39,8 @@ function confirmdelete(evt){
 <h1>Personal Information</h1>
 Email: <%= current_user.email %>
 <br />
+Username: <%= current_user.username %>
+<br />
 Books you owned: <%= @Userbook.own %>
 <% if (@Userbook.own > 0) %>
 	<ol>
