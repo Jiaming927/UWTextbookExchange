@@ -7,6 +7,14 @@ class InitController < ApplicationController
 
  def personal
 	@Userbook = Userbooks.where(:email => current_user.email).first
+	if !@Userbook
+			@Userbook = Userbooks.new
+			@Userbook.email = current_user.email
+			if !@Userbook.save
+				# database error
+				redirect_to(root_url)
+			end
+	end
  end
 
  def terms
