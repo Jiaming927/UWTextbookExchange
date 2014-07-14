@@ -31,24 +31,9 @@ Books you owned: <%= @Userbook.own %>
 	
 <% end %>
 
-Books you borrowed: <%= @Userbook.borrow %>
-<% if (@Userbook.borrow > 0) %>
-	<ol>
-	<% for i in 1..@Userbook.borrow %>
-		<% borrowcolumn = "borrowedbook" + i.to_s %>
-		<li><%= @Userbook.read_attribute(borrowcolumn.to_sym)%></li>
-	<% end %>
-	</ol>	
-<% end %>
-
 <br />
 
 <%= link_to("Change Password", edit_user_registration_path) %>
-
-<h3>Disable my account</h3>
-
-<p><%= button_to "Disable my account", registration_path(resource_name), method: :delete, id: 'cancelbutton' %></p>
-
 </body>
 
 </html>
