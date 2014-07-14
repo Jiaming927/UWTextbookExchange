@@ -47,8 +47,8 @@ class InitController < ApplicationController
 			if index
 				for i in index..(@userbook_edit.own-1)
 					owncolumn = "ownedbook" + i.to_s
-					nexcolumn = "ownedbook" + (i+1).to_s
-					nextvalue = @userbook_edit.read_attribute(nexcolumn.to_sym)
+					nextcolumn = "ownedbook" + (i+1).to_s
+					nextvalue = @userbook_edit.read_attribute(nextcolumn.to_sym)
 					@userbook_edit.assign_attributes({owncolumn.to_sym => nextvalue})
 				end
 				lastcolumn = "ownedbook" + @userbook_edit.own.to_s
@@ -143,8 +143,8 @@ class InitController < ApplicationController
 		index = nil
 		if @Tradedbook
 			for i in 1..@Tradedbook.traded			
-				owncolumn = "tradedbook" + i.to_s
-				if @Tradedbook.read_attribute(owncolumn.to_sym) == bookname
+				thiscolumn = "tradedbook" + i.to_s
+				if @Tradedbook.read_attribute(thiscolumn.to_sym) == bookname
 					index = i
 					break
 				end
@@ -175,7 +175,7 @@ class InitController < ApplicationController
 					@Userbook.assign_attributes({usercolumn.to_sym => bookname})
 					if @Userbook.save
 						#success
-						flash[:editbookmessage] = bookname + " is posted successfully."
+						flash[:editbookmessage] = bookname + " is back on sale."
 						return 	redirect_to('/personal')
 					end
 					# failed to redirect
@@ -205,6 +205,34 @@ class InitController < ApplicationController
 
  def delete
 	if params[:book]
+		bookname = params[:book].strip
+		#delete from Tradedbook database
+		@Tradedbook = Usertraded.where(:email => current_user.email).first
+		index = nil
+		if @Usertraded
+			for i in 1..@Usertraded.traded			
+				thiscolumn = "tradedbook" + i.to_s
+				if @Usertraded.read_attribute(thiscolumn.to_sym) == bookname
+					index = i
+					break
+				end
+			end
+			if index
+				for i in index..(@Usertraded.traded-1)
+					thiscolumn = "tradedbook" + i.to_s
+					nextcolumn = "tradedbook" + (i+1).to_s
+					nextvalue = @userbook_edit.read_attribute(nextcolumn.to_sym)
+					@Usertraded.assign_attributes({thiscolumn.to_sym => nextvalue})
+				end
+				lastcolumn = "tradedbook" + @Usertraded.traded.to_s
+				@Usertraded.assign_attributes({lastcolumn.to_sym => nil})
+				@Usertraded.traded = @Usertraded.traded - 1
+				if !@Usertraded.save
+					# database error
+				end
+			end
+			
+		end
 		return redirect_to('/personal')
 	else
 		return redirect_to(root_url)
