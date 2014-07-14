@@ -44,16 +44,6 @@ class GetBookController < ApplicationController
 	end
   end
 
-  def post
-	if session[:coursename]
-		@courseInfo = Course.where(:course_name => session[:coursename]).first
-		if !@courseInfo
-		  flash[:notice] = "Oops.. Misspell anything?"
-		  redirect_to(root_url)
-		end
-	end
-  end
-
   def postto
 	if params[:course] && params[:book]
 		course = params[:course].strip
@@ -132,5 +122,15 @@ class GetBookController < ApplicationController
 		end
 	end
 	redirect_to('/post')
+  end
+
+  def post
+	if session[:coursename]
+		@courseInfo = Course.where(:course_name => session[:coursename]).first
+		if !@courseInfo
+		  flash[:notice] = "Oops.. Misspell anything?"
+		  redirect_to(root_url)
+		end
+	end
   end
 end

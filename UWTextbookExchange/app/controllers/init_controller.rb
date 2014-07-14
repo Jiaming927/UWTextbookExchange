@@ -243,7 +243,7 @@ class InitController < ApplicationController
 		return redirect_to(root_url)
 	end
  end
-
+private
  def delete_from_user(bookname)
 	@book = Book.where(:book_title => bookname).first
 	if @book
