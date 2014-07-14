@@ -134,4 +134,81 @@ class InitController < ApplicationController
 	end
  end
 
+ def resume
+	if params[:book]
+		bookname = params[:book].strip
+
+		#delete from Usertraded database
+		@Tradedbook = Usertraded.where(:email => current_user.email).first
+		index = nil
+		if @Tradedbook
+			for i in 1..@Tradedbook.traded			
+				owncolumn = "tradedbook" + i.to_s
+				if @Tradedbook.read_attribute(owncolumn.to_sym) == bookname
+					index = i
+					break
+				end
+			end
+			if index
+
+				for i in index..(@Tradedbook.traded-1)
+					owncolumn = "tradedbook" + i.to_s
+					nextcolumn = "tradedbook" + (i+1).to_s
+					nextvalue = @Tradedbook.read_attribute(nextcolumn.to_sym)
+					@Tradedbook.assign_attributes({owncolumn.to_sym => nextvalue})
+				end
+				lastcolumn = "tradedbook" + @Tradedbook.traded.to_s
+				@Tradedbook.assign_attributes({lastcolumn.to_sym => nil})
+				@Tradedbook.traded = @Tradedbook.traded - 1
+				if !@Tradedbook.save
+					# database error
+					return redirect_to('/personal')
+				else
+					# add to Userbooks database
+					@Userbook = Userbooks.where(:email => current_user.email).first
+					if !@Userbook
+						@Userbook= Userbooks.new
+						@Userbook.email = current_user.email
+					end
+					@Userbook.own = @Userbook.own + 1
+					usercolumn = "ownedbook" + @Userbook.own.to_s
+					@Userbook.assign_attributes({usercolumn.to_sym => bookname})
+					if @Userbook.save
+						#success
+						flash[:editbookmessage] = bookname + " is posted successfully."
+						return 	redirect_to('/personal')
+					end
+					# failed to redirect
+					# retrieve database
+					@Tradedbook.traded = @Tradedbook.traded + 1
+
+					for i in @Tradedbook.traded..(index+1)
+						thiscolumn = "tradedbook" + i.to_s
+						prevcolumn = "tradedbook" + (i-1).to_s
+						prevvalue = @Tradedbook.read_attribute(prevcolumn.to_sym)
+						@Tradedbook.assign_attributes({thiscolumn.to_sym => prevvalue})
+					end
+					thiscolumn = "tradedbook" + index
+					@Tradedbook.assign_attributes({thiscolumn.to_sym => bookname})
+					if !@Tradedbook.save
+						# retrieve error
+					end
+				end
+				
+			end
+		end
+		return redirect_to('/personal')
+	else
+		return redirect_to(root_url)
+	end
+ end
+
+ def delete
+	if params[:book]
+		return redirect_to('/personal')
+	else
+		return redirect_to(root_url)
+	end
+ end
+
 end

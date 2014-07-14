@@ -75,36 +75,55 @@ class GetBookController < ApplicationController
 		end
 		
 		if !exist
-			@userbook_edit.own = @userbook_edit.own + 1
-			@userbookcolumn = "ownedbook" + @userbook_edit.own.to_s
-			@userbook_edit.assign_attributes({@userbookcolumn.to_sym => bookname})
-			if @userbook_edit.save
-				# update books
-				@book_edit = Book.where(:book_title => bookname).first
-				if !@book_edit
-					#book not exist
-					@book_edit = Book.new
-					@book_edit.book_title = bookname
-					@book_edit.course_name = course
-				end
-				@book_edit.number = @book_edit.number + 1
-				@usercolumn = "user" + @book_edit.number.to_s
-				@book_edit.assign_attributes({@usercolumn.to_sym => current_user.email})
-				if @book_edit.save
-					#success
-					flash[:postmessage] = bookname + " is posted successfully."
-					return 	redirect_to('/post')
-				end
+			if @userbook_edit.own != 15
+				@userbook_edit.own = @userbook_edit.own + 1
+				@userbookcolumn = "ownedbook" + @userbook_edit.own.to_s
+				@userbook_edit.assign_attributes({@userbookcolumn.to_sym => bookname})
+				if @userbook_edit.save
+					# update books
+					@book_edit = Book.where(:book_title => bookname).first
+					if !@book_edit
+						#book not exist
+						@book_edit = Book.new
+						@book_edit.book_title = bookname
+						@book_edit.course_name = course
+					end
 
-				# failed to redirect
-				# retrieve database
-				@userbook_edit.own = @userbook_edit.own - 1
-				@userbook_edit.assign_attributes({userbookcolumn.to_sym => nil})
-				if !@userbook_edit.save
-					# retrieve error
+					if @book_edit.number == 500
+						#overflow
+						@book_edit.number = @book_edit.number - 1
+						for i in 1..499
+							prevcolumn = "user" + i.to_s
+							nextcolumn = "user" + (i+1).to_s
+							nextvalue = @book_edit.read_attribute(nextcolumn.to_sym)
+							@book_edit.assign_attributes({prevcolumn.to_sym => nextvalue})
+						end
+						@book_edit.assign_attributes({:user500 => nil})
+					end
+					@book_edit.number = @book_edit.number + 1
+					@usercolumn = "user" + @book_edit.number.to_s
+					@book_edit.assign_attributes({@usercolumn.to_sym => current_user.email})
+					if @book_edit.save
+						#success
+						flash[:postmessage] = bookname + " is posted successfully."
+						return 	redirect_to('/post')
+					end
+
+					# failed to redirect
+					# retrieve database
+					@userbook_edit.own = @userbook_edit.own - 1
+					@userbook_edit.assign_attributes({userbookcolumn.to_sym => nil})
+					if !@userbook_edit.save
+						# retrieve error
+					end
 				end
+				flash[:postmessage] = "Error occurs. We are working on it right now. Sorry for the inconvenience."
+			else
+
+				# overflow
+				flash[:editbookmessage] = "You cannot post more than 15 books. Please unlist some of them"
+				return 	redirect_to('/personal')	
 			end
-			flash[:postmessage] = "Error occurs. We are working on it right now. Sorry for the inconvenience."
 		else
 			flash[:postmessage] = "You have already had that book."
 		end
