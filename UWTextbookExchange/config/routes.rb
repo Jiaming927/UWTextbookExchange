@@ -13,6 +13,7 @@ Rails.application.routes.draw do
   match 'postto', to: 'get_book#postto', :via => [:get]
   
   match 'personal', to: 'init#personal', :via => [:get]
+  match 'chatlist', to: 'init#chatlist', :via => [:get]
   match 'terms', to: 'init#terms', :via => [:get]
   match 'traded', to: 'init#traded', :via => [:get]
   match 'unlist', to: 'init#unlist', :via => [:get]

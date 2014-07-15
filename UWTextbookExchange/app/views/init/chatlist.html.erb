@@ -1,0 +1,30 @@
+<%= link_to("Home", root_url) %>
+<a href="javascript:history.back(-1)">Back </a>
+<h1>Chat List</h1>
+<h2>Unread</h2>
+<% @chnls.each do |ch| %>
+	<% if (current_user.username + current_user.username) > ch.channel_name %>
+		<% receiver = ch.channel_name[0..(ch.channel_name.bytesize - current_user.username.bytesize - 1)] %>
+		<% if ch.first_side > 0 %>
+			<a href="<%=root_url%>messages?receiver=<%=receiver%>"><%=receiver%></a>
+		<% end %>
+	<% else %>		
+		<% receiver = ch.channel_name[(current_user.username.bytesize)..(ch.channel_name.bytesize - 1)] %>
+		<% if ch.second_side > 0 %>
+			<a href="<%=root_url%>messages?receiver=<%=receiver%>"><%=receiver%></a>
+		<% end %>
+	<% end %>
+	&nbsp;
+<% end %>
+
+<h2>All Messages </h2>
+<% @chnls.each do |ch| %>
+	<% if (current_user.username+current_user.username) > ch.channel_name %>
+		<% receiver = ch.channel_name[0..(ch.channel_name.bytesize - current_user.username.bytesize - 1)] %>
+		<a href="<%=root_url%>messages?receiver=<%=receiver%>"><%=receiver%></a>
+	<% else %>
+		<% receiver = ch.channel_name[(current_user.username.bytesize)..(ch.channel_name.bytesize - 1)] %>
+		<a href="<%=root_url%>messages?receiver=<%=receiver%>"><%=receiver%></a>
+	<% end %>
+	&nbsp;
+<% end %>

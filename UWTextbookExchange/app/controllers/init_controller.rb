@@ -5,6 +5,10 @@ class InitController < ApplicationController
  def index
  end
 
+ def chatlist
+	@chnls = Channel.where("channel_name LIKE ? OR channel_name LIKE ?", current_user.username + "%", "%" + current_user.username)
+ end
+
  def personal
 	@Userbook = Userbooks.where(:email => current_user.email).first
 	if !@Userbook
