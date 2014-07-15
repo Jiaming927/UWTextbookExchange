@@ -5,6 +5,8 @@ Rails.application.routes.draw do
     get 'passreset', :to => 'devise/passwords#new'  
   end
 
+  resources :messages
+
   match 'find', to: 'get_book#find', :via => [:get, :post]
   match 'show', to: 'get_book#show', :via => [:get]
   match 'post', to: 'get_book#post', :via => [:get]

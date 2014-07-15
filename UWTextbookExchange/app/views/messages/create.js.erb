@@ -1,0 +1,7 @@
+<% if params[:message] && params[:message][:sender] && params[:message][:receiver] %>
+	<% chnl = params[:message][:sender].strip < params[:message][:receiver].strip ? (params[:message][:sender].strip + params[:message][:receiver].strip) : (params[:message][:receiver].strip + params[:message][:sender].strip) %>
+	<% publish_to "/messages/" + chnl do %>
+	  $("#chat").append("<%= j render(@message) %>");
+	<% end %>
+	$("#new_message")[0].reset();
+<% end %>

@@ -9,6 +9,7 @@ validate :email_match
 validate :email_unique
 
 validate :username_exist
+validate :username_length
 validate :username_unique
 
 validate :password_conformation
@@ -24,15 +25,18 @@ validate :password_complexity
   end
 
   def email_match
-	if !(/@uw.edu$/.match(email.strip))
+	if email.strip.present? && !(/@uw.edu$/.match(email.strip))
 		errors.add :email,  ": Please use valid UW email address"
 	end
   end
 
+
   def email_unique
-	user = User.where(:email => email.strip).first
-	if user
-		errors.add :email, ": Email already exist"
+	if email.strip.present?
+		user = User.where(:email => email.strip).first
+		if user
+			errors.add :email, ": Email already exist"
+		end
 	end
   end
 
@@ -41,11 +45,19 @@ validate :password_complexity
 		errors.add :username, ": Username cannot be blank"
 	end
   end
+  
+  def username_length
+	if username.strip.present? && !(username.bytesize >= 5 && username.bytesize <= 20)
+		error.add :username, ": Username must have 5 to 20 characters"
+	end
+  end
 
   def username_unique
-	user = User.where(:username => username.strip).first
-	if user
-		errors.add :username, ": Username already exist"
+	if !username.strip.present?
+		user = User.where(:username => username.strip).first
+		if user
+			errors.add :username, ": Username already exist"
+		end
 	end
   end
 
@@ -56,7 +68,7 @@ validate :password_complexity
   end
 
   def password_conformation
-	if password.present? && password_confirmation.present? && password_confirmation != password
+	if password.present? && (!password_confirmation.present? || password_confirmation.present? && password_confirmation != password)
 		errors.add :password, ": Password conformation must match"
 	end
 

@@ -1,0 +1,10 @@
+development:
+  server: "http://5.231.68.144:9292/faye/faye"
+  secret_token: "secret"
+test:
+  server: "http://5.231.68.144:9292/faye/faye"
+  secret_token: "secret"
+production:
+  server: "http://5.231.68.144:9292/faye/faye"
+  secret_token: "69694a16d5b380ef948b646d0abf7742e2b8080535893500e5c2e354cdb19710"
+  signature_expiration: 3600 # one hour
