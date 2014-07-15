@@ -63,7 +63,7 @@ function openWin(sWindowURL,sWindowName,iWidth,iHeight)
  <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
    <ul class="nav navbar-nav">
 <% if user_signed_in? %>
-    <li class="active"><a href="/chatlist">Message(<%= @msgc ? @msgc.unread : nil %>)</a></li>
+    <li class="active"><a href="/chatlist">Message(<%= @msgc ? @msgc.unread : 0 %>)</a></li>
 <% end %>
    </ul>
 
