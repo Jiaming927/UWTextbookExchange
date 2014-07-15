@@ -560,7 +560,7 @@ ActiveRecord::Schema.define(version: 20140715113346) do
   end
 
   create_table "msgcounts", force: true do |t|
-    t.string  "username"
+    t.string  "username",             null: false
     t.integer "count",    default: 0, null: false
     t.integer "unread",   default: 0, null: false
   end

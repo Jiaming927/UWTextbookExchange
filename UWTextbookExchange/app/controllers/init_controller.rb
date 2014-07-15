@@ -3,6 +3,9 @@ class InitController < ApplicationController
  before_filter :authenticate_user!, :except => [:index, :terms]
 
  def index
+	if user_signed_in?
+		@msgc = Msgcount.where(:username => current_user.username).first
+	end
  end
 
  def chatlist
