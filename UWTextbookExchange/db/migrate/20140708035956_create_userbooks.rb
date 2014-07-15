@@ -2,6 +2,7 @@ class CreateUserbooks < ActiveRecord::Migration
   def change
     create_table :userbooks do |t|
       t.string :email, null: false
+      t.string :username, null: false
       t.integer :own,  null: false, :default => 0
       t.integer :borrow,  null: false, :default => 0
 #owned

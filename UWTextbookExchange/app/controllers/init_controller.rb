@@ -10,6 +10,7 @@ class InitController < ApplicationController
 	if !@Userbook
 			@Userbook = Userbooks.new
 			@Userbook.email = current_user.email
+			@Userbook.username = current_user.username
 			if !@Userbook.save
 				# database error
 				return redirect_to(root_url)
@@ -20,6 +21,7 @@ class InitController < ApplicationController
 	if !@Tradedbook
 			@Tradedbook= Usertraded.new
 			@Tradedbook.email = current_user.email
+			@Tradedbook.username = current_user.username
 			if !@Tradedbook.save
 				# database error
 				return redirect_to(root_url)
@@ -103,6 +105,7 @@ class InitController < ApplicationController
 					if !@Tradedbook
 						@Tradedbook= Usertraded.new
 						@Tradedbook.email = current_user.email
+						@Tradedbook.username = current_user.username
 					end
 					@Tradedbook.traded = @Tradedbook.traded + 1
 					tradecolumn = "tradedbook" + @Tradedbook.traded.to_s
@@ -171,6 +174,7 @@ class InitController < ApplicationController
 						if !@Userbook
 							@Userbook= Userbooks.new
 							@Userbook.email = current_user.email
+							@Userbook.username = current_user.username
 						end
 						@Userbook.own = @Userbook.own + 1
 						usercolumn = "ownedbook" + @Userbook.own.to_s

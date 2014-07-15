@@ -16,10 +16,14 @@
 
 			<h2><%= pluralize(@bookinfo.number, 'person') %> <%= @has %> the book</h2>
 		<% if user_signed_in? %>
+			<div>Chat with some of them:</div>
 			<div>
 				<% for i in 1..@bookinfo.number %>
 					<% ownuser = "user" + i.to_s %>
-					<%= @bookinfo.read_attribute(ownuser.to_sym)%> &nbsp;				
+					<% if @bookinfo.read_attribute(ownuser.to_sym) != current_user.username%>
+						<a href="<%=root_url%>messages?receiver=<%=@bookinfo.read_attribute(ownuser.to_sym)%>"><%=@bookinfo.read_attribute(ownuser.to_sym)%></a>
+						&nbsp;	
+					<% end %>			
 				<% end %>
 			</div>
 		<% else %>

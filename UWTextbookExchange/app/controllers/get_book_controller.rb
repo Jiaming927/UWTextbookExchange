@@ -56,6 +56,7 @@ class GetBookController < ApplicationController
 			#userbook record not exist
 			@userbook_edit = Userbooks.new
 			@userbook_edit.email = current_user.email
+			@userbook_edit.username = current_user.username
 		else
 			#record exist
 			# test if the book already exist in the record
@@ -95,7 +96,7 @@ class GetBookController < ApplicationController
 					end
 					@book_edit.number = @book_edit.number + 1
 					@usercolumn = "user" + @book_edit.number.to_s
-					@book_edit.assign_attributes({@usercolumn.to_sym => current_user.email})
+					@book_edit.assign_attributes({@usercolumn.to_sym => current_user.username})
 					if @book_edit.save
 						#success
 						flash[:postmessage] = bookname + " is posted successfully."

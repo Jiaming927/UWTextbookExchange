@@ -2,6 +2,7 @@ class CreateUsertradeds < ActiveRecord::Migration
   def up
     create_table :usertradeds do |t|
       t.string :email, null: false
+      t.string :username, null: false
       t.integer :traded,  null: false, :default => 0
 #traded
       t.text :tradedbook1, limit: 100
