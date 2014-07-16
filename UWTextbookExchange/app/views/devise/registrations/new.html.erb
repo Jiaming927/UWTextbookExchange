@@ -14,84 +14,70 @@
 <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
 <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
 <![endif]-->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+<script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script> 
 <script type="text/javascript">
-	window.onload = function() {
-		document.getElementById("youremail").onblur = validemail;
-		document.getElementById("username").onblur = validusername;
-		document.querySelector("#user_password").onblur = validpassword;
-		document.querySelector("#user_password_confirmation").onblur = reenterpassword;
-	};
-
-
-	function validemail(){
-		var msg = document.getElementById("message");
-		var email = document.getElementById("youremail").value.trim();
-                var emailpatt = new RegExp("@uw.edu$");
-		if (!emailpatt.test(email)){
-				msg.innerHTML = 'Email should end with <strong>"uw.edu"</strong>';
-				msg.hidden = false;
-				$("#youremail").css("background-color", "#FF9999");
-				$("#youremail").fadeIn(100).fadeOut(100).fadeIn(100).fadeOut(100).fadeIn(100);
-				$("#submit-button").attr('disabled', 'disabled');
-                } else {
-			msg.hidden = true;
-                        $("#submit-button").removeAttr('disabled');
-                        $("#youremail").css("background-color", "#FFFFFF");
+$( document ).ready(function(){	
+	$("#youremail").focusout(function(){
+		if (!new RegExp("@uw.edu$").test($("#youremail")[0].value.trim())){
+				$("#message").html( 'Email should end with <strong>"uw.edu"</strong>');
+				$("#message")[0].hidden = null;
+				flash($("#youremail"));
+		} else {
+			reactivate($("#youremail"));
 		}
-	}
-	
-	function validusername(){
-		var msg = document.getElementById("message");
-		var name = document.getElementById("username").value.trim();
-		if (name.length < 5 || name.length > 20){
-				msg.innerHTML = 'Username must have 5 to 20 characters';
-				msg.hidden = false;
-				$("#username").css("background-color", "#FF9999");
-				$("#username").fadeIn(100).fadeOut(100).fadeIn(100).fadeOut(100).fadeIn(100);
-				$("#submit-button").attr('disabled', 'disabled');
-                } else {
-			msg.hidden = true;
-                        $("#submit-button").removeAttr('disabled');
-                        $("#username").css("background-color", "#FFFFFF");
-		}
-	}	
+	});
 
-	function validpassword(){
-		var msg = document.getElementById("message");
-		var password = document.querySelector("#user_password").value;
+	$("#username").focusout(function(){
+		if ($("#username")[0].value.trim().length < 5 || $("#username")[0].value.trim().length > 20){
+				$("#message").html('Username must have 5 to 20 characters');
+				$("#message")[0].hidden = null;
+				flash($("#username"));
+                } else {
+			reactivate($("#username"));
+		}
+	});
+
+	$("#user_password").focusout(function(){
+		var password = $("#user_password")[0].value;
 		var hasUpper = new RegExp("[A-Z]");
 		var hasLower = new RegExp("[a-z]");
 		var hasNumber = new RegExp("[0-9]");
 		if (password.length < 8 || password.length > 20 || !hasUpper.test(password) || !hasLower.test(password) || !hasNumber.test(password)){
-			msg.innerHTML = 'Your password must be 8 to 20 characters with at least <br/> <strong>one digit</strong><br/> <strong>one lowercase letter</strong> <br/> <strong>one uppercase letter</strong>';
-			msg.hidden = false;
+			$("#message").html('Your password must be 8 to 20 characters with at least <br/> <strong>one digit</strong><br/> <strong>one lowercase letter</strong> <br/> <strong>one uppercase letter</strong>');
+			$("#message")[0].hidden = null;
 			$("#user_password_confirmation").prop('disabled', true);
-                   $("#user_password").css("background-color", "#FF9999");
-                   $("#user_password").fadeIn(100).fadeOut(100).fadeIn(100).fadeOut(100).fadeIn(100);
-                   $("#submit-button").attr('disabled', 'disabled');
+			flash($("#user_password"));
 		} else {
-			msg.hidden = true;
+			reactivate($("#user_password"));
 			$("#user_password_confirmation").prop('disabled', false);
-			$("#submit-button").removeAttr('disabled');
-			$("#user_password").css("background-color", "#FFFFFF");
 			$("#user_password_confirmation").css("background-color", "#FFFFFF");
 		}
-	}
+	});
 
-        function reenterpassword(){
-		var msg = document.getElementById("message")
+	$("#user_password_confirmation").focusout(function(){
                if ($("#user_password").val() !== $("#user_password_confirmation").val()) {
-				msg.innerHTML = "Password re-entered does not match";
-				msg.hidden = false;
-				$("#user_password_confirmation").css("background-color", "#FF9999");
-				$("#user_password_confirmation").fadeIn(100).fadeOut(100).fadeIn(100).fadeOut(100).fadeIn(100);
-				$("#submit-button").attr('disabled', 'disabled');
-               } else {
-			msg.hidden = true;
-			$("#submit-button").removeAttr('disabled');
-			$("#user_password_confirmation").css("background-color", "#FFFFFF");
-                }
-        }
+				$("#message").html("Password re-entered does not match");
+				$("#message")[0].hidden = null;
+				flash($("#user_password_confirmation"));
+		} else {
+			reactivate($("#user_password_confirmation"));
+		}
+	});
+});
+
+function flash(obj){
+	obj.css("background-color", "#FF9999");
+	obj.fadeIn(100).fadeOut(100).fadeIn(100).fadeOut(100).fadeIn(100);
+	$("#submit-button").attr('disabled', 'disabled');
+}
+
+function reactivate(obj){
+	$("#message")[0].hidden = true;
+	$("#submit-button").removeAttr('disabled');
+	obj.css("background-color", "#FFFFFF");
+}
+
 
 function openWin(sWindowURL,sWindowName,iWidth,iHeight)
 {
@@ -123,10 +109,7 @@ function openWin(sWindowURL,sWindowName,iWidth,iHeight)
 
 </head>
 <body>
-    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
-    <!-- Include all compiled plugins (below), or include individual files as needed -->
-   <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script> 
+
 
     <div class="container">
         <div class="row">
