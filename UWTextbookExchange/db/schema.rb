@@ -554,7 +554,7 @@ ActiveRecord::Schema.define(version: 20140715113346) do
   create_table "messages", force: true do |t|
     t.string   "sender",     null: false
     t.string   "receiver",   null: false
-    t.text     "content",    null: false
+    t.binary   "content",    null: false
     t.datetime "created_at"
     t.datetime "updated_at"
   end

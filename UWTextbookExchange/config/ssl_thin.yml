@@ -1,0 +1,7 @@
+---
+port: 4443
+ssl: true
+ssl_key_file: /var/server.pem
+ssl_cert_file: /var/certificate_chain.pem
+environment: production
+rackup: private_pub.ru

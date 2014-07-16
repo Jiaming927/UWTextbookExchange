@@ -9,3 +9,4 @@ gem 'devise'
 gem 'jquery-rails'
 gem "private_pub"
 gem "thin"
+gem "encryptor"
