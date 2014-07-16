@@ -41,6 +41,8 @@ Email: <%= current_user.email %>
 <br />
 Username: <%= current_user.username %>
 <br />
+Messages(unread/total): <a href="/chatlist"><%= @msgc ? @msgc.unread : 0 %>/<%= @msgc ? @msgc.count : 0 %></a>
+<br />
 Books you owned: <%= @Userbook.own %>
 <% if (@Userbook.own > 0) %>
 	<ol>

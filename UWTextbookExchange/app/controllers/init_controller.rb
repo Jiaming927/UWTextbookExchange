@@ -13,6 +13,7 @@ class InitController < ApplicationController
  end
 
  def personal
+	@msgc = Msgcount.where(:username => current_user.username).first
 	@Userbook = Userbooks.where(:email => current_user.email).first
 	if !@Userbook
 			@Userbook = Userbooks.new

@@ -104,6 +104,29 @@ class MessagesController < ApplicationController
 	end
   end
 
+  def markread
+	#clear all channels
+	@chnls = Channel.where("channel_name LIKE ? OR channel_name LIKE ?", current_user.username + "%", "%" + current_user.username)
+	@chnls.each do |ch|
+		if (current_user.username + current_user.username) > ch.channel_name
+			ch.first_side = 0
+		else	
+			ch.second_side = 0
+		end
+		ch.save
+	end
+
+	#clear msgcount db
+	msgc = Msgcount.where(:username => current_user.username).first
+	if msgc
+		msgc.unread = 0
+		if !msgc.save
+			database_error
+		end
+	end
+	redirect_to('/chatlist')
+  end
+
 private
   
     def user_exist_create(send_to_user)
