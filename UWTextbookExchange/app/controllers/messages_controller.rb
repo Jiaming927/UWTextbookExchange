@@ -46,7 +46,7 @@ class MessagesController < ApplicationController
 			return database_error
 		end
 	else
-		redirect_to(root_url)
+		redirect_to('/chatlist')
 	end
   end
 
@@ -54,6 +54,7 @@ class MessagesController < ApplicationController
 	if params[:message] && params[:message][:sender] && params[:message][:receiver] && params[:message][:content] && !params[:message][:sender].blank? && !params[:message][:receiver].blank? && !params[:message][:content].blank? && user_exist_create(params[:message][:receiver].strip) && params[:message][:sender].blank? != params[:message][:receiver]
 		@message = Message.create!(params[:message].permit(:content, :sender, :receiver))		
 		chnl = return_asc(current_user.username, params[:message][:receiver].strip)
+		PrivatePub.publish_to("/messages/" + chnl, message: @message)
 		chnl_db = Channel.where(:channel_name => chnl).first
 		if chnl_db
 			#increment total in channel db
@@ -79,19 +80,27 @@ class MessagesController < ApplicationController
 				#increment self-count in channel db
 				msgc_db.count = msgc_db.count + 1
 				msgc_db.save
-			end
 
-			#add unread to other user
-			msgc_other_db = Msgcount.where(:username => params[:message][:receiver].strip).first
-			if msgc_other_db
-				msgc_other_db.unread = msgc_other_db.unread + 1
-				msgc_other_db.save
+				#add unread to other user
+				msgc_other_db = Msgcount.where(:username => params[:message][:receiver].strip).first
+				if msgc_other_db
+					msgc_other_db.unread = msgc_other_db.unread + 1
+					if !msgc_other_db.save
+						return database_error
+					end
+				else
+					return database_error
+				end
+			else
+				return database_error
 			end
+		else
+			return database_error
 		end
-		PrivatePub.publish_to("/messages/" + chnl, message: @message)
+
 
 	else
-		redirect_to(root_url)
+		redirect_to('/chatlist')
 	end
   end
 
@@ -108,6 +117,8 @@ private
 	end
 	if !Msgcount.where(:username => send_to_user).first
 		if !User.where(:username => send_to_user).first
+			#receiver not exist
+			flash[:notice] = "The user does not exist."
 			return false
 		else
 			#user exist
@@ -146,6 +157,6 @@ private
 
     def database_error
 	flash[:notice] = "Something has gone wrong. We are trying to fix it."
-	return redirect_to(root_url)
+	return redirect_to('/chatlist')
     end
 end
