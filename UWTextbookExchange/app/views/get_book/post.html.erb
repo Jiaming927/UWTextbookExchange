@@ -7,11 +7,11 @@
 <% end %>
 
 <h1>Search Result for <%= @courseInfo.course_name %></h1>
-<% @courseInfo.attributes.each do |attr_name, attr_value| %>
 <ol>
+<% @courseInfo.attributes.each do |attr_name, attr_value| %>
   <% if attr_name != "id" && attr_name != "course_name" && attr_name != "number" && attr_name != "created_at" && attr_name != "updated_at" && attr_value != nil %>
 <li><a href="<%=root_url%>show?book=<%=attr_value%>"><%=attr_value%></a>
   <a href="<%=root_url%>postto?course=<%=@courseInfo.course_name%>&book=<%=attr_value%>&course=<%= @courseInfo.course_name %>">Post</a></li>
   <% end %>
-</ol>
 <% end %>
+</ol>

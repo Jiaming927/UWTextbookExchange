@@ -7,7 +7,7 @@ class GetBookController < ApplicationController
 		@courseName = params["coursename"].strip.upcase
 		@courseInfo = Course.where(:course_name => @courseName).first
 		if !@courseInfo
-		  flash[:notice] = "Oops.. Misspell anything?"
+		  flash[:notice] = "This course is not held in this quarter, or misspell anything?"
 		  redirect_to(root_url)
 		end
 	elsif params[:course]
@@ -23,7 +23,7 @@ class GetBookController < ApplicationController
 		else	
 			@courseInfo = Course.where(:course_name => @courseName).first
 			if !@courseInfo
-			  flash[:notice] = "Oops.. Misspell anything?"
+			  flash[:notice] = "This course is not held in this quarter, or misspell anything?"
 			  redirect_to(root_url)
 			end
 		end
@@ -129,7 +129,7 @@ class GetBookController < ApplicationController
 	if session[:coursename]
 		@courseInfo = Course.where(:course_name => session[:coursename]).first
 		if !@courseInfo
-		  flash[:notice] = "Oops.. Misspell anything?"
+		  flash[:notice] = "This course is not held in this quarter, or misspell anything?"
 		  redirect_to(root_url)
 		end
 	end

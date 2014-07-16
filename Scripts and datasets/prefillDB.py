@@ -1,6 +1,6 @@
 import sqlite3 
 
-db = sqlite3.connect("UWTextbookExchange/db/development.sqlite3")
+db = sqlite3.connect("../UWTextbookExchange/db/development.sqlite3")
 print "Connection established"
 file = open("*TextBookFile.txt")
 print "File found\n"
@@ -19,8 +19,9 @@ i = 0
 while i < len(lines):
 	if lines[i].startswith("*"):
 		course_name = lines[i][1:].strip()
+		course_name = "".join(course_name.split())
 		i += 1
-		queryStart = "\"" + course_name + "\"" +
+		queryStart = "\"" + course_name + "\""
 	else:
 		print course_name + "...START \n"
 		index = 1
@@ -36,7 +37,7 @@ while i < len(lines):
 		queryContent = queryStart + ",\"" + str(index) + "\"" + queryBooks
 		finalQuery = "INSERT INTO courses " + "(course_name, number, " + bookCount + ") VALUES(" + queryContent + ")"
 		db.execute(finalQuery)
-
+	queryBooks=""
 db.commit()
 db.close()
 #"INSERT INTO courses("

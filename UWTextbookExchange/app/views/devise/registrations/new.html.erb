@@ -17,6 +17,7 @@
 <script type="text/javascript">
 	window.onload = function() {
 		document.getElementById("youremail").onblur = validemail;
+		document.getElementById("username").onblur = validusername;
 		document.querySelector("#user_password").onblur = validpassword;
 		document.querySelector("#user_password_confirmation").onblur = reenterpassword;
 	};
@@ -36,6 +37,22 @@
 			msg.hidden = true;
                         $("#submit-button").removeAttr('disabled');
                         $("#youremail").css("background-color", "#FFFFFF");
+		}
+	}
+	
+	function validusername(){
+		var msg = document.getElementById("message");
+		var name = document.getElementById("username").value.trim();
+		if (name.length < 5 || name.length > 20){
+				msg.innerHTML = 'Username must have 5 to 20 characters';
+				msg.hidden = false;
+				$("#username").css("background-color", "#FF9999");
+				$("#username").fadeIn(100).fadeOut(100).fadeIn(100).fadeOut(100).fadeIn(100);
+				$("#submit-button").attr('disabled', 'disabled');
+                } else {
+			msg.hidden = true;
+                        $("#submit-button").removeAttr('disabled');
+                        $("#username").css("background-color", "#FFFFFF");
 		}
 	}	
 
@@ -124,7 +141,7 @@ function openWin(sWindowURL,sWindowName,iWidth,iHeight)
   <%= devise_error_messages! %>
 <div class="row">
 	  <%= f.email_field :email, placeholder: "Your UW Email", autofocus: true, class: "form-control", id: "youremail",  :required => true %>	
-	<%= f.text_field :username, placeholder: "Username", class: "form-control",  :required => true %>
+	<%= f.text_field :username, placeholder: "Username", class: "form-control", id: "username",  :required => true %>
 	    <%= f.password_field :password, placeholder: "Password", autocomplete: "off", class: "form-control",  :required => true %>
 
 	    <%= f.password_field :password_confirmation, autocomplete: "off" , :placeholder => "Re-enter Password", class: "form-control",  :required => true %>

@@ -1,5 +1,5 @@
 class CreateUserbooks < ActiveRecord::Migration
-  def change
+  def up
     create_table :userbooks do |t|
       t.string :email, null: false
       t.string :username, null: false
@@ -40,5 +40,11 @@ class CreateUserbooks < ActiveRecord::Migration
 
       t.timestamps
     end
+	add_index :userbooks, :email, unique: true
+	add_index :userbooks, :username, unique: true
+  end
+
+  def down
+	drop_table :userbooks
   end
 end

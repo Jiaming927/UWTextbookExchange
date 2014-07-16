@@ -20,6 +20,7 @@ class CreateCourses < ActiveRecord::Migration
       t.text :book15, limit: 100
       t.timestamps
     end
+	add_index :courses, :course_name, unique: true
   end
 
   def down

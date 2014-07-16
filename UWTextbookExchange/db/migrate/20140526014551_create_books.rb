@@ -3,6 +3,7 @@ class CreateBooks < ActiveRecord::Migration
     create_table :books do |t|
       t.text :book_title, null: false, limit:50
       t.string :author, limit:50
+      t.decimal :price
       t.string :course_name, null: false, limit:20
       t.integer :number, :default => 0, null: false
       t.string :user1, limit: 100
@@ -507,6 +508,7 @@ class CreateBooks < ActiveRecord::Migration
       t.string :user500, limit: 100
       t.timestamps
     end
+	add_index :books, :book_title, unique: true
   end
 
   def down

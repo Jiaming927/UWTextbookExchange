@@ -108,6 +108,8 @@ class CreateUsertradeds < ActiveRecord::Migration
 
       t.timestamps
     end
+	add_index :usertradeds, :email, unique: true
+	add_index :usertradeds, :username, unique: true
   end
 
   def down
