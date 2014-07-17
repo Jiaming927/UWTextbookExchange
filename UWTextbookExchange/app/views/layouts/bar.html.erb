@@ -2,7 +2,7 @@
 <% if user_signed_in? %>
 var flashing = null
 $( document ).ready(function(){	
-	setInterval(updateCount,10000);
+	setInterval(updateCount,30000);
 	if (<%= @msgc ? @msgc.unread : 0 %> > 0){
 		flashing = setInterval(function(){ $("#chatmsg").fadeOut(300).fadeIn(300); },600);
 	}
