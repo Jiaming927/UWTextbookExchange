@@ -9,6 +9,7 @@ class InitController < ApplicationController
  end
 
  def chatlist
+	@msgc = Msgcount.where(:username => current_user.username).first
 	@chnls = Channel.where("channel_name LIKE ? OR channel_name LIKE ?", current_user.username + "%", "%" + current_user.username)
  end
 
@@ -314,5 +315,6 @@ private
 	end
 	return @book
  end
+
 
 end

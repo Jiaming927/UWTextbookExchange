@@ -8,8 +8,9 @@ class GetBookController < ApplicationController
 		@courseInfo = Course.where(:course_name => @courseName).first
 		if !@courseInfo
 		  flash[:notice] = "This course is not held in this quarter, or misspell anything?"
-		  redirect_to(root_url)
+		  return redirect_to(root_url)
 		end
+		messagehelper
 	elsif params[:course]
 		session[:last_dep] = params[:course]["department"].strip
 		session[:last_class] = params[:course]["class"].strip
@@ -19,14 +20,15 @@ class GetBookController < ApplicationController
 
 		if params[:post]
 		    	 flash[:notice] = params[:course]["department"]
-			redirect_to('/post')
+			return redirect_to('/post')
 		else	
 			@courseInfo = Course.where(:course_name => @courseName).first
 			if !@courseInfo
 			  flash[:notice] = "This course is not held in this quarter, or misspell anything?"
-			  redirect_to(root_url)
+			  return redirect_to(root_url)
 			end
 		end
+		messagehelper
 	else
 		redirect_to(root_url)
 	end
@@ -36,6 +38,7 @@ class GetBookController < ApplicationController
 	if params[:book]
 		@showbookname = params[:book].strip
 		@bookinfo = Book.where(:book_title => @showbookname).first
+		messagehelper
 		if params[:course]
 			@showcoursename = params[:course].strip
 		end
@@ -130,8 +133,16 @@ class GetBookController < ApplicationController
 		@courseInfo = Course.where(:course_name => session[:coursename]).first
 		if !@courseInfo
 		  flash[:notice] = "This course is not held in this quarter, or misspell anything?"
-		  redirect_to(root_url)
+		  return redirect_to(root_url)
 		end
+		messagehelper
 	end
   end
+
+private
+    def messagehelper
+	if user_signed_in?
+		@msgc = Msgcount.where(:username => current_user.username).first
+	end
+    end
 end

@@ -1,4 +1,5 @@
 class MessagesController < ApplicationController
+  layout false
   before_filter :authenticate_user!
 
 # Channel model
@@ -20,17 +21,17 @@ class MessagesController < ApplicationController
 					#mark msg from other side to read
 					ch.first_side = 0
 				end
-				msgc_db = Msgcount.where(:username => current_user.username).first
-				if msgc_db
-					msgc_db.unread = msgc_db.unread - @msg_number
-					if msgc_db.save
+				@msgc = Msgcount.where(:username => current_user.username).first
+				if @msgc
+					@msgc.unread = @msgc.unread - @msg_number
+					if @msgc.save
 						if ch.save
 							@messages = Message.where("(sender = ? AND receiver = ?) OR (sender = ? AND receiver = ?)", current_user.username,params[:receiver].strip,params[:receiver].strip, current_user.username)
 						else
 							#database error
 							#retrieve database
-							msgc_db.unread = msgc_db.unread + @msg_number
-							msgc_db.save
+							@msgc.unread = @msgc.unread + @msg_number
+							@msgc.save
 							return database_error
 						end
 					else

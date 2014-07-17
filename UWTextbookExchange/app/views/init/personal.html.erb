@@ -2,7 +2,43 @@
 <html>
 <head>
 	<title>Personal Information</title>
+<link href="//netdna.bootstrapcdn.com/bootswatch/3.1.1/simplex/bootstrap.min.css" rel="stylesheet">
+<%= stylesheet_link_tag('index', :media => 'all') %>
+
+<script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+<script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+<script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+
 <script>
+<% if user_signed_in? %>
+var flashing = null
+$( document ).ready(function(){	
+	setInterval(updateCount,10000);
+	if (<%= @msgc ? @msgc.unread : 0 %> > 0){
+		$("#chatmsg").css("background-color", "#FFFFFF");
+		flashing = setInterval(function(){ $("#chatmsg").fadeOut(300).fadeIn(300); },600);
+	}
+});
+
+function updateCount(){
+    $.ajax({
+    url:  "/showcount",
+    type: "GET",
+  }).done(function(data){
+    $("#msgct").html(data);
+    if (data.trim() != "0"){
+	clearInterval(flashing);
+	$("#chatmsg").css("background-color", "#FFFFFF");
+	flashing = setInterval(function(){ $("#chatmsg").fadeOut(300).fadeIn(300); },600);
+    } else {
+	clearInterval(flashing);
+    }
+  });
+}
+<% end %>
+
 window.onload = function(){
 	var unlist = document.querySelectorAll(".unlist");
 	for(var i = 0; i < unlist.length; i++){
@@ -28,12 +64,20 @@ function confirmdelete(evt){
 </head>
 
 <body>
+
+<%= render template: "layouts/bar" %>
+<div style="width:90%;margin:auto">
+<br />
+
 <%= link_to("Home", root_url) %>
 
+
 <% if !flash[:editbookmessage].blank? %>
+<br />
 <div class = "notice">
         <%= flash[:editbookmessage] %>
 </div>
+<br />
 <% end %>
 
 <h1>Personal Information</h1>
@@ -72,6 +116,7 @@ Books traded: <%= @Tradedbook.traded %>
 <br />
 
 <%= link_to("Change Password", edit_user_registration_path) %>
+</div>
 </body>
 
 </html>
