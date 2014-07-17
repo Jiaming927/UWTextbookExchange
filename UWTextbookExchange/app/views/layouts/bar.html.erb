@@ -1,3 +1,30 @@
+<script type="text/javascript">
+<% if user_signed_in? %>
+var flashing = null
+$( document ).ready(function(){	
+	setInterval(updateCount,10000);
+	if (<%= @msgc ? @msgc.unread : 0 %> > 0){
+		flashing = setInterval(function(){ $("#chatmsg").fadeOut(300).fadeIn(300); },600);
+	}
+});
+
+function updateCount(){
+    $.ajax({
+    url:  "/showcount",
+    type: "GET",
+  }).done(function(data){
+    $("#msgct").html(data);
+    if (data.trim() != "0"){
+	clearInterval(flashing);
+	flashing = setInterval(function(){ $("#chatmsg").fadeOut(300).fadeIn(300); },600);
+    } else {
+	clearInterval(flashing);
+    }
+  });
+}
+<% end %>
+
+</script>
     <!-- Top Navigation Bar -->
     <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
       <div class="container-fluid">

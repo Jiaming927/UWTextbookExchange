@@ -10,35 +10,10 @@
 <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
 <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
 <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
-
+<%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
+<%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
+<%= csrf_meta_tags %>
 <script>
-<% if user_signed_in? %>
-var flashing = null
-$( document ).ready(function(){	
-	setInterval(updateCount,10000);
-	if (<%= @msgc ? @msgc.unread : 0 %> > 0){
-		$("#chatmsg").css("background-color", "#FFFFFF");
-		flashing = setInterval(function(){ $("#chatmsg").fadeOut(300).fadeIn(300); },600);
-	}
-});
-
-function updateCount(){
-    $.ajax({
-    url:  "/showcount",
-    type: "GET",
-  }).done(function(data){
-    $("#msgct").html(data);
-    if (data.trim() != "0"){
-	clearInterval(flashing);
-	$("#chatmsg").css("background-color", "#FFFFFF");
-	flashing = setInterval(function(){ $("#chatmsg").fadeOut(300).fadeIn(300); },600);
-    } else {
-	clearInterval(flashing);
-    }
-  });
-}
-<% end %>
-
 $( document ).ready(function(){
 	
 	$("#loading")[0].hidden = "hidden";
