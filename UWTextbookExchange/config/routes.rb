@@ -2,7 +2,8 @@ Rails.application.routes.draw do
   devise_for :users, path: '', path_names: { sign_in: 'login', sign_out: 'logout', sign_up: 'signup'}
   devise_scope :user do
     get 'resend', :to => 'devise/confirmations#new'
-    get 'passreset', :to => 'devise/passwords#new'  
+    get 'passreset', :to => 'devise/passwords#new'
+    get 'unlockresend', :to=> 'devise/unlocks#new'
   end
 
   resources :messages

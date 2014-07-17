@@ -1,8 +1,35 @@
 class User < ActiveRecord::Base
   # Include default devise modules. Others available are:
-  # :lockable, :timeoutable and :omniauthable
+  # :timeoutable and :omniauthable
   devise :confirmable, :database_authenticatable, :registerable,
-         :recoverable, :rememberable, :trackable
+         :recoverable, :rememberable, :trackable, :lockable
+
+	before_save {
+		if self.encrypted_password
+			self.encrypted_password = self.encrypted_password.force_encoding("UTF-8")
+		end
+		if self.reset_password_token
+			self.reset_password_token = self.reset_password_token.force_encoding("UTF-8")
+		end
+		if self.current_sign_in_ip
+			self.current_sign_in_ip = self.current_sign_in_ip.force_encoding("UTF-8")
+		end
+		if self.last_sign_in_ip
+			self.last_sign_in_ip = self.last_sign_in_ip.force_encoding("UTF-8")
+		end
+		if self.confirmation_token
+			self.confirmation_token = self.confirmation_token.force_encoding("UTF-8")
+		end
+		if self.unlock_token
+			self.unlock_token = self.unlock_token.force_encoding("UTF-8")
+		end	
+	}
+
+	before_create {
+		if self.confirmation_token
+			self.confirmation_token = self.confirmation_token.force_encoding("UTF-8")
+		end
+	}
 
 validate :email_exist
 validate :email_match

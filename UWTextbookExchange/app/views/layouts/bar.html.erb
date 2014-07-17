@@ -64,11 +64,12 @@ function updateCount(){
                     <% if devise_mapping.recoverable? && controller_name != 'passwords' && controller_name != 'registrations' %>
                       <li><%= link_to "Forgot your password?", '/passreset' %></li>
                     <% end %>
-
                     <% if devise_mapping.confirmable? && controller_name != 'confirmations' %>
                       <li><%= link_to "Didn't receive confirmation instructions?", '/resend' %></li>
                     <% end %>
-
+                    <% if devise_mapping.lockable? && controller_name != 'unlocks' %>
+                      <li><%= link_to "Didn't receive unlock instructions?", '/unlockresend' %></li>
+                    <% end %>
                 <% end %>
                 </ul>
             </li>
