@@ -12,6 +12,15 @@ class InitController < ApplicationController
 	@chnls = Channel.where("channel_name LIKE ? OR channel_name LIKE ?", current_user.username + "%", "%" + current_user.username)
  end
 
+ def showcount
+	msgc = Msgcount.where(:username => current_user.username).first
+	if msgc
+		render :text => msgc.unread
+	else
+		render :text => "0"
+	end
+ end
+
  def personal
 	@msgc = Msgcount.where(:username => current_user.username).first
 	@Userbook = Userbooks.where(:email => current_user.email).first

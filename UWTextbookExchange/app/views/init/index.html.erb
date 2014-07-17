@@ -16,12 +16,30 @@
 <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
 
 <script type="text/javascript">
+var flashing = null
 $( document ).ready(function(){	
+	setInterval(updateCount,10000);
 	if (<%= @msgc ? @msgc.unread : 0 %> > 0){
-		$("#chatmsg").css("background-color", "#FFFFFF")
-		setInterval(function(){ $("#chatmsg").fadeOut(300).fadeIn(300); },600);
+		$("#chatmsg").css("background-color", "#FFFFFF");
+		flashing = setInterval(function(){ $("#chatmsg").fadeOut(300).fadeIn(300); },600);
 	}
 });
+
+function updateCount(){
+    $.ajax({
+    url:  "/showcount",
+    type: "GET",
+  }).done(function(data){
+    $("#msgct").html(data);
+    if (data.trim() != "0"){
+	clearInterval(flashing);
+	$("#chatmsg").css("background-color", "#FFFFFF");
+	flashing = setInterval(function(){ $("#chatmsg").fadeOut(300).fadeIn(300); },600);
+    } else {
+	clearInterval(flashing);
+    }
+  });
+}
 
 function openWin(sWindowURL,sWindowName,iWidth,iHeight)
 {
@@ -71,7 +89,7 @@ function openWin(sWindowURL,sWindowName,iWidth,iHeight)
  <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
    <ul class="nav navbar-nav">
 <% if user_signed_in? %>
-    <li id = "chatmsg"class="active"><a href="/chatlist">Message(<%= @msgc ? @msgc.unread : 0 %>)</a></li>
+    <li id = "chatmsg"class="active"><a href="/chatlist">Message(<span id='msgct'><%= @msgc ? @msgc.unread : 0 %></span>)</a></li>
 <% end %>
    </ul>
 
