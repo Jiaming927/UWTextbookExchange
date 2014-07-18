@@ -14,17 +14,67 @@
 <%= csrf_meta_tags %>
 <script>
 $( document ).ready(function(){
-	
+	$("#chat").scrollTop($('#chat')[0].scrollHeight);
 	$("#loading")[0].hidden = "hidden";
-	$("#new_message").submit(function() {
+	$("#new_message").submit(function(event) {
+		$("#message_content")[0].value = $("#content")[0].value;
 		if ($("#message_content")[0].value.trim() != ""){
 			$("#loading")[0].hidden = null;
 		} else {
-			$("#message_content")[0].value = "";
+			event.preventDefault();
+			$("#content")[0].value = "";
+			$("#content").fadeOut(200).fadeIn(200).fadeOut(200).fadeIn(200);
 		}
 	});
+
+	$(document).keydown(function(event){
+		if(event.keyCode==13){
+			$("#submitbutton").click();
+			return false;
+		}
+	});
+
+	$("#chat").bind("DOMSubtreeModified",function(){
+		$("#chat").scrollTop($('#chat')[0].scrollHeight);
+	});
+	
 });
 </script>
+<style>
+#chat {
+border: 1px solid black;
+width:400px;
+height:300px;
+overflow-y: scroll;
+margin-top: 10px;
+margin-bottom: 10px;
+}
+#content {
+width:350px;
+height:50px;
+resize:none;
+}
+#submitbutton {
+vertical-align: top;
+margin-top: 12px;
+}
+.sender {
+color:red;
+}
+.msg {
+color:blue;
+}
+.msgtime {
+float:right;
+}
+.msg_bundle {
+clear:both;
+}
+h1 {
+margin-top: 10px;
+margin-bottom: 10px;
+}
+</style>
 </head>
 <body>
 
@@ -37,17 +87,18 @@ $( document ).ready(function(){
 
 <h1>Chat with <%=params[:receiver].strip%></h1>
 <div>Log in as <%=current_user.username%></div>
-<br />
-<ul id="chat">
+
+<div id="chat">
   <%= render @messages %>
-</ul>
+</div>
 
 <%= form_for Message.new, :remote => true do |f| %>
 <div>
-  <%= f.text_field :content %>
+  <textarea id="content"></textarea>
+  <%= f.hidden_field :content, autofocus: true %>
   <%= f.hidden_field :sender, :value => current_user.username %>
   <%= f.hidden_field :receiver, :value => params[:receiver].strip %>
-  <%= f.submit "Send"%>
+  <%= f.submit "Send", id: 'submitbutton'%>
   <%= image_tag('loading.gif', id: 'loading', size:"20x20") %>
 </div>
 <% end %>

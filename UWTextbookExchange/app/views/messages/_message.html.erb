@@ -1,4 +1,5 @@
-<li>
-  <span><%= message.sender%>: <%= message.content %></span>
-  <span class="created_at"><%= message.created_at.strftime("%H:%M") %></span>
-</li>
+<div class="msg_bundle">
+	<span class="sender"><%= message.sender%>:</span>
+	<span class="msg"><%= message.content %></span>
+	<span class="msgtime"><%= message.created_at.strftime("%-m.%-d %H:%M") %><span>
+</div>
