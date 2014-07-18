@@ -272,7 +272,7 @@ private
 		index = nil
 		for i in 1..@book.number
 			thiscolumn = "user" + i.to_s
-			if @book.read_attribute(thiscolumn.to_sym) == current_user.email
+			if @book.read_attribute(thiscolumn.to_sym) == current_user.username
 				index = i
 				break
 			end
@@ -310,7 +310,7 @@ private
 
 		@book.number = @book.number + 1
 		@usercolumn = "user" + @book.number.to_s
-		@book.assign_attributes({@usercolumn.to_sym => current_user.email})
+		@book.assign_attributes({@usercolumn.to_sym => current_user.username})
 		return @book.save
 	end
 	return @book

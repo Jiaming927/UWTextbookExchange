@@ -28,12 +28,12 @@
 	<% end %>
 	<% if @bookinfo.number > 0 %>
 		<% if @bookinfo.number == 1 %>
-			<% @has = 'has' %>
+			<% has = 'has' %>
 		<% else %>
-			<% @has = 'have' %>
+			<% has = 'have' %>
 		<% end %>
 
-			<h2><%= pluralize(@bookinfo.number, 'person') %> <%= @has %> the book</h2>
+			<h2><%= pluralize(@bookinfo.number, 'person') %> <%= has %> the book</h2>
 		<% if user_signed_in? %>
 			<div>Chat with some of them:</div>
 			<div>
