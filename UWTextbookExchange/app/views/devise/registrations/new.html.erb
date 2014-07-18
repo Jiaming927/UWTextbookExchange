@@ -19,7 +19,7 @@ $( document ).ready(function(){
 	$("#youremail").focusout(function(){
 		if (!new RegExp("@uw.edu$").test($("#youremail")[0].value.trim())){
 				$("#message").html( 'Email should end with <strong>"uw.edu"</strong>');
-				$("#message")[0].hidden = null;
+				$("#message").show();
 				flash($("#youremail"));
 		} else {
 			reactivate($("#youremail"));
@@ -29,7 +29,7 @@ $( document ).ready(function(){
 	$("#username").focusout(function(){
 		if ($("#username")[0].value.trim().length < 5 || $("#username")[0].value.trim().length > 20){
 				$("#message").html('Username must have 5 to 20 characters');
-				$("#message")[0].hidden = null;
+				$("#message").show();
 				flash($("#username"));
                 } else {
 			reactivate($("#username"));
@@ -42,8 +42,8 @@ $( document ).ready(function(){
 		var hasLower = new RegExp("[a-z]");
 		var hasNumber = new RegExp("[0-9]");
 		if (password.length < 8 || password.length > 20 || !hasUpper.test(password) || !hasLower.test(password) || !hasNumber.test(password)){
-			$("#message").html('Your password must be 8 to 20 characters with at least <br/> <strong>one digit</strong><br/> <strong>one lowercase letter</strong> <br/> <strong>one uppercase letter</strong>');
-			$("#message")[0].hidden = null;
+			$("#message").html('Your password must be 8 to 20 characters with at least <strong>one digit</strong>, <strong>one lowercase letter</strong> and <strong>one uppercase letter</strong>');
+			$("#message").show();
 			$("#user_password_confirmation").prop('disabled', true);
 			flash($("#user_password"));
 		} else {
@@ -56,7 +56,7 @@ $( document ).ready(function(){
 	$("#user_password_confirmation").focusout(function(){
                if ($("#user_password").val() !== $("#user_password_confirmation").val()) {
 				$("#message").html("Password re-entered does not match");
-				$("#message")[0].hidden = null;
+				$("#message").show();
 				flash($("#user_password_confirmation"));
 		} else {
 			reactivate($("#user_password_confirmation"));
@@ -71,7 +71,7 @@ function flash(obj){
 }
 
 function reactivate(obj){
-	$("#message")[0].hidden = true;
+	$("#message").hide();
 	$("#submit-button").removeAttr('disabled');
 	obj.css("background-color", "#FFFFFF");
 }

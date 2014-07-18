@@ -15,11 +15,11 @@
 <script>
 $( document ).ready(function(){
 	$("#chat").scrollTop($('#chat')[0].scrollHeight);
-	$("#loading")[0].hidden = "hidden";
+	$("#loading").hide();
 	$("#new_message").submit(function(event) {
 		$("#message_content")[0].value = $("#content")[0].value;
 		if ($("#message_content")[0].value.trim() != ""){
-			$("#loading")[0].hidden = null;
+			$("#loading").show();
 		} else {
 			event.preventDefault();
 			$("#content")[0].value = "";
