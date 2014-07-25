@@ -33,11 +33,11 @@ class User < ActiveRecord::Base
 
 validate :email_exist
 validate :email_match
-validate :email_unique
+validate :email_unique, :on => :create
 
 validate :username_exist
 validate :username_length
-validate :username_unique
+validate :username_unique, :on => :create
 
 validate :password_conformation
 validate :password_exist
@@ -80,7 +80,7 @@ validate :password_complexity
   end
 
   def username_unique
-	if !username.strip.present?
+	if username.strip.present?
 		user = User.where(:username => username.strip).first
 		if user
 			errors.add :username, ": Username already exist"
@@ -95,7 +95,7 @@ validate :password_complexity
   end
 
   def password_conformation
-	if password.present? && (!password_confirmation.present? || password_confirmation.present? && password_confirmation != password)
+	if password.present? && (!password_confirmation.present? || (password_confirmation.present? && password_confirmation != password))
 		errors.add :password, ": Password conformation must match"
 	end
 
