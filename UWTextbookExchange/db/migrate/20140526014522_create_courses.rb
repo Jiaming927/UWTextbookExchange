@@ -3,22 +3,21 @@ class CreateCourses < ActiveRecord::Migration
     create_table :courses do |t|
       t.string :course_name, null: false, limit:20
       t.integer :number, null: false, :default => 0
-      t.text :book1, limit: 100
-      t.text :book2, limit: 100
-      t.text :book3, limit: 100
-      t.text :book4, limit: 100
-      t.text :book5, limit: 100
-      t.text :book6, limit: 100
-      t.text :book7, limit: 100
-      t.text :book8, limit: 100
-      t.text :book9, limit: 100
-      t.text :book10, limit: 100
-      t.text :book11, limit: 100
-      t.text :book12, limit: 100
-      t.text :book13, limit: 100
-      t.text :book14, limit: 100
-      t.text :book15, limit: 100
-      t.timestamps
+      t.text :book1
+      t.text :book2
+      t.text :book3
+      t.text :book4
+      t.text :book5
+      t.text :book6
+      t.text :book7
+      t.text :book8
+      t.text :book9
+      t.text :book10
+      t.text :book11
+      t.text :book12
+      t.text :book13
+      t.text :book14
+      t.text :book15
     end
 	add_index :courses, :course_name, unique: true
   end

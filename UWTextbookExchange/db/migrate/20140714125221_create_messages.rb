@@ -4,7 +4,7 @@ class CreateMessages < ActiveRecord::Migration
 	t.string :sender, null: false
 	t.string :receiver, null: false
 	t.text :content, null:false
-	t.timestamps
+	t.column :created_at, :datetime
     end
   end
 
