@@ -20,47 +20,39 @@
 
 <%= link_to("Home", root_url) %>
 <a href="javascript:history.back(-1)">Back </a>
-<% if @bookinfo && @bookinfo.number > 0 %>
+<% if @bookinfo.number > 0 %>
 	<h1><%=@bookinfo.book_title %></h1>
 	<div>Author: <%= @bookinfo.author %></div>
 	<div>Course: <a href="<%=root_url%>find?coursename=<%=@bookinfo.course_name%>"><%=@bookinfo.course_name%></a></div>
 	<% if user_signed_in? %>
-		<a href="<%=root_url%>postto?course=<%=@bookinfo.course_name%>&book=<%=@bookinfo.book_title%>">Post</a>
+		<a href="<%=root_url%>postto?book=<%=@bookinfo.book_title%>">Post</a>
 	<% end %>
-	<% if @bookinfo.number > 0 %>
-		<% if @bookinfo.number == 1 %>
-			<% has = 'has' %>
-		<% else %>
-			<% has = 'have' %>
-		<% end %>
-
+	<% if @bookinfo.number == 1 %>
+		<% has = 'has' %>
+	<% else %>
+		<% has = 'have' %>
+	<% end %>
 			<h2><%= pluralize(@bookinfo.number, 'person') %> <%= has %> the book</h2>
-		<% if user_signed_in? %>
-			<div>Chat with some of them:</div>
-			<div>
-				<% for i in 1..@bookinfo.number %>
-					<% ownuser = "user" + i.to_s %>
-					<% if @bookinfo.read_attribute(ownuser.to_sym) != current_user.username%>
-						<a href="<%=root_url%>messages?receiver=<%=@bookinfo.read_attribute(ownuser.to_sym)%>"><%=@bookinfo.read_attribute(ownuser.to_sym)%></a>
-						&nbsp;	
-					<% end %>			
-				<% end %>
-			</div>
-		<% else %>
-			<div><%=link_to('Sign in', :controller => new_session_path(resource_name)) %> or <%=link_to('Sign up', :controller => new_registration_path(resource_name)) %> to see who has it.</div>
-		<% end %>
+	<% if user_signed_in? %>
+		<div>Chat with some of them:</div>
+		<div>
+			<% @book.each do |bk| %>
+				<% if bk.username != current_user.username%>
+					<a href="<%=root_url%>messages?receiver=<%=bk.username%>"><%=bk.username%></a>
+					&nbsp;	
+				<% end %>			
+			<% end %>
+		</div>
+	<% else %>
+		<div><%=link_to('Sign in', :controller => new_session_path(resource_name)) %> or <%=link_to('Sign up', :controller => new_registration_path(resource_name)) %> to see who has it.</div>
 	<% end %>
 <% else %>
-	<h1><%=@showbookname%></h1>
+	<h1><%=@bookinfo.book_title%></h1>
 	<div>Sorry, no one has posted this book yet.</div>
 	<% if !user_signed_in? %>
 		<div><%=link_to('Sign in', :controller => new_session_path(resource_name)) %> or <%=link_to('Sign up', :controller => new_registration_path(resource_name)) %> to post it.</div>
 	<% else %>
-		<% if @showcoursename %>
-			<div>Do you want to <a href="<%=root_url%>postto?course=<%=@showcoursename%>&book=<%=@showbookname%>">post</a> it?</div>
-		<% else %>
-			<div>Do you want to <%= link_to("post", root_url) %> it?</div>
-		<% end %>
+		<div>Do you want to <a href="<%=root_url%>postto?book=<%=@bookinfo.book_title%>">post</a> it?</div>
 	<% end %>
 <% end %>
 </div>
