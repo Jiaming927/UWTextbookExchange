@@ -7,15 +7,19 @@
 
 <script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
 <%= javascript_include_tag "private_pub" %>
+<!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
 <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+<![endif]-->
 <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
-<%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
+<script type="text/javascript" src="http://hacks.bluesmoon.info/strftime/strftime-min.js"></script>
+<%= javascript_include_tag 'jquery_ujs'%>
 <%= csrf_meta_tags %>
 <script>
 $( document ).ready(function(){
 	$("#chat").scrollTop($('#chat')[0].scrollHeight);
 	$("#loading").hide();
+	convertTime();
 	$("#new_message").submit(function(event) {
 		$("#message_content")[0].value = $("#content")[0].value;
 		if ($("#message_content")[0].value.trim() != ""){
@@ -36,9 +40,17 @@ $( document ).ready(function(){
 
 	$("#chat").bind("DOMSubtreeModified",function(){
 		$("#chat").scrollTop($('#chat')[0].scrollHeight);
+		convertTime();
 	});
 	
 });
+
+function convertTime(){
+	$(".timezone").each(function(){
+		$(this).text(new Date($(this).html()).strftime("%D %r"));
+		$(this).removeClass("timezone")
+	})
+}
 </script>
 <style>
 #chat {
@@ -46,6 +58,7 @@ border: 1px solid black;
 width:400px;
 height:300px;
 overflow-y: scroll;
+word-wrap: break-word;
 margin-top: 10px;
 margin-bottom: 10px;
 }

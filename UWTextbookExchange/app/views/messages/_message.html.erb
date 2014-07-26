@@ -1,5 +1,5 @@
 <div class="msg_bundle">
 	<span class="sender"><%= message.sender%>:</span>
 	<span class="msg"><%= message.content %></span>
-	<span class="msgtime"><%= message.created_at.strftime("%-m.%-d %H:%M") %><span>
+	<span class="msgtime timezone"><%= message.created_at.to_s %></span>
 </div>
