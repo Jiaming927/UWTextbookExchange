@@ -24,8 +24,8 @@ class InitController < ApplicationController
 
  def personal
 	@msgc = Msgcount.where(:username => current_user.username).first
-	@Ownedbook = Ownedbook.where(:email => current_user.username)
-	@Tradedbook = Tradedbook.where(:email => current_user.username)
+	@Ownedbook = Ownedbook.where(:username => current_user.username)
+	@Tradedbook = Tradedbook.where(:username => current_user.username)
  end
 
  def terms

@@ -15,8 +15,7 @@ class GetBookController < ApplicationController
 	elsif params[:course]
 		session[:last_dep] = params[:course]["department"].strip
 		session[:last_class] = params[:course]["class"].strip
-		courseName = params[:course]["department"].strip.upcase
-		courseName <<  params[:course]["class"].strip
+		courseName = params[:course]["department"].strip.upcase + params[:course]["class"].strip
 		session[:coursename] = courseName
 
 		if params[:post]
@@ -52,17 +51,28 @@ class GetBookController < ApplicationController
 		#if book in bookinfo
 		binfo = Bookinfo.where(:book_title => bookname).first
 		if binfo
-			coursename = binfo.course_name
-			#increment bookinfo
-			binfo.number = binfo.number + 1
-			if binfo.save
-				#add to book
-				Book.create(:book_title => bookname, :username => current_user.username)
-
-				#add to owned
-				Ownedbook.create(:book_title => bookname, :username => current_user.username)
-				flash[:postmessage] = bookname + " is posted successfully"
+			bk = Book.where(:username => current_user.username, :book_title => bookname).first
+			if bk
+				flash[:postmessage] = "You have already posted the book"
 				return redirect_to('/post')
+			else
+				coursename = binfo.course_name
+				#increment bookinfo
+				binfo.number = binfo.number + 1
+				if binfo.save
+					#if user have traded the book, resume
+					tb = Tradedbook.where(:username => current_user.username, :book_title => bookname).first
+					if tb
+						tb.destroy
+					end
+					#add to book
+					Book.create(:book_title => bookname, :username => current_user.username)
+
+					#add to owned
+					Ownedbook.create(:book_title => bookname, :username => current_user.username)
+					flash[:postmessage] = bookname + " is posted successfully"
+					return redirect_to('/post')
+				end
 			end
 		end
 	end
@@ -92,7 +102,7 @@ private
 
     def createInfo(course)
 	course.attributes.each do |attr_name, attr_value|
-		if attr_name != "id" && attr_name != "course_name" && attr_name != "number" && attr_value != nil %>
+		if attr_name != "id" && attr_name != "course_name" && attr_name != "number" && attr_value != nil
 			binfo = Bookinfo.where(:book_title => attr_value).first
 			if !binfo
 				Bookinfo.create(:book_title => attr_value, :course_name => course.course_name)
