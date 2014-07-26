@@ -22,7 +22,7 @@ ActiveRecord::Schema.define(version: 20140726171514) do
   end
 
   add_index "bookinfos", ["book_title"], name: "index_bookinfos_on_book_title", unique: true
-in
+
   create_table "books", force: true do |t|
     t.text     "book_title", null: false
     t.string   "username"
@@ -78,9 +78,11 @@ in
   end
 
   create_table "msgcounts", force: true do |t|
-    t.string  "username",             null: false
-    t.integer "count",    default: 0, null: false
-    t.integer "unread",   default: 0, null: false
+    t.string   "username",               null: false
+    t.integer  "count",      default: 0, null: false
+    t.integer  "unread",     default: 0, null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   add_index "msgcounts", ["username"], name: "index_msgcounts_on_username", unique: true

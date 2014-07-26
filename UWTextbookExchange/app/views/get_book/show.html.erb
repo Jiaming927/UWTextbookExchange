@@ -34,7 +34,7 @@
 	<% end %>
 			<h2><%= pluralize(@bookinfo.number, 'person') %> <%= has %> the book</h2>
 	<% if user_signed_in? %>
-		<div>Chat with some of them:</div>
+		<div>Chat with them:</div>
 		<div>
 			<% @book.each do |bk| %>
 				<% if bk.username != current_user.username%>

@@ -5,6 +5,9 @@ class InitController < ApplicationController
  def index
 	if user_signed_in?
 		@msgc = Msgcount.where(:username => current_user.username).first
+		if !@msgc
+			Msgcount.create(:username => current_user.username)
+		end
 	end
  end
 
@@ -16,6 +19,8 @@ class InitController < ApplicationController
  def showcount
 	msgc = Msgcount.where(:username => current_user.username).first
 	if msgc
+		msgc.updated_at = Time.now
+		msgc.save
 		render :text => msgc.unread
 	else
 		render :text => "0"

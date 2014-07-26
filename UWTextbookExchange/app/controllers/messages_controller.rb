@@ -132,9 +132,7 @@ private
   
     def user_exist_create(send_to_user)
 	if !Msgcount.where(:username => current_user.username).first
-		msg = Msgcount.new
-		msg.username = current_user.username
-		if !msg.save
+		if !Msgcount.create(:username => current_user.username)
 			#save failed
 			return false
 		end
@@ -146,9 +144,8 @@ private
 			return false
 		else
 			#user exist
-			msg = Msgcount.new
-			msg.username = send_to_user
-			if !msg.save
+			
+			if !Msgcount.create(:username => send_to_user)
 				#save failed
 				return false
 			end
@@ -160,9 +157,7 @@ private
 
     def user_channel_exist(channel)
 	if !Channel.where(:channel_name => channel).first
-		ch = Channel.new
-		ch.channel_name = channel
-		if !ch.save
+		if !Channel.create(:channel_name => channel)
 			return false
 		end
 	end
