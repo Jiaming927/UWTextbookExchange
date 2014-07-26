@@ -54,28 +54,26 @@ Username: <%= current_user.username %>
 Messages(unread/total): <a href="/chatlist"><%= @msgc ? @msgc.unread : 0 %>/<%= @msgc ? @msgc.count : 0 %></a>
 <br />
 <div id="bookinfo">
-Books you owned: <%= @Userbook.own %>
-<% if (@Userbook.own > 0) %>
+Books you owned: <%= @Ownedbook.count %>
+<% if (@Ownedbook.count > 0) %>
 	<ol>
-	<% for i in 1..@Userbook.own %>
-		<% owncolumn = "ownedbook" + i.to_s %>
-		<li><a href="<%=root_url%>show?book=<%=@Userbook.read_attribute(owncolumn.to_sym)%>"><%=@Userbook.read_attribute(owncolumn.to_sym)%></a>
+	<% @Ownedbook.each do |ob| %>
+		<li><a href="<%=root_url%>show?book=<%=ob.book_title%>"><%=ob.book_title%></a>
 		<br />
-		<a href="<%=root_url%>traded?book=<%=@Userbook.read_attribute(owncolumn.to_sym)%>">Traded</a>
-		<a class="unlist" href="<%=root_url%>unlist?book=<%=@Userbook.read_attribute(owncolumn.to_sym)%>">Unlist</a></li>
+		<a href="<%=root_url%>traded?book=<%=ob.book_title%>">Traded</a>
+		<a class="unlist" href="<%=root_url%>unlist?book=<%=ob.book_title%>">Unlist</a></li>
 	<% end %>
 	</ol>
 	
 <% end %>
 <br />
-Books traded: <%= @Tradedbook.traded %>
-<% if (@Tradedbook.traded > 0) %>
+Books traded: <%= @Tradedbook.count %>
+<% if (@Tradedbook.count > 0) %>
 	<ol>
-	<% for i in 1..@Tradedbook.traded %>
-		<% tradedcolumn = "tradedbook" + i.to_s %>
-		<li><a href="<%=root_url%>show?book=<%=@Tradedbook.read_attribute(tradedcolumn.to_sym)%>"><%=@Tradedbook.read_attribute(tradedcolumn.to_sym)%></a></li>
-		<a href="<%=root_url%>resume?book=<%=@Tradedbook.read_attribute(tradedcolumn.to_sym)%>">Back on sale</a>
-		<a class="delete" href="<%=root_url%>delete?book=<%=@Tradedbook.read_attribute(tradedcolumn.to_sym)%>">Delete</a></li>
+	<% @Tradedbook.each do |tb| %>
+		<li><a href="<%=root_url%>show?book=<%=tb.book_title%>"><%=tb.book_title%></a></li>
+		<a href="<%=root_url%>resume?book=<%=tb.book_title%>">Back on sale</a>
+		<a class="delete" href="<%=root_url%>delete?book=<%=tb.book_title%>">Delete</a></li>
 	<% end %>
 	</ol>	
 <% end %>

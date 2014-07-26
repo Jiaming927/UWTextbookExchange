@@ -22,7 +22,7 @@ ActiveRecord::Schema.define(version: 20140726171514) do
   end
 
   add_index "bookinfos", ["book_title"], name: "index_bookinfos_on_book_title", unique: true
-
+in
   create_table "books", force: true do |t|
     t.text     "book_title", null: false
     t.string   "username"
