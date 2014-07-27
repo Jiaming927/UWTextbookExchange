@@ -37,7 +37,7 @@ class GetBookController < ApplicationController
 
   def show
 	if params[:book]
-		@book = Book.where(:book_title => params[:book].strip)
+		@book = Book.where(:book_title => params[:book].strip).includes("msgcount").order("msgcounts.last_update DESC")
 		@bookinfo = Bookinfo.where(:book_title => params[:book].strip).first
 		messagehelper
 	else

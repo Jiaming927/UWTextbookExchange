@@ -4,7 +4,7 @@ class CreateMsgcounts < ActiveRecord::Migration
 	t.string :username, null: false
 	t.integer :count, default: 0, null: false
 	t.integer :unread, default: 0, null: false
-	t.timestamps
+	t.column :last_update, :datetime
     end
 	add_index :msgcounts, :username, unique: true
   end

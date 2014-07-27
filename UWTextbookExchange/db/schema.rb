@@ -78,11 +78,10 @@ ActiveRecord::Schema.define(version: 20140726171514) do
   end
 
   create_table "msgcounts", force: true do |t|
-    t.string   "username",               null: false
-    t.integer  "count",      default: 0, null: false
-    t.integer  "unread",     default: 0, null: false
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.string   "username",                null: false
+    t.integer  "count",       default: 0, null: false
+    t.integer  "unread",      default: 0, null: false
+    t.datetime "last_update"
   end
 
   add_index "msgcounts", ["username"], name: "index_msgcounts_on_username", unique: true

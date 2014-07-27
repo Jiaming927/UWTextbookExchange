@@ -19,7 +19,7 @@ class InitController < ApplicationController
  def showcount
 	msgc = Msgcount.where(:username => current_user.username).first
 	if msgc
-		msgc.updated_at = Time.now
+		msgc.last_update = Time.now
 		msgc.save
 		render :text => msgc.unread
 	else
