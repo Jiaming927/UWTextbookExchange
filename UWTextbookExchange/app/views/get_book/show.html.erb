@@ -38,6 +38,11 @@
 		<div>
 			<% @book.each do |bk| %>
 				<% if bk.username != current_user.username%>
+					<% if bk.msgcount.last_update > 2.minutes.ago %>
+						<%= image_tag('online.png', size:"12x12") %>
+					<% else %>
+						<%= image_tag('offline.png', size:"12x12") %>
+					<% end %>
 					<a href="<%=root_url%>messages?receiver=<%=bk.username%>"><%=bk.username%></a>
 					&nbsp;	
 				<% end %>			

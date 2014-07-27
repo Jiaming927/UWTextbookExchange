@@ -7,12 +7,19 @@ class InitController < ApplicationController
 		@msgc = Msgcount.where(:username => current_user.username).first
 		if !@msgc
 			Msgcount.create(:username => current_user.username)
+		else
+			@msgc.last_update = Time.now
+			@msgc.save
 		end
 	end
  end
 
  def chatlist
 	@msgc = Msgcount.where(:username => current_user.username).first
+	if @msgc
+		@msgc.last_update = Time.now
+		@msgc.save
+	end
 	@chnls = Channel.where("channel_name LIKE ? OR channel_name LIKE ?", current_user.username + "%", "%" + current_user.username)
  end
 
@@ -21,14 +28,32 @@ class InitController < ApplicationController
 	if msgc
 		msgc.last_update = Time.now
 		msgc.save
-		render :text => msgc.unread
+		if params[:receiver] && !params[:receiver].strip.blank?
+			msgc_receiver = Msgcount.where(:username => params[:receiver].strip).first
+			if msgc_receiver
+				if msgc_receiver.last_update > 2.minutes.ago
+					render :json => { :count => msgc.unread, :online => 1}
+				else
+					render :json => { :count => msgc.unread, :online => 0}
+				end
+			else
+				render :json => { :count => msgc.unread}
+			end
+
+		else
+			render :json => { :count => msgc.unread}
+		end
 	else
-		render :text => "0"
+		render :json => { :count => 0}
 	end
  end
 
  def personal
 	@msgc = Msgcount.where(:username => current_user.username).first
+	if @msgc
+		@msgc.last_update = Time.now
+		@msgc.save
+	end
 	@Ownedbook = Ownedbook.where(:username => current_user.username)
 	@Tradedbook = Tradedbook.where(:username => current_user.username)
  end

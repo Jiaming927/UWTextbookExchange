@@ -97,6 +97,10 @@ private
     def messagehelper
 	if user_signed_in?
 		@msgc = Msgcount.where(:username => current_user.username).first
+		if @msgc
+			@msgc.last_update = Time.now
+			@msgc.save
+		end
 	end
     end
 
