@@ -23,7 +23,17 @@
 		<% if @bookinfo.number > 0 %>
 			<h1><%=@bookinfo.book_title %></h1>
 			<div>Author: <%= @bookinfo.author %></div>
-			<div>Course: <a href="<%=root_url%>find?coursename=<%=@bookinfo.course_name%>"><%=@bookinfo.course_name%></a></div>
+			<div>
+				<% if @bookinfo.course_name.split(',').count > 1 %>
+					Courses: 
+				<% else %>
+					Course:
+				<% end %>
+
+				<% @bookinfo.course_name.split(',').each do |course| %>
+					<a href="<%=root_url%>find?coursename=<%=course%>"><%=course%></a>
+				<% end %>
+			</div>
 			<% if user_signed_in? %>
 				<a href="<%=root_url%>postto?book=<%=@bookinfo.book_title%>">Post</a>
 			<% end %>
