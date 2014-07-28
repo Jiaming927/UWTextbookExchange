@@ -56,7 +56,6 @@ class GetBookController < ApplicationController
 				flash[:postmessage] = "You have already posted the book"
 				return redirect_to('/post')
 			else
-				coursename = binfo.course_name
 				#increment bookinfo
 				binfo.number = binfo.number + 1
 				if binfo.save
@@ -110,6 +109,9 @@ private
 			binfo = Bookinfo.where(:book_title => attr_value).first
 			if !binfo
 				Bookinfo.create(:book_title => attr_value, :course_name => course.course_name)
+			elsif !binfo.course_name.split(',').include?course.course_name
+				binfo.course_name = binfo.course_name + "," + course.course_name
+				binfo.save
 			end
 		end
 	end

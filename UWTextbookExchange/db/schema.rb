@@ -17,7 +17,7 @@ ActiveRecord::Schema.define(version: 20140726171514) do
     t.text    "book_title",                         null: false
     t.string  "author",      limit: 50
     t.decimal "price"
-    t.string  "course_name", limit: 20,             null: false
+    t.string  "course_name"                         null: false
     t.integer "number",                 default: 0, null: false
   end
 

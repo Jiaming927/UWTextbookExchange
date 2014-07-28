@@ -8,11 +8,12 @@ Rails.application.routes.draw do
 
   resources :messages
 
+  root :to => "init#index"
+
   match 'find', to: 'get_book#find', :via => [:get, :post]
   match 'show', to: 'get_book#show', :via => [:get]
   match 'post', to: 'get_book#post', :via => [:get]
-  match 'postto', to: 'get_book#postto', :via => [:get]
-  
+  match 'postto', to: 'get_book#postto', :via => [:get]  
   match 'personal', to: 'init#personal', :via => [:get]
   match 'showcount', to: 'init#showcount', :via => [:get]
   match 'chatlist', to: 'init#chatlist', :via => [:get]
@@ -21,10 +22,7 @@ Rails.application.routes.draw do
   match 'unlist', to: 'init#unlist', :via => [:get]
   match 'resume', to: 'init#resume', :via => [:get]
   match 'delete', to: 'init#delete', :via => [:get]
-
   match 'markread', to: 'messages#markread', :via => [:get]
 
-  root :to => "init#index"
-  match ':controller(/:action(/:id))', :via => [:get, :post]
   match "*path", to: redirect("/"), via: :all
 end

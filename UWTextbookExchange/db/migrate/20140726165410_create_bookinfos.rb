@@ -4,7 +4,7 @@ class CreateBookinfos < ActiveRecord::Migration
       t.text :book_title, null: false
       t.string :author, limit:50
       t.decimal :price
-      t.string :course_name, null: false, limit:20
+      t.string :course_name, null: false
       t.integer :number, :default => 0, null: false
     end
     add_index :bookinfos, :book_title, unique: true

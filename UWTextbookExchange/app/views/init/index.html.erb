@@ -1,83 +1,80 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Mysterion</title>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Mysterion</title>
 
-<link href="//netdna.bootstrapcdn.com/bootswatch/3.1.1/simplex/bootstrap.min.css" rel="stylesheet">
-<%= stylesheet_link_tag('index', :media => 'all') %>
+	<link href="//netdna.bootstrapcdn.com/bootswatch/3.1.1/simplex/bootstrap.min.css" rel="stylesheet">
+	<%= stylesheet_link_tag('index', :media => 'all') %>
 
-<script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
-<script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.js"></script>
+	<script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
+	<script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.js"></script>
 
-<!--[if lt IE 9]>
-<script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-<script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
-<![endif]-->
+	<!--[if lt IE 9]>
+	<script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+	<script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+	<![endif]-->
 
-<%= csrf_meta_tags %>
+	<%= csrf_meta_tags %>
 
-<script type="text/javascript">
-function openWin(sWindowURL,sWindowName,iWidth,iHeight)
-{
-	if (iWidth > screen.width) {
-		iWidth = screen.width * .75;
-	}
-	if (iHeight > screen.height) {
-		iHeight = screen.height * .85;
-	}
+	<script type="text/javascript">
+		function openWin(sWindowURL,sWindowName,iWidth,iHeight)
+		{
+			if (iWidth > screen.width) {
+				iWidth = screen.width * .75;
+			}
+			if (iHeight > screen.height) {
+				iHeight = screen.height * .85;
+			}
 
-	popupWindow = open
-			(	sWindowURL,
-				sWindowName,
-				"resizable=no"
-					+	",scrollbars=yes"
-					+	",toolbar=no"
-					+	",location=no"
-					+	",directories=no"
-					+	",status=no"
-					+	",menubar=no"
-					+	",width=" + iWidth
-					+	",height=" + iHeight
-					+	",top="+((screen.height-iHeight)/2)
-					+	",left="+((screen.width-iWidth)/2)
-			);
-}
-</script>
+			popupWindow = open
+					(   sWindowURL,
+						sWindowName,
+						"resizable=no"
+							+   ",scrollbars=yes"
+							+   ",toolbar=no"
+							+   ",location=no"
+							+   ",directories=no"
+							+   ",status=no"
+							+   ",menubar=no"
+							+   ",width=" + iWidth
+							+   ",height=" + iHeight
+							+   ",top="+((screen.height-iHeight)/2)
+							+   ",left="+((screen.width-iWidth)/2)
+					);
+		}
+	</script>
 </head>
 <body>
 
-<%= render template: "layouts/bar" %>
+	<%= render template: "layouts/bar" %>
 
-<!-- Main BackGround Image  -->
+	<!-- Main BackGround Image  -->
 
-<img src="http://cdn8.openculture.com/wp-content/uploads/2014/04/intelligent-books-to-read.jpg" class="img-responsive" alt="Responsive image" id="main-background-img">
+	<img src="http://cdn8.openculture.com/wp-content/uploads/2014/04/intelligent-books-to-read.jpg" class="img-responsive" alt="Responsive image" id="main-background-img">
 
-<!-- Main Search Center -->
-<div class="jumbotron center" id="main-search-area">
- <%= form_for(:course, :url=>'find', html:{class: "form-signin", role: "search"}) do |f| %>
-  <div class="form-group nav-search">
-  <%= f.text_field(:department, :placeholder => "Curriculum Abbreviation(Eg: MATH)", class: "form-control", id: "main-search-department-field", value: session[:last_dep]) %>
-  <a style="color:white;" href="http://www.washington.edu/students/reg/curricabbr.html" onclick="javascript:openWin('http://www.washington.edu/students/reg/curricabbr.html','list',540,400);return false">Curriculum
-Abbreviation List</a>
-  <%= f.text_field(:class, :placeholder => "Course Number", class: "form-control", id: "main-search-class-field", value: session[:last_class]) %>
-   </div>
+	<!-- Main Search Center -->
+	<div class="jumbotron center" id="main-search-area">
+		<%= form_for(:course, :url=>'find', html:{class: "form-signin", role: "search"}) do |f| %>
+			<div class="form-group nav-search">
+		 		<%= f.text_field(:department, :placeholder => "Curriculum Abbreviation(Eg: MATH)", class: "form-control", id: "main-search-department-field", value: session[:last_dep]) %>
+				<a style="color:white;" href="http://www.washington.edu/students/reg/curricabbr.html" onclick="javascript:openWin('http://www.washington.edu/students/reg/curricabbr.html','list',540,400);return false">Curriculum Abbreviation List</a>
+				<%= f.text_field(:class, :placeholder => "Course Number", class: "form-control", id: "main-search-class-field", value: session[:last_class]) %>
+			</div>
+			<%= submit_tag("Find", id: "main-search-find-btn", class: "btn btn-custom-light-blue", :name => 'find')%>
+			<%= submit_tag("Post", id: "main-search-post-btn", class: "btn btn-custom-light-orange", :name => 'post') %>
+		<% end %>
+	</div>
 
-  <%= submit_tag("Find", id: "main-search-find-btn", class: "btn btn-custom-light-blue", :name => 'find')%>
-   <%= submit_tag("Post", id: "main-search-post-btn", class: "btn btn-custom-light-orange", :name => 'post') %>
-<% end %>
-</div>
-
-<!-- SignUp button Form -->
-<% if !user_signed_in? %>
-    <% if devise_mapping.registerable? && controller_name != 'registrations' %>
-              <%= form_tag({:controller => new_registration_path(resource_name)}, :method => "get") do %>                   
-              
-                    <button type="submit" class="btn-sm btn-info" id="signup-btn">SignUp</button>
-              <% end %>
-    <% end %>
-<% end %>
+	<!-- SignUp button Form -->
+	<% if !user_signed_in? %>
+		<% if devise_mapping.registerable? && controller_name != 'registrations' %>
+		  <%= form_tag(new_registration_path(resource_name), :method => "get") do %>
+				<button type="submit" class="btn-sm btn-info" id="signup-btn">SignUp</button>
+		  <% end %>
+		<% end %>
+	<% end %>
 </body>
 </html>

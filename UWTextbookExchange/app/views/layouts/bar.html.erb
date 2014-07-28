@@ -1,131 +1,127 @@
 <script type="text/javascript">
 <% if user_signed_in? %>
-var flashing = null
-$( document ).ready(function(){	
-	updateCount();
-	setInterval(updateCount,30000);
-	if (<%= @msgc ? @msgc.unread : 0 %> > 0){
-		flashing = setInterval(function(){ $("#chatmsg").fadeOut(300).fadeIn(300); },600);
-	}
-});
+	var flashing = null
+	$( document ).ready(function(){	
+		updateCount();
+		setInterval(updateCount,30000);
+		if (<%= @msgc ? @msgc.unread : 0 %> > 0){
+			flashing = setInterval(function(){ $("#chatmsg").fadeOut(300).fadeIn(300); },600);
+		}
+	});
 
-function updateCount(){
-    $.ajax({
-    url:  "/showcount",
-    type: "GET",
-    dataType: 'json',
-<% if params[:receiver] && !params[:receiver].strip.blank?%>
-    data: {receiver: '<%=params[:receiver].strip%>' }
-<% end %>
-  }).done(function(data){
-    $("#msgct").html(data.count);
-    
-    if (data.hasOwnProperty("online")){
-	if (data.online == 0){
-		$("#offline").show();
-		$("#online").hide();
-	} else {
-		$("#offline").hide();
-		$("#online").show();
+	function updateCount(){
+		$.ajax({
+		url:  "/showcount",
+		type: "GET",
+		dataType: 'json',
+	<% if params[:receiver] && !params[:receiver].strip.blank?%>
+		data: {receiver: '<%=params[:receiver].strip%>' }
+	<% end %>
+		}).done(function(data){
+			$("#msgct").html(data.count);
+			
+			if (data.hasOwnProperty("online")){
+				if (data.online == 0){
+					$("#offline").show();
+					$("#online").hide();
+				} else {
+					$("#offline").hide();
+					$("#online").show();
+				}
+			}
+			if (data.count != 0){
+				clearInterval(flashing);
+				flashing = setInterval(function(){ $("#chatmsg").fadeOut(300).fadeIn(300); },600);
+			} else {
+				clearInterval(flashing);
+			}
+		});
 	}
-    }
-    if (data.count != 0){
-	clearInterval(flashing);
-	flashing = setInterval(function(){ $("#chatmsg").fadeOut(300).fadeIn(300); },600);
-    } else {
-	clearInterval(flashing);
-    }
-  });
-}
 <% end %>
-
 </script>
-    <!-- Top Navigation Bar -->
-    <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
-      <div class="container-fluid">
-       <!-- Brand and toggle get grouped for better mobile display -->
-       <div class="navbar-header">
-        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
-         <span class="sr-only">Toggle navigation</span>
-         <span class="icon-bar"></span>
-         <span class="icon-bar"></span>
-         <span class="icon-bar"></span>
-     </button>
-     <a class="navbar-brand" href="/"><strong>Mysterion</strong></a>
- </div>
 
- <!-- Collect the nav links, forms, and other content for toggling -->
- <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-   <ul class="nav navbar-nav">
-<% if user_signed_in? %>
-    <li id = "chatmsg"class="active"><a href="/chatlist">Message(<span id='msgct'><%= @msgc ? @msgc.unread : 0 %></span>)</a></li>
-<% end %>
-   </ul>
+<!-- Top Navigation Bar -->
+<nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+	<div class="container-fluid">
+		<!-- Brand and toggle get grouped for better mobile display -->
+		<div class="navbar-header">
+			<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+				<span class="sr-only">Toggle navigation</span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+			</button>
+	 		<a class="navbar-brand" href="/"><strong>Mysterion</strong></a>
+		</div>
+		<!-- Collect the nav links, forms, and other content for toggling -->
+		<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+			<ul class="nav navbar-nav">
+			<% if user_signed_in? %>
+				<li id = "chatmsg"class="active"><a href="/chatlist">Message(<span id='msgct'><%= @msgc ? @msgc.unread : 0 %></span>)</a></li>
+			<% end %>
+			</ul>
+			<ul class="nav navbar-nav">
+			<% if !flash[:notice].blank? %>
+				<div class = "notice">
+					<%= flash[:notice] %>
+				</div>
+			<% end %>
+			</ul>
+			<!-- Preference Dropdown -->
+			<ul class="nav navbar-nav navbar-right">
+				<li class="dropdown">
+					<% if user_signed_in? %>
+						<a href="#" class="dropdown-toggle" data-toggle="dropdown" style="float: right;">Preference <b class="caret"></b></a>
+						<ul class="dropdown-menu">                
+							<li><%= link_to('Personal Settings', 'personal') %></li>
+							<li class="divider"></li>
+							<li><%= link_to('Logout', destroy_user_session_path) %></li>
+						</ul>
+					<% else %>
+						<a href="#" class="dropdown-toggle" data-toggle="dropdown" style="float: right;">More <b class="caret"></b></a>
+						<ul class="dropdown-menu"> 
+							<% if devise_mapping.recoverable? && controller_name != 'passwords' && controller_name != 'registrations' %>
+								<li><%= link_to "Forgot your password?", '/passreset' %></li>
+							<% end %>
 
+							<% if devise_mapping.confirmable? && controller_name != 'confirmations' %>
+								<li><%= link_to "Didn't receive confirmation instructions?", '/resend' %></li>
+							<% end %>
 
-      <!-- Preference Dropdown -->
-      <ul class="nav navbar-nav navbar-right">
-
-             <li class="dropdown">
-		<% if user_signed_in? %>
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Preference <b class="caret"></b></a>
-                    <ul class="dropdown-menu">                
-                    <li><%= link_to('Personal Settings', 'personal') %></li>
-                    <li class="divider"></li>
-               	    <li><%= link_to('Logout', destroy_user_session_path) %></li>
-                <% else %>
-		    <a href="#" class="dropdown-toggle" data-toggle="dropdown">More <b class="caret"></b></a>
-                    <ul class="dropdown-menu"> 
-                    <% if devise_mapping.recoverable? && controller_name != 'passwords' && controller_name != 'registrations' %>
-                      <li><%= link_to "Forgot your password?", '/passreset' %></li>
-                    <% end %>
-                    <% if devise_mapping.confirmable? && controller_name != 'confirmations' %>
-                      <li><%= link_to "Didn't receive confirmation instructions?", '/resend' %></li>
-                    <% end %>
-                    <% if devise_mapping.lockable? && controller_name != 'unlocks' %>
-                      <li><%= link_to "Didn't receive unlock instructions?", '/unlockresend' %></li>
-                    <% end %>
-                <% end %>
-                </ul>
-            </li>
-        </ul>
-
-
-<% if !flash[:notice].blank? %>
-<div class = "notice">
-        <%= flash[:notice] %>
-</div>
-<% end %>
-<% if user_signed_in? %>
-  <div class = "login_info">
-    <%= current_user.username %>
-  </div>
-<% end %>
-
-
-
-<% if !user_signed_in? %>
-        <!-- Login Form -->
-      <%= form_for(resource, as: resource_name, url: session_path(resource_name), html:{class: "navbar-form navbar-right", role: "form"}) do |f| %>
-      <div class="form-group">
-        <%= f.email_field :email, autofocus: true, placeholder: "Email", class: "form-control", id: "exampleInputEmail2"%>
-      </div>
-
-      <div class="form-group">
-          <%= f.password_field :password,placeholder: "Password", autocomplete: "off", class: "form-control", id: "exampleInputPassword2" %>
-      </div>
-
-        <% if devise_mapping.rememberable? -%>
-        <div class="checkbox">
-          <div><%= f.check_box :remember_me %> <%= f.label :remember_me %></div>
-        </div>
-        <% end -%>
-
-        <%= f.submit "Sign in" , class: "btn-sm btn-default" %>
-      <% end %>
- <% end %>
+							<% if devise_mapping.lockable? && controller_name != 'unlocks' %>
+								<li><%= link_to "Didn't receive unlock instructions?", '/unlockresend' %></li>
+							<% end %>
+						</ul>
+					<% end %>
+				</li>
+			</ul>
+			<% if user_signed_in? %>
+				<div class = "login_info">
+					<%= current_user.username %>
+				</div>
+			<% end %>
 
 
-</div><!-- /.navbar-collapse -->
-</div><!-- /.container-fluid -->
+			<!-- Login Form -->
+			<% if !user_signed_in? %>
+				<%= form_for(resource, as: resource_name, url: session_path(resource_name), html:{class: "navbar-form navbar-right", role: "form"}) do |f| %>
+					<div class="form-group">
+						<%= f.email_field :email, autofocus: true, placeholder: "Email", class: "form-control", id: "exampleInputEmail2"%>
+					</div>
+
+					<div class="form-group">
+						<%= f.password_field :password,placeholder: "Password", autocomplete: "off", class: "form-control", id: "exampleInputPassword2" %>
+					</div>
+
+					<% if devise_mapping.rememberable? %>
+						<div class="checkbox">
+							<div><%= f.check_box :remember_me %> <%= f.label :remember_me %></div>
+						</div>
+					<% end %>
+
+					<%= f.submit "Sign in" , class: "btn-sm btn-default" %>
+				<% end %>
+			<% end %>
+		</div><!-- /.navbar-collapse -->
+	</div><!-- /.container-fluid -->
 </nav>

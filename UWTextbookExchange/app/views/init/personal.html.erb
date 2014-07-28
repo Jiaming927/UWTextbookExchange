@@ -2,86 +2,85 @@
 <html>
 <head>
 	<title>Personal Information</title>
-<link href="//netdna.bootstrapcdn.com/bootswatch/3.1.1/simplex/bootstrap.min.css" rel="stylesheet">
-<%= stylesheet_link_tag('index', :media => 'all') %>
-<!--[if lt IE 9]>
-<script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-<script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
-<![endif]-->
+	<link href="//netdna.bootstrapcdn.com/bootswatch/3.1.1/simplex/bootstrap.min.css" rel="stylesheet">
+	<%= stylesheet_link_tag('index', :media => 'all') %>
+	<!--[if lt IE 9]>
+	<script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+	<script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+	<![endif]-->
 
-<script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
-<script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
-<%= csrf_meta_tags %>
-<script>
-$( document ).ready(function(){	
-	$(".unlist").click(function(evt){
-		if (!confirm('Are you sure you want to unlist this book?')) {
-			evt.preventDefault();   		
-		}
-	})
+	<script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
+	<script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+	<%= csrf_meta_tags %>
+	<script>
+	$( document ).ready(function(){	
+		$(".unlist").click(function(evt){
+			if (!confirm('Are you sure you want to unlist this book?')) {
+				evt.preventDefault();
+			}
+		})
 
-	$(".delete").click(function(evt){
-		if (!confirm('Are you sure you want to delete this book?')) {
-			evt.preventDefault();   		
-		}	
-	})
-});
-</script>
+		$(".delete").click(function(evt){
+			if (!confirm('Are you sure you want to delete this book?')) {
+				evt.preventDefault();
+			}
+		})
+	});
+	</script>
 </head>
 
 <body>
 
-<%= render template: "layouts/bar" %>
-<div style="width:90%;margin:auto">
-<br />
+	<%= render template: "layouts/bar" %>
+	<div style="width:90%;margin:auto">
+	<br />
 
-<%= link_to("Home", root_url) %>
+	<%= link_to("Home", root_url) %>
 
 
-<% if !flash[:editbookmessage].blank? %>
-<br />
-<div class = "notice">
-        <%= flash[:editbookmessage] %>
-</div>
-<br />
-<% end %>
-
-<h1>Personal Information</h1>
-Email: <%= current_user.email %>
-<br />
-Username: <%= current_user.username %>
-<br />
-Messages(unread/total): <a href="/chatlist"><%= @msgc ? @msgc.unread : 0 %>/<%= @msgc ? @msgc.count : 0 %></a>
-<br />
-<div id="bookinfo">
-Books you owned: <%= @Ownedbook.count %>
-<% if (@Ownedbook.count > 0) %>
-	<ol>
-	<% @Ownedbook.each do |ob| %>
-		<li><a href="<%=root_url%>show?book=<%=ob.book_title%>"><%=ob.book_title%></a>
-		<br />
-		<a href="<%=root_url%>traded?book=<%=ob.book_title%>">Traded</a>
-		<a class="unlist" href="<%=root_url%>unlist?book=<%=ob.book_title%>">Unlist</a></li>
+	<% if !flash[:editbookmessage].blank? %>
+	<br />
+	<div class = "notice">
+		<%= flash[:editbookmessage] %>
+	</div>
+	<br />
 	<% end %>
-	</ol>
-	
-<% end %>
-<br />
-Books traded: <%= @Tradedbook.count %>
-<% if (@Tradedbook.count > 0) %>
-	<ol>
-	<% @Tradedbook.each do |tb| %>
-		<li><a href="<%=root_url%>show?book=<%=tb.book_title%>"><%=tb.book_title%></a></li>
-		<a href="<%=root_url%>resume?book=<%=tb.book_title%>">Back on sale</a>
-		<a class="delete" href="<%=root_url%>delete?book=<%=tb.book_title%>">Delete</a></li>
-	<% end %>
-	</ol>	
-<% end %>
-</div>
-<br />
 
-<%= link_to("Change Password", edit_user_registration_path) %>
-</div>
+	<h1>Personal Information</h1>
+	Email: <%= current_user.email %>
+	<br />
+	Username: <%= current_user.username %>
+	<br />
+	Messages(unread/total): <a href="/chatlist"><%= @msgc ? @msgc.unread : 0 %>/<%= @msgc ? @msgc.count : 0 %></a>
+	<br />
+	<div id="bookinfo">
+	Books you owned: <%= @Ownedbook.count %>
+	<% if (@Ownedbook.count > 0) %>
+		<ol>
+		<% @Ownedbook.each do |ob| %>
+			<li><a href="<%=root_url%>show?book=<%=ob.book_title%>"><%=ob.book_title%></a>
+			<br />
+			<a href="<%=root_url%>traded?book=<%=ob.book_title%>">Traded</a>
+			<a class="unlist" href="<%=root_url%>unlist?book=<%=ob.book_title%>">Unlist</a></li>
+		<% end %>
+		</ol>
+		
+	<% end %>
+	<br />
+	Books traded: <%= @Tradedbook.count %>
+	<% if (@Tradedbook.count > 0) %>
+		<ol>
+		<% @Tradedbook.each do |tb| %>
+			<li><a href="<%=root_url%>show?book=<%=tb.book_title%>"><%=tb.book_title%></a></li>
+			<a href="<%=root_url%>resume?book=<%=tb.book_title%>">Back on sale</a>
+			<a class="delete" href="<%=root_url%>delete?book=<%=tb.book_title%>">Delete</a></li>
+		<% end %>
+		</ol>
+	<% end %>
+	</div>
+	<br />
+
+	<%= link_to("Change Password", edit_user_registration_path) %>
+	</div>
 </body>
-
 </html>
