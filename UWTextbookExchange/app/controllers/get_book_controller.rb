@@ -110,7 +110,7 @@ private
 			if !binfo
 				Bookinfo.create(:book_title => attr_value, :course_name => course.course_name)
 			elsif !binfo.course_name.split(',').include?course.course_name
-				binfo.course_name = binfo.course_name + "," + course.course_name
+				binfo.course_name = (binfo.course_name + "," + course.course_name).split(',').sort.join(',')
 				binfo.save
 			end
 		end
