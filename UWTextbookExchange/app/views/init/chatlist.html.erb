@@ -11,32 +11,46 @@
 <div style="margin:15px;">
 	<h3>Unread</h3>
 	<div id="markread">Mark all as read</div>
-	<% count = 0 %>
+	<% count=0 %>
 	<% @chnls.each do |ch| %>
 		<% if (current_user.username + current_user.username) > ch.channel_name %>
 			<% receiver = ch.channel_name[0..(ch.channel_name.bytesize - current_user.username.bytesize - 1)] %>
 			<% if ch.first_side > 0 %>
 				<% count = count + 1 %>
-				<div class="friends"><%=receiver%></div>
+				<% if params[:remote] && params[:remote] != true && count == 1 %>					
+					<script>showchatting("<%=receiver%>");</script>
+				<% end %>
+				<div class="friends"><%=receiver%></div>				
 			<% end %>
 		<% else %>		
 			<% receiver = ch.channel_name[(current_user.username.bytesize)..(ch.channel_name.bytesize - 1)] %>
 			<% if ch.second_side > 0 %>
 				<% count = count + 1 %>
+				<% if params[:remote] && params[:remote] != true && count == 1 %>			
+					<script>showchatting("<%=receiver%>");</script>
+				<% end %>
 				<div class="friends"><%=receiver%></div>
 			<% end %>
 		<% end %>
 	<% end %>
 
 	<br />
-	<h3>All Messages </h3>
+	<h3>Recent Messages </h3>
 	<% if @chnls.first %>
 		<% @chnls.each do |ch| %>
 			<% if (current_user.username+current_user.username) > ch.channel_name %>
 				<% receiver = ch.channel_name[0..(ch.channel_name.bytesize - current_user.username.bytesize - 1)] %>
+				<% count = count + 1 %>
+				<% if params[:remote] && params[:remote].strip == '0' && count == 1 %>			
+					<script>showchatting("<%=receiver%>");</script>
+				<% end %>
 				<div class="friends"><%=receiver%></div>
 			<% else %>
 				<% receiver = ch.channel_name[(current_user.username.bytesize)..(ch.channel_name.bytesize - 1)] %>
+				<% count = count + 1 %>
+				<% if params[:remote] && params[:remote].strip == '0' && count == 1 %>					
+					<script>showchatting("<%=receiver%>");</script>
+				<% end %>
 				<div class="friends"><%=receiver%></div>
 			<% end %>
 		<% end %>

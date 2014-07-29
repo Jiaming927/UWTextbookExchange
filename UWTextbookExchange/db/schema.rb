@@ -17,7 +17,7 @@ ActiveRecord::Schema.define(version: 20140726171514) do
     t.text    "book_title",                         null: false
     t.string  "author",      limit: 50
     t.decimal "price"
-    t.string  "course_name"                         null: false
+    t.string  "course_name",                        null: false
     t.integer "number",                 default: 0, null: false
   end
 
@@ -40,10 +40,12 @@ ActiveRecord::Schema.define(version: 20140726171514) do
   add_index "borrowedbooks", ["username"], name: "index_borrowedbooks_on_username"
 
   create_table "channels", force: true do |t|
-    t.string  "channel_name",              null: false
-    t.integer "total_message", default: 0, null: false
-    t.integer "first_side",    default: 0, null: false
-    t.integer "second_side",   default: 0, null: false
+    t.string   "channel_name",              null: false
+    t.integer  "total_message", default: 0, null: false
+    t.integer  "first_side",    default: 0, null: false
+    t.integer  "second_side",   default: 0, null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   add_index "channels", ["channel_name"], name: "index_channels_on_channel_name", unique: true

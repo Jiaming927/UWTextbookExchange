@@ -15,13 +15,14 @@ class InitController < ApplicationController
  end
 
  def chat
+	if params[:receiver] && !params[:receiver].blank?
+		@receiver = params[:receiver].strip
+	end
 	@msgc = Msgcount.where(:username => current_user.username).first
 	if @msgc
 		@msgc.last_update = Time.now
 		@msgc.save
 	end
-	@chnls = Channel.where("channel_name LIKE ? OR channel_name LIKE ?", current_user.username + "%", "%" + current_user.username)
-
  end
 
 
@@ -31,7 +32,8 @@ class InitController < ApplicationController
 		@msgc.last_update = Time.now
 		@msgc.save
 	end
-	@chnls = Channel.where("channel_name LIKE ? OR channel_name LIKE ?", current_user.username + "%", "%" + current_user.username)
+	@chnls = Channel.where("channel_name LIKE ? OR channel_name LIKE ?", current_user.username + "%", "%" + current_user.username).order("updated_at DESC")
+
  end
 
  def showcount

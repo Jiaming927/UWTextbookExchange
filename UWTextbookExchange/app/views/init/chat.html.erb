@@ -41,14 +41,16 @@
 </style>
 <script>
 	$( document ).ready(function(){	
-		getchatlist();
-		showchatting('testuser');
-		setInterval(getchatlist,30000);
+		getchatlist('0');
+		<% if @receiver && !@receiver.blank? %>
+			showchatting("<%=@receiver%>");
+		<% end %>
+		setInterval( function() { getchatlist('1'); }, 30000);
 	});
 
-	function getchatlist(){
+	function getchatlist(num){
 		$.ajax({
-		url:  "/chatlist",
+		url:  "/chatlist?remote="+ num,
 		type: "GET",
 		dataType: 'html'
 		}).success(function(data){			
@@ -90,7 +92,7 @@
 		dataType: 'json'
 		}).success(function(data){
 			if (data.success == 1) {
-				getchatlist();
+				getchatlist(1);
 			} else {
 				$("#chatlist").html("Ooops... Error occurs. Try to refresh the page.");
 			}

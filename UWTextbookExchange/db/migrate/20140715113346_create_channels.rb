@@ -5,6 +5,7 @@ class CreateChannels < ActiveRecord::Migration
 	t.integer :total_message, default: 0, null: false
 	t.integer :first_side, default: 0, null: false
 	t.integer :second_side, default: 0, null: false
+	t.timestamps
     end
 	add_index :channels, :channel_name, unique: true
   end
