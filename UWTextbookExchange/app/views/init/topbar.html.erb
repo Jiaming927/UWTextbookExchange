@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<link href="//netdna.bootstrapcdn.com/bootswatch/3.1.1/simplex/bootstrap.min.css" rel="stylesheet">
+	<%= stylesheet_link_tag('index', :media => 'all') %>
+	<script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
+	<script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+	<%= csrf_meta_tags %>
+</head>
+<body>
+	<%= render template: "layouts/bar" %>
+	<br />
+	<div style="margin-left: 15px;">
+		<%= link_to("Home", root_url) %>
+		<a href="javascript:history.back(-1)">Back </a>
+	</div>
+</body>
+</html>

@@ -1,69 +1,62 @@
 <!DOCTYPE html>
-<html lang="en">
+<html style="height:100%;overflow-y:hidden;">
 <head>
-	<link href="//netdna.bootstrapcdn.com/bootswatch/3.1.1/simplex/bootstrap.min.css" rel="stylesheet">
-	<%= stylesheet_link_tag('index', :media => 'all') %>
-	<!--[if lt IE 9]>
-	<script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-	<script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
-	<![endif]-->
-
 	<script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
-	<script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
 	<%= csrf_meta_tags %>
+	<style>
+	body {
+		margin:0px;
+		background-color: rgb(252,252,252);
+		border-right: 1px #eeeeee solid;
+		border-top: 1px #eeeeee solid;
+		height: 100%;
+	}
+	</style>
 </head>
 
 <body>
-	<%= render template: "layouts/bar" %>
-	<div style="width:90%;margin:auto">
-	<br />
-
-	<%= link_to("Home", root_url) %>
-	<a href="javascript:history.back(-1)">Back </a>
-	<h1>Chat List</h1>
-
-
-	<h2>Unread</h2>
-	<%= link_to("Mark all as read", '/markread') %>
-	<br /><br />
+<div style="margin:15px;">
+	<div>Unread</div>
+	<span><%= link_to("Mark all as read", '/markread') %></span>
 	<% count = 0 %>
 	<% @chnls.each do |ch| %>
 		<% if (current_user.username + current_user.username) > ch.channel_name %>
 			<% receiver = ch.channel_name[0..(ch.channel_name.bytesize - current_user.username.bytesize - 1)] %>
 			<% if ch.first_side > 0 %>
 				<% count = count + 1 %>
-				<a href="<%=root_url%>messages?receiver=<%=receiver%>"><%=receiver%></a>
+				<a href="<%=root_url%>messages?receiver=<%=receiver%>" target="onchat"><%=receiver%></a>
 			<% end %>
 		<% else %>		
 			<% receiver = ch.channel_name[(current_user.username.bytesize)..(ch.channel_name.bytesize - 1)] %>
 			<% if ch.second_side > 0 %>
 				<% count = count + 1 %>
-				<a href="<%=root_url%>messages?receiver=<%=receiver%>"><%=receiver%></a>
+				<a href="<%=root_url%>messages?receiver=<%=receiver%>"  target="onchat"><%=receiver%></a>
 			<% end %>
 		<% end %>
 		&nbsp;
 	<% end %>
 	<% if count == 0 %>
-		<p>No unread message.</p>
+		<div>No unread message.</div>
 	<% end %>
 
 	<br />
-	<h2>All Messages </h2>
+	<div>All Messages </div>
 	<% if @chnls.first %>
 		<% @chnls.each do |ch| %>
 			<% if (current_user.username+current_user.username) > ch.channel_name %>
 				<% receiver = ch.channel_name[0..(ch.channel_name.bytesize - current_user.username.bytesize - 1)] %>
-				<a href="<%=root_url%>messages?receiver=<%=receiver%>"><%=receiver%></a>
+				<a href="<%=root_url%>messages?receiver=<%=receiver%>"  target="onchat"><%=receiver%></a>
 			<% else %>
 				<% receiver = ch.channel_name[(current_user.username.bytesize)..(ch.channel_name.bytesize - 1)] %>
-				<a href="<%=root_url%>messages?receiver=<%=receiver%>"><%=receiver%></a>
+				<a href="<%=root_url%>messages?receiver=<%=receiver%>"  target="onchat"><%=receiver%></a>
 			<% end %>
 			&nbsp;
 		<% end %>
 	<% else %>
-		<p>You haven't talked to anyone yet.</p>
+		<div>You haven't talked to anyone yet.</div>
 	<% end %>
 
 	</div>
+</div>
 </body>
 </html>

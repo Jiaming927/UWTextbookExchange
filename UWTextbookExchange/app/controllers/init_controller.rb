@@ -14,6 +14,18 @@ class InitController < ApplicationController
 	end
  end
 
+ def chat
+
+ end
+
+ def blankchat
+
+ end
+
+ def topbar
+
+ end
+
  def chatlist
 	@msgc = Msgcount.where(:username => current_user.username).first
 	if @msgc

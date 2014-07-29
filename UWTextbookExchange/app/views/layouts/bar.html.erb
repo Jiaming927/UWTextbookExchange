@@ -57,7 +57,7 @@
 		<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 			<ul class="nav navbar-nav">
 			<% if user_signed_in? %>
-				<li id = "chatmsg"class="active"><a href="/chatlist">Message(<span id='msgct'><%= @msgc ? @msgc.unread : 0 %></span>)</a></li>
+				<li id = "chatmsg"class="active"><a href="/chat">Message(<span id='msgct'><%= @msgc ? @msgc.unread : 0 %></span>)</a></li>
 			<% end %>
 			</ul>
 			<ul class="nav navbar-nav">

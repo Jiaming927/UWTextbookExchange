@@ -3,24 +3,14 @@
 <head>
 	<title>Chat</title>
 	<link href="//netdna.bootstrapcdn.com/bootswatch/3.1.1/simplex/bootstrap.min.css" rel="stylesheet">
-	<%= stylesheet_link_tag('index', :media => 'all') %>
-
 	<script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
 	<%= javascript_include_tag "private_pub" %>
-	<!--[if lt IE 9]>
-	<script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-	<script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
-	<![endif]-->
-	<script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
 	<script type="text/javascript" src="http://hacks.bluesmoon.info/strftime/strftime-min.js"></script>
 	<%= javascript_include_tag 'jquery_ujs'%>
 	<%= csrf_meta_tags %>
 	<script>
 		$( document ).ready(function(){
 			$("#chat").scrollTop($('#chat')[0].scrollHeight);
-			$("#loading").hide();
-			$("#offline").show();
-			$("#online").hide();
 
 			convertTime();
 			$("#new_message").submit(function(event) {
@@ -57,12 +47,15 @@
 	</script>
 
 	<style>
+		body {
+			 background-color: rgb(252,252,252);
+		}
 		.status {
 			vertical-align: initial;
 		}
 		#chat {
 			border: 1px solid black;
-			width:400px;
+			min-width:450px;
 			height:300px;
 			overflow-y: scroll;
 			word-wrap: break-word;
@@ -70,13 +63,16 @@
 			margin-bottom: 10px;
 		}
 		#content {
-			width:350px;
+			width: 85%;
+			min-width:350px;
 			height:50px;
 			resize:none;
 		}
 		#submitbutton {
 			vertical-align: top;
 			margin-top: 12px;
+			float:right;
+			margin-right:1.5%;
 		}
 		.sender {
 			color:red;
@@ -90,32 +86,29 @@
 		.msg_bundle {
 			clear:both;
 		}
+		#chatmain {
+			width:85%;
+			margin:auto;
+			margin-top:10px;
+		}
 	</style>
 </head>
 <body>
-
-	<%= render template: "layouts/bar" %>
-
-	<div style="width:90%;margin:auto">
-		<br />
-
-		<%= link_to("Home", root_url) %>
-		<a href="javascript:history.back(-1)">Back </a>
-
-		<div style="font-size:20px;">Chat with <%=params[:receiver].strip%><span style="margin:5px;"><%= image_tag('offline.png', size:"12x12", id: "offline", class: "status") %><%= image_tag('online.png', size:"12x12", id: "online", class: "status") %></span></div>
+	<div id="chatmain">
+		<div style="font-size:20px;min-width:400px;"><%=params[:receiver].strip%><span style="margin:5px;"><%= image_tag('offline.png', size:"12x12", id: "offline", class: "status") %><%= image_tag('online.png', size:"12x12", id: "online", class: "status", :style => "display: none") %></span></div>
 
 		<div id="chat">
 			<%= render @messages %>
 		</div>
 
 		<%= form_for Message.new, :remote => true do |f| %>
-			<div>
+			<div style="min-width:400px;">
 				<textarea id="content"></textarea>
 				<%= f.hidden_field :content, autofocus: true %>
 				<%= f.hidden_field :sender, :value => current_user.username %>
 				<%= f.hidden_field :receiver, :value => params[:receiver].strip %>
 				<%= f.submit "Send", id: 'submitbutton'%>
-				<%= image_tag('loading.gif', id: 'loading', size:"20x20") %>
+				<div><%= image_tag('loading.gif', id: 'loading', size:"20x20", :style => "display: none") %></div>
 			</div>
 		<% end %>
 		<%= subscribe_to "/messages/" + @channel %>
