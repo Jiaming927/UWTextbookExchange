@@ -1,22 +1,12 @@
-<!DOCTYPE html>
-<html style="height:100%;overflow-y:hidden;">
-<head>
-	<script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
-	<%= csrf_meta_tags %>
-	<style>
-	body {
-		margin:0px;
-		background-color: rgb(252,252,252);
-		border-right: 1px #eeeeee solid;
-		border-top: 1px #eeeeee solid;
-		height: 100%;
-	}
-	</style>
-</head>
-
-<body>
+<script>
+	$( document ).ready(function(){	
+		$(".friends").click(function(){
+			showchatting($(this).text().trim());
+		});
+	});
+</script>
 <div style="margin:15px;">
-	<div>Unread</div>
+	<h3>Unread</h3>
 	<span><%= link_to("Mark all as read", '/markread') %></span>
 	<% count = 0 %>
 	<% @chnls.each do |ch| %>
@@ -24,39 +14,31 @@
 			<% receiver = ch.channel_name[0..(ch.channel_name.bytesize - current_user.username.bytesize - 1)] %>
 			<% if ch.first_side > 0 %>
 				<% count = count + 1 %>
-				<a href="<%=root_url%>messages?receiver=<%=receiver%>" target="onchat"><%=receiver%></a>
+				<div class="friends"><%=receiver%></div>
 			<% end %>
 		<% else %>		
 			<% receiver = ch.channel_name[(current_user.username.bytesize)..(ch.channel_name.bytesize - 1)] %>
 			<% if ch.second_side > 0 %>
 				<% count = count + 1 %>
-				<a href="<%=root_url%>messages?receiver=<%=receiver%>"  target="onchat"><%=receiver%></a>
+				<div class="friends"><%=receiver%></div>
 			<% end %>
 		<% end %>
-		&nbsp;
-	<% end %>
-	<% if count == 0 %>
-		<div>No unread message.</div>
 	<% end %>
 
 	<br />
-	<div>All Messages </div>
+	<h3>All Messages </h3>
 	<% if @chnls.first %>
 		<% @chnls.each do |ch| %>
 			<% if (current_user.username+current_user.username) > ch.channel_name %>
 				<% receiver = ch.channel_name[0..(ch.channel_name.bytesize - current_user.username.bytesize - 1)] %>
-				<a href="<%=root_url%>messages?receiver=<%=receiver%>"  target="onchat"><%=receiver%></a>
+				<div class="friends"><%=receiver%></div>
 			<% else %>
 				<% receiver = ch.channel_name[(current_user.username.bytesize)..(ch.channel_name.bytesize - 1)] %>
-				<a href="<%=root_url%>messages?receiver=<%=receiver%>"  target="onchat"><%=receiver%></a>
+				<div class="friends"><%=receiver%></div>
 			<% end %>
-			&nbsp;
 		<% end %>
 	<% else %>
 		<div>You haven't talked to anyone yet.</div>
 	<% end %>
 
-	</div>
 </div>
-</body>
-</html>

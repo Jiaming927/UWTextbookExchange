@@ -15,16 +15,15 @@ class InitController < ApplicationController
  end
 
  def chat
+	@msgc = Msgcount.where(:username => current_user.username).first
+	if @msgc
+		@msgc.last_update = Time.now
+		@msgc.save
+	end
+	@chnls = Channel.where("channel_name LIKE ? OR channel_name LIKE ?", current_user.username + "%", "%" + current_user.username)
 
  end
 
- def blankchat
-
- end
-
- def topbar
-
- end
 
  def chatlist
 	@msgc = Msgcount.where(:username => current_user.username).first

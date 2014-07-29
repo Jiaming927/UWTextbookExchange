@@ -1,12 +1,91 @@
 <!DOCTYPE html>
 <html>
+<head>
+	<link href="//netdna.bootstrapcdn.com/bootswatch/3.1.1/simplex/bootstrap.min.css" rel="stylesheet">
+	<%= stylesheet_link_tag('index', :media => 'all') %>
+	<script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
+	<%= javascript_include_tag 'jquery_ujs'%>
+	<script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+	<script type="text/javascript" src="http://hacks.bluesmoon.info/strftime/strftime-min.js"></script>
+	<%= javascript_include_tag "private_pub" %>
+	<%= csrf_meta_tags %>
 
-<frameset rows="80,*"  frameborder=0>
-	<frame src="/topbar"> 
+<style>
+	#chatlist{
+		border-right: 1px #eeeeee solid;
+		border-top: 1px #eeeeee solid;
+		height: 100vh;
+	}
+	#chatting{
+		margin: 15px;
+		overflow: hidden;
+	}
 
-	<frameset cols="200,*" frameborder=1>
-		<frame src="/chatlist">
-		<frame src="/blankchat" name="onchat">
-	</frameset>
-</frameset>
+	.friends:hover{
+		background-color:cyan;
+		cursor:pointer;
+	}
+	#imgdiv{
+		text-align:center;
+		margin:10px;
+	}
+</style>
+<script>
+	$( document ).ready(function(){	
+		getchatlist();
+		showchatting('testuser');
+		setInterval(getchatlist,30000);
+	});
+
+	function getchatlist(){
+		$.ajax({
+		url:  "/chatlist",
+		type: "GET",
+		dataType: 'html'
+		}).success(function(data){			
+			$("#chatlist").html(data);
+		}).fail(function (jqXHR, textStatus) {
+			$("#chatting").html("<p>Ooops... Error occurs. Try to refresh the page.</p>")
+		});
+	}
+
+	function showchatting(receiver){
+		$("#chatting").empty();
+		var div = $('<div></div>');
+		div.attr("id","imgdiv")
+		$('#chatting').append(div);
+		var img = $('<img id="largeloading">');
+		img.attr('src', "/assets/largeloading.gif");
+		$('#imgdiv').append(img);
+		$.ajax({
+		url:  "/messages?receiver=" + receiver,
+		type: "GET",
+		dataType: 'html'
+		}).success(function(data){			
+			$("#chatting").html(data);
+		}).fail(function (jqXHR, textStatus) {
+			$("#chatting").html("<p>Loading error. Try to refresh the page</p>")
+		});
+	}
+
+</script>
+</head>
+<body>
+	<%= render template: "layouts/bar" %>
+	<br />
+	<div style="margin-left: 15px;margin-top:10px;margin-bottom:10px;">
+		<%= link_to("Home", root_url) %>
+		<a href="javascript:history.back(-1)">Back </a>
+	</div>
+<div id="chatoverall">
+	<div id="chatlist" style="float:left;">
+	</div>
+
+	<div id="chatting">
+		
+	</div>
+</div>
+</body>
+
+
 </html>

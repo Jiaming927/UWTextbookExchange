@@ -18,8 +18,6 @@ Rails.application.routes.draw do
   match 'personal', to: 'init#personal', :via => [:get]
   match 'showcount', to: 'init#showcount', :via => [:get]
   match 'chat', to: 'init#chat', :via => [:get]
-  match 'blankchat', to: 'init#blankchat', :via => [:get]
-  match 'topbar', to: 'init#topbar', :via => [:get]
   match 'chatlist', to: 'init#chatlist', :via => [:get]
   match 'terms', to: 'init#terms', :via => [:get]
   match 'traded', to: 'init#traded', :via => [:get]

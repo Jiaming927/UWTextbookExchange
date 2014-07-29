@@ -1,17 +1,6 @@
-<!DOCTYPE html>
-<html>
-<head>
-	<title>Chat</title>
-	<link href="//netdna.bootstrapcdn.com/bootswatch/3.1.1/simplex/bootstrap.min.css" rel="stylesheet">
-	<script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
-	<%= javascript_include_tag "private_pub" %>
-	<script type="text/javascript" src="http://hacks.bluesmoon.info/strftime/strftime-min.js"></script>
-	<%= javascript_include_tag 'jquery_ujs'%>
-	<%= csrf_meta_tags %>
 	<script>
 		$( document ).ready(function(){
 			$("#chat").scrollTop($('#chat')[0].scrollHeight);
-
 			convertTime();
 			$("#new_message").submit(function(event) {
 				$("#message_content")[0].value = $("#content")[0].value;
@@ -92,8 +81,6 @@
 			margin-top:10px;
 		}
 	</style>
-</head>
-<body>
 	<div id="chatmain">
 		<div style="font-size:20px;min-width:400px;"><%=params[:receiver].strip%><span style="margin:5px;"><%= image_tag('offline.png', size:"12x12", id: "offline", class: "status") %><%= image_tag('online.png', size:"12x12", id: "online", class: "status", :style => "display: none") %></span></div>
 
@@ -113,6 +100,3 @@
 		<% end %>
 		<%= subscribe_to "/messages/" + @channel %>
 	</div>
-</body>
-
-</html>

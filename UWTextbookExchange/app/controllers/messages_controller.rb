@@ -47,7 +47,7 @@ class MessagesController < ApplicationController
 			return database_error
 		end
 	else
-		redirect_to('/chatlist')
+		return database_error
 	end
   end
 
@@ -125,7 +125,7 @@ class MessagesController < ApplicationController
 			database_error
 		end
 	end
-	redirect_to('/chatlist')
+	redirect_to('/chat')
   end
 
 private
@@ -175,7 +175,6 @@ private
     end
 
     def database_error
-	flash[:notice] = "Something has gone wrong. We are trying to fix it."
-	return redirect_to('/chatlist')
+	render plain: "Ooops... Error occurs. Try to refresh the page."
     end
 end

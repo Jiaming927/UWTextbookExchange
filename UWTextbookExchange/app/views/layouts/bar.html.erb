@@ -17,7 +17,7 @@
 	<% if params[:receiver] && !params[:receiver].strip.blank?%>
 		data: {receiver: '<%=params[:receiver].strip%>' }
 	<% end %>
-		}).done(function(data){
+		}).success(function(data){
 			$("#msgct").html(data.count);
 			
 			if (data.hasOwnProperty("online")){
