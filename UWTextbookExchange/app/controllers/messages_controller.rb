@@ -114,7 +114,9 @@ class MessagesController < ApplicationController
 		else	
 			ch.second_side = 0
 		end
-		ch.save
+		if !ch.save
+			render :json => { :success => 0}
+		end
 	end
 
 	#clear msgcount db
@@ -122,10 +124,10 @@ class MessagesController < ApplicationController
 	if msgc
 		msgc.unread = 0
 		if !msgc.save
-			database_error
+			render :json => { :success => 0}
 		end
 	end
-	redirect_to('/chat')
+	render :json => { :success => 1}
   end
 
 private

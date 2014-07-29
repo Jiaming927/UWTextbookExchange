@@ -3,11 +3,14 @@
 		$(".friends").click(function(){
 			showchatting($(this).text().trim());
 		});
+		$("#markread").click(function(){
+			setread();
+		});
 	});
 </script>
 <div style="margin:15px;">
 	<h3>Unread</h3>
-	<span><%= link_to("Mark all as read", '/markread') %></span>
+	<div id="markread">Mark all as read</div>
 	<% count = 0 %>
 	<% @chnls.each do |ch| %>
 		<% if (current_user.username + current_user.username) > ch.channel_name %>

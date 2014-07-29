@@ -14,7 +14,11 @@
 	#chatlist{
 		border-right: 1px #eeeeee solid;
 		border-top: 1px #eeeeee solid;
-		height: 100vh;
+		height: 82vh;
+		float:left;
+		width:220px;
+		overflow-x:hidden;
+		overflow-y:auto;
 	}
 	#chatting{
 		margin: 15px;
@@ -25,7 +29,12 @@
 		background-color:cyan;
 		cursor:pointer;
 	}
-	#imgdiv{
+	#markread:hover{
+		background-color:yellow;
+		cursor:pointer;
+	}
+
+	#imgdiv, #smallimgdiv {
 		text-align:center;
 		margin:10px;
 	}
@@ -45,7 +54,7 @@
 		}).success(function(data){			
 			$("#chatlist").html(data);
 		}).fail(function (jqXHR, textStatus) {
-			$("#chatting").html("<p>Ooops... Error occurs. Try to refresh the page.</p>")
+			$("#chatlist").html("Ooops... Error occurs. Try to refresh the page.");
 		});
 	}
 
@@ -64,7 +73,29 @@
 		}).success(function(data){			
 			$("#chatting").html(data);
 		}).fail(function (jqXHR, textStatus) {
-			$("#chatting").html("<p>Loading error. Try to refresh the page</p>")
+			$("#chatting").html("Ooops... Error occurs. Try to refresh the page.");
+		});
+	}
+	function setread(){
+		$("#chatlist").empty();
+		var div = $('<div></div>');
+		div.attr("id","smallimgdiv")
+		$("#chatlist").append(div);
+		var img = $('<img id="largeloading">');
+		img.attr('src', "/assets/largeloading.gif");
+		$('#smallimgdiv').append(img);
+		$.ajax({
+		url:  "/markread",
+		type: "GET",
+		dataType: 'json'
+		}).success(function(data){
+			if (data.success == 1) {
+				getchatlist();
+			} else {
+				$("#chatlist").html("Ooops... Error occurs. Try to refresh the page.");
+			}
+		}).fail(function (jqXHR, textStatus) {
+			$("#chatlist").html("Ooops... Error occurs. Try to refresh the page.");
 		});
 	}
 
@@ -78,7 +109,7 @@
 		<a href="javascript:history.back(-1)">Back </a>
 	</div>
 <div id="chatoverall">
-	<div id="chatlist" style="float:left;">
+	<div id="chatlist" style="">
 	</div>
 
 	<div id="chatting">
