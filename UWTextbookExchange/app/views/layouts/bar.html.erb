@@ -1,9 +1,16 @@
 <script type="text/javascript">
+$.ajaxSetup({
+  headers: {
+    'X-CSRF-Token': '<%= form_authenticity_token.to_s %>'
+  }
+});
 <% if user_signed_in? %>
 	var flashing = null
 	$( document ).ready(function(){	
+	<% if !( params[:action] == 'chat' && params[:controller] == 'init') %>
 		updateCount();
 		setInterval(updateCount,30000);
+	<% end %>
 		if (<%= @msgc ? @msgc.unread : 0 %> > 0){
 			flashing = setInterval(function(){ $("#chatmsg").fadeOut(300).fadeIn(300); },600);
 		}
@@ -14,21 +21,8 @@
 		url:  "/showcount",
 		type: "GET",
 		dataType: 'json',
-	<% if params[:receiver] && !params[:receiver].strip.blank?%>
-		data: {receiver: '<%=params[:receiver].strip%>' }
-	<% end %>
 		}).success(function(data){
 			$("#msgct").html(data.count);
-			
-			if (data.hasOwnProperty("online")){
-				if (data.online == 0){
-					$("#offline").show();
-					$("#online").hide();
-				} else {
-					$("#offline").hide();
-					$("#online").show();
-				}
-			}
 			if (data.count != 0){
 				clearInterval(flashing);
 				flashing = setInterval(function(){ $("#chatmsg").fadeOut(300).fadeIn(300); },600);

@@ -5,15 +5,9 @@
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<title>Sign Up</title>
-
 	<link href="//netdna.bootstrapcdn.com/bootswatch/3.1.1/simplex/bootstrap.min.css" rel="stylesheet">    
-	<%= stylesheet_link_tag('signup', :media => 'all') %>
-
-	<script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-	<script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
-
+	<%= stylesheet_link_tag('formgroup', :media => 'all') %>
 	<script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
-	<script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script> 
 	<script type="text/javascript">
 		$( document ).ready(function(){	
 			$("#youremail").focusout(function(){
@@ -103,18 +97,20 @@
 					);
 		}
 	</script>
+
+
 </head>
 <body>
     <div class="container">
         <div class="row">
-            <div class="col-xs-12 col-sm-12 col-md-4 well well-sm" id="signup-box">
+            <div class="col-xs-12 col-sm-12 col-md-4 well well-sm" id="form-box">
                 <legend><a href="#"><i class="glyphicon glyphicon-user"></i></a> Sign up!</legend>
-				<%= link_to("Home", root_url) %>
+				<div class="link"><%= link_to("Home", root_url) %></div>
 				<div id="message" hidden="true"></div>
 				<%= form_for(resource, as: resource_name, url: registration_path(resource_name), html:{id: "sign-form", class: "form", role: "form"}) do |f| %>
 					<%= devise_error_messages! %>
 					<div class="row">
-						<%= f.email_field :email, placeholder: "Your UW Email", autofocus: true, class: "form-control", id: "youremail",  :required => true %>	
+						<%= f.email_field :email, placeholder: "Your UW Email", class: "form-control", id: "youremail",  :required => true %>	
 						<%= f.text_field :username, placeholder: "Username", class: "form-control", id: "username",  :required => true %>
 						<%= f.password_field :password, placeholder: "Password", autocomplete: "off", class: "form-control",  :required => true %>
 
@@ -126,8 +122,15 @@
 					<div><%= f.submit "Sign up" ,id: "submit-button", class: "btn btn-block btn-custom-light-blue" %></div>
 				<% end %>
 
-				<%= render "devise/shared/links" %>
-
+				<%- if controller_name != 'sessions' %>
+					<div class="link"><%= link_to "Sign in", new_session_path(resource_name) %></div>
+				<% end -%>
+				<%- if devise_mapping.confirmable? && controller_name != 'confirmations' %>
+					<div class="link"><%= link_to "Didn't receive confirmation instructions?", '/resend' %></div>
+				<% end -%>
+				<%- if devise_mapping.lockable? && controller_name != 'unlocks' %>
+					<div class="link"><%= link_to "Didn't receive unlock instructions?", '/unlockresend' %></div>
+				<% end -%>
 			</div>
 		</div>
 	</div>
