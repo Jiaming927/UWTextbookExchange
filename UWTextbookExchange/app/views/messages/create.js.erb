@@ -2,6 +2,8 @@
 	<% chnl = params[:message][:sender].strip < params[:message][:receiver].strip ? (params[:message][:sender].strip + params[:message][:receiver].strip) : (params[:message][:receiver].strip + params[:message][:sender].strip) %>
 	<% publish_to "/messages/" + chnl do %>
 		$("#chat").append("<%= j render(@message) %>");
+		convertTime();
+		$("#chat").scrollTop($('#chat')[0].scrollHeight);
 	<% end %>
 	$("#new_message")[0].reset();
 	$("#loading").hide();

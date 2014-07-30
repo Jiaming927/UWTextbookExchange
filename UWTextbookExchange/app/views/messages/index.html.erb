@@ -20,13 +20,7 @@
 				$("#submitbutton").click();
 				return false;
 			}
-		});
-
-		$("#chat").bind("DOMSubtreeModified",function(){
-			$("#chat").scrollTop($('#chat')[0].scrollHeight);
-			convertTime();
-		});
-		
+		});		
 	});
 
 	function updateAll(){
@@ -59,8 +53,8 @@
 	function convertTime(){
 		$(".timezone").each(function(){
 			$(this).text(new Date($(this).html()).strftime("%I:%M %p"));
-			$(this).removeClass("timezone")
-		})
+			$(this).removeClass("timezone");
+		});
 	}
 </script>
 
