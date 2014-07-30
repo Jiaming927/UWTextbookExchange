@@ -1,34 +1,44 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+	<title>Tebook</title>
 	<link href="//netdna.bootstrapcdn.com/bootswatch/3.1.1/simplex/bootstrap.min.css" rel="stylesheet">
-	<%= stylesheet_link_tag('index', :media => 'all') %>
-	<!--[if lt IE 9]>
-	<script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-	<script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
-	<![endif]-->
-
+	<%= stylesheet_link_tag('commonbg', :media => 'all') %>
 	<script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
 	<script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
 	<%= csrf_meta_tags %>
+<style>
+#toplink {
+	margin-top:50px;
+	font-size: 1.2em;
+	font-weight: bold;
+}
+
+h2 {
+	margin-top: 5px;
+}
+.bookresult {
+	margin: 10px;
+	clear:both;
+}
+</style>
+
 </head>
 
 <body>
 	<%= render template: "layouts/bar" %>
 
 	<div style="width:90%;margin:auto">
-
-		<br />
-		<%= link_to("Home", root_url) %>
-		<a href="javascript:history.back(-1)">Back </a>
-		<h1>Search Result for <%= @course.course_name %></h1>
-		<ol>
-			<% @course.attributes.each do |attr_name, attr_value| %>
-				<% if attr_name != "id" && attr_name != "course_name" && attr_name != "number" && attr_value != nil %>
-					<li><a href="<%=root_url%>show?book=<%=attr_value%>&course=<%= @course.course_name %>"><%=attr_value%></a></li>
-				<% end %>
+		<div id="toplink">
+			<%= link_to("Home", root_url) %>
+			<a href="javascript:history.back(-1)">Back </a>
+		</div>
+		<h2>Search Result for <%= @course.course_name %></h2>
+		<% @course.attributes.each do |attr_name, attr_value| %>
+			<% if attr_name != "id" && attr_name != "course_name" && attr_name != "number" && attr_value != nil %>
+				<div class="bookresult"><a href="<%=root_url%>show?book=<%=attr_value%>&course=<%= @course.course_name %>"><%=attr_value%></a></div>
 			<% end %>
-		</ol>
+		<% end %>
 	</div>
 </body>
 </html>

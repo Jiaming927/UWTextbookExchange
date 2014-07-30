@@ -102,7 +102,7 @@ class InitController < ApplicationController
 		else
 			return redirect_to(root_url)
 		end
-		flash[:editbookmessage] = bookname + " is unlisted"
+		flash[:notice] = bookname + " is unlisted"
 		return redirect_to('/personal')
 	else
 		return redirect_to(root_url)
@@ -139,7 +139,7 @@ class InitController < ApplicationController
 		else
 			return redirect_to(root_url)
 		end
-		flash[:editbookmessage] = bookname + " is successfully traded"
+		flash[:notice] = bookname + " is successfully traded"
 		return redirect_to('/personal')
 	else
 		return redirect_to(root_url)
@@ -156,7 +156,7 @@ class InitController < ApplicationController
 			#if the user already post the book
 			bk = Book.where(:username => current_user.username, :book_title => bookname).first
 			if bk
-				flash[:editbookmessage] = "You have already posted the book"
+				flash[:notice] = "You have already posted the book"
 				return redirect_to('/personal')
 			else
 				#remove from traded
@@ -178,9 +178,9 @@ class InitController < ApplicationController
 				end
 			end
 		else
-			flash[:editbookmessage] = bookname + " is back on sale"
 			return redirect_to(root_url)
 		end
+		flash[:notice] = bookname + " is back on sale"
 		return redirect_to('/personal')
 	else
 		return redirect_to(root_url)
@@ -204,7 +204,7 @@ class InitController < ApplicationController
 		else
 			return redirect_to(root_url)
 		end
-		flash[:editbookmessage] = bookname + " is deleted from the record"
+		flash[:notice] = bookname + " is deleted from the record"
 		return redirect_to('/personal')
 	else
 		return redirect_to(root_url)

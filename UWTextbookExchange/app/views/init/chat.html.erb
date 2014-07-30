@@ -1,8 +1,9 @@
 <!DOCTYPE html>
 <html>
 <head>
+	<title>Tebook</title>
 	<link href="//netdna.bootstrapcdn.com/bootswatch/3.1.1/simplex/bootstrap.min.css" rel="stylesheet">
-	<%= stylesheet_link_tag('index', :media => 'all') %>
+	<%= stylesheet_link_tag('commonbg', :media => 'all') %>
 	<script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
 	<%= javascript_include_tag 'jquery_ujs'%>
 	<script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
@@ -11,6 +12,12 @@
 	<%= csrf_meta_tags %>
 
 <style>
+	#toplink {
+		margin-top:50px;
+		font-size: 1.2em;
+		font-weight: bold;
+		margin-left: 15px;
+	}
 	#chatlist{
 		border-right: 1px #eeeeee solid;
 		border-top: 1px #eeeeee solid;
@@ -24,16 +31,6 @@
 		margin: 15px;
 		overflow: hidden;
 	}
-
-	.friends:hover{
-		background-color:cyan;
-		cursor:pointer;
-	}
-	#markread:hover{
-		background-color:yellow;
-		cursor:pointer;
-	}
-
 	#imgdiv, #smallimgdiv {
 		text-align:center;
 		margin:10px;
@@ -55,8 +52,6 @@
 		dataType: 'html'
 		}).success(function(data){			
 			$("#chatlist").html(data);
-		}).fail(function (jqXHR, textStatus) {
-			$("#chatlist").html("Ooops... Error occurs. Try to refresh the page.");
 		});
 	}
 
@@ -105,11 +100,10 @@
 </head>
 <body>
 	<%= render template: "layouts/bar" %>
-	<br />
-	<div style="margin-left: 15px;margin-top:10px;margin-bottom:10px;">
-		<%= link_to("Home", root_url) %>
-		<a href="javascript:history.back(-1)">Back </a>
-	</div>
+		<div id="toplink">
+			<%= link_to("Home", root_url) %>
+			<a href="javascript:history.back(-1)">Back </a>
+		</div>
 <div id="chatoverall">
 	<div id="chatlist" style="">
 	</div>

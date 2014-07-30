@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Personal Information</title>
+	<title>Tebook</title>
 	<link href="//netdna.bootstrapcdn.com/bootswatch/3.1.1/simplex/bootstrap.min.css" rel="stylesheet">
-	<%= stylesheet_link_tag('index', :media => 'all') %>
+	<%= stylesheet_link_tag('commonbg', :media => 'all') %>
 	<script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
 	<script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
 	<%= csrf_meta_tags %>
@@ -22,60 +22,100 @@
 		})
 	});
 	</script>
+<style>
+#toplink {
+	margin-top:50px;
+	font-size: 1.2em;
+	font-weight: bold;
+}
+
+h2 {
+	margin-top: 5px;
+	margin-bottom: 5px;
+	padding-left: 5px;
+}
+.option {
+	margin: 10px;
+	clear:both;
+}
+.notice {
+	margin-bottom: 10px;
+	border-radius: 5px;
+	padding: 5px;
+	border: 1px red solid;
+	background-color: #ff9999;
+	text-align: center;
+	color: black;
+	font-weight: bold;
+}
+.bookresult {
+	margin: 10px;
+	clear:both;
+}
+.postlink {
+	font-size: 1.2em;
+	padding-left: 5px;
+	vertical-align: middle;
+	font-weight: bold;
+}
+fieldset {
+	margin: 10px;
+	padding: 5px;
+	border: 5px ridge rgb(255, 204, 0);
+	border-radius: 5px;
+}
+</style>
+
 </head>
 
 <body>
 
 	<%= render template: "layouts/bar" %>
 	<div style="width:90%;margin:auto">
-	<br />
-
-	<%= link_to("Home", root_url) %>
-
-
-	<% if !flash[:editbookmessage].blank? %>
-	<br />
-	<div class = "notice">
-		<%= flash[:editbookmessage] %>
+	<div id="toplink">
+		<%= link_to("Home", root_url) %>
+		<a href="javascript:history.back(-1)">Back </a>
 	</div>
-	<br />
+	<h2>Personal Information</h2>
+	<% if !flash[:notice].blank? %>
+		<div class = "notice">
+			<%= flash[:notice] %>
+		</div>
 	<% end %>
 
-	<h1>Personal Information</h1>
-	Email: <%= current_user.email %>
-	<br />
-	Username: <%= current_user.username %>
-	<br />
-	Messages(unread/total): <a href="/chatlist"><%= @msgc ? @msgc.unread : 0 %>/<%= @msgc ? @msgc.count : 0 %></a>
-	<br />
-	<div id="bookinfo">
+	<div class="option">Email: <%= current_user.email %></div>
+	<div class="option">Username: <%= current_user.username %></div>
+	<div class="option">
+		Messages(unread/total): <a href="/chatlist"><%= @msgc ? @msgc.unread : 0 %>/<%= @msgc ? @msgc.count : 0 %></a>
+	</div>
+
+	<div id="bottomlink"><%= link_to("Change Password", edit_user_registration_path) %></div>
+<fieldset>
+	<div class="option">
 	Books you owned: <%= @Ownedbook.count %>
 	<% if (@Ownedbook.count > 0) %>
-		<ol>
 		<% @Ownedbook.each do |ob| %>
-			<li><a href="<%=root_url%>show?book=<%=ob.book_title%>"><%=ob.book_title%></a>
-			<br />
-			<a href="<%=root_url%>traded?book=<%=ob.book_title%>">Traded</a>
-			<a class="unlist" href="<%=root_url%>unlist?book=<%=ob.book_title%>">Unlist</a></li>
+			<div class="bookresult">
+				<a href="<%=root_url%>show?book=<%=ob.book_title%>"><%=ob.book_title%></a>
+				<span class="postlink"><a href="<%=root_url%>traded?book=<%=ob.book_title%>">Traded</a></span>
+				<span class="postlink"><a class="unlist" href="<%=root_url%>unlist?book=<%=ob.book_title%>">Unlist</a></span>
+			</div>
 		<% end %>
-		</ol>
-		
-	<% end %>
-	<br />
-	Books traded: <%= @Tradedbook.count %>
-	<% if (@Tradedbook.count > 0) %>
-		<ol>
-		<% @Tradedbook.each do |tb| %>
-			<li><a href="<%=root_url%>show?book=<%=tb.book_title%>"><%=tb.book_title%></a></li>
-			<a href="<%=root_url%>resume?book=<%=tb.book_title%>">Back on sale</a>
-			<a class="delete" href="<%=root_url%>delete?book=<%=tb.book_title%>">Delete</a></li>
-		<% end %>
-		</ol>
 	<% end %>
 	</div>
-	<br />
-
-	<%= link_to("Change Password", edit_user_registration_path) %>
+	<div class="option">
+	Books traded: <%= @Tradedbook.count %>
+	<% if (@Tradedbook.count > 0) %>
+		<% @Tradedbook.each do |tb| %>
+			<div class="bookresult">
+				<a href="<%=root_url%>show?book=<%=tb.book_title%>"><%=tb.book_title%></a></li>
+				<span class="postlink"><a href="<%=root_url%>resume?book=<%=tb.book_title%>">Back on sale</a></span>
+				<span class="postlink"><a class="delete" href="<%=root_url%>delete?book=<%=tb.book_title%>">Delete</a></span>
+			</div>
+		<% end %>
+	<% end %>
+	</div>
+</fieldset>
 	</div>
 </body>
 </html>

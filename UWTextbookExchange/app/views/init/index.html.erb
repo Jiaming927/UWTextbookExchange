@@ -4,7 +4,7 @@
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<title>Mysterion</title>
+	<title>Tebook</title>
 
 	<link href="//netdna.bootstrapcdn.com/bootswatch/3.1.1/simplex/bootstrap.min.css" rel="stylesheet">
 	<%= stylesheet_link_tag('index', :media => 'all') %>
@@ -44,10 +44,14 @@
 <body>
 
 	<%= render template: "layouts/bar" %>
-
+	<% if !flash[:notice].blank? %>
+		<div class = "notice">
+			<%= flash[:notice] %>
+		</div>
+	<% end %>
 	<!-- Main BackGround Image  -->
 
-	<img src="http://cdn8.openculture.com/wp-content/uploads/2014/04/intelligent-books-to-read.jpg" class="img-responsive" alt="Responsive image" id="main-background-img">
+
 
 	<!-- Main Search Center -->
 	<div class="jumbotron center" id="main-search-area">

@@ -16,11 +16,10 @@ class GetBookController < ApplicationController
 		session[:last_dep] = params[:course]["department"].strip
 		session[:last_class] = params[:course]["class"].strip
 		courseName = params[:course]["department"].strip.upcase + params[:course]["class"].strip
-		session[:coursename] = courseName
+		#session[:coursename] = courseName
 
 		if params[:post]
-		    	flash[:notice] = params[:course]["department"]
-			return redirect_to('/post')
+			return redirect_to('/post?coursename=' + courseName)
 		else	
 			@course = Course.where(:course_name => courseName).first
 			if !@course
@@ -46,15 +45,19 @@ class GetBookController < ApplicationController
   end
 
   def postto
-	if params[:book]
+	if params[:book] && params[:from] && (params[:from].strip == 'post' || params[:from].strip == 'show')
 		bookname = params[:book].strip
 		#if book in bookinfo
 		binfo = Bookinfo.where(:book_title => bookname).first
 		if binfo
 			bk = Book.where(:username => current_user.username, :book_title => bookname).first
 			if bk
-				flash[:postmessage] = "You have already posted the book"
-				return redirect_to('/post')
+				flash[:notice] = "You have already posted the book"
+				if params[:from].strip == 'post'
+					return redirect_to('/post?coursename=' + binfo.course_name.split(',').first)
+				else
+					return redirect_to('/show?book=' + bookname)
+				end
 			else
 				#increment bookinfo
 				binfo.number = binfo.number + 1
@@ -69,8 +72,12 @@ class GetBookController < ApplicationController
 
 					#add to owned
 					Ownedbook.create(:book_title => bookname, :username => current_user.username)
-					flash[:postmessage] = bookname + " is posted successfully"
-					return redirect_to('/post')
+					flash[:notice] = bookname + " is posted successfully"
+					if params[:from].strip == 'post'
+						return redirect_to('/post?coursename=' + binfo.course_name.split(',').first)
+					else
+						return redirect_to('/show?book=' + bookname)
+					end
 				end
 			end
 		end
@@ -79,8 +86,8 @@ class GetBookController < ApplicationController
   end
 
   def post
-	if session[:coursename]
-		@course = Course.where(:course_name => session[:coursename]).first
+	if params[:coursename]
+		@course = Course.where(:course_name => params[:coursename]).first
 		if !@course
 		  flash[:notice] = "This course is not held in this quarter, or misspell anything?"
 		  return redirect_to(root_url)

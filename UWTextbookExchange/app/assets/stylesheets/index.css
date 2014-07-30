@@ -1,15 +1,16 @@
 body { 
-  padding-top: 30px; 
+	padding-top: 30px; 
+	background-image: url('http://cdn8.openculture.com/wp-content/uploads/2014/04/intelligent-books-to-read.jpg');
+	background-size: contain;
 }
+
+@media (min-width: 640px){ body {
+	background-size: cover;
+}}
+
 
 .center {
-  text-align: center;
-}
-
-
-#main-background-img {
-	position: absolute;
-	z-index: -1;
+	text-align: center;
 }
 
 .jumbotron {
@@ -104,13 +105,19 @@ body {
   -webkit-font-s
 }
 
-.notice {
-	float:left;
-	padding: 10px;
-}
-
 .login_info {
 	padding: 10px;
 	float:right;
+}
+.notice {
+	margin-top: 11px;
+	padding: 5px;
+	border: 1px red solid;
+	background-color: #ff9999;
+	text-align: center;
+	color: black;
+	font-weight: bold;
+	position: fixed;
+	width: 100%;
 }
 

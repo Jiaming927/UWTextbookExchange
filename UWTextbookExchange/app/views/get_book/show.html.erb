@@ -1,29 +1,68 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+	<title>Tebook</title>
 	<link href="//netdna.bootstrapcdn.com/bootswatch/3.1.1/simplex/bootstrap.min.css" rel="stylesheet">
-	<%= stylesheet_link_tag('index', :media => 'all') %>
-	<!--[if lt IE 9]>
-	<script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-	<script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
-	<![endif]-->
-
+	<%= stylesheet_link_tag('commonbg', :media => 'all') %>
 	<script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
 	<script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
 	<%= csrf_meta_tags %>
+<style>
+#toplink {
+	margin-top:50px;
+	font-size: 1.2em;
+	font-weight: bold;
+}
+
+h2, h3 {
+	margin-top: 5px;
+	margin-bottom: 5px;
+	padding-left: 5px;
+}
+.postlink {
+	font-size: 1.2em;
+	padding: 5px;
+	vertical-align: middle;
+	font-weight: bold;
+}
+.option {
+	margin: 10px;
+	clear:both;
+}
+.users {
+	margin: 5px;
+	float: left;
+	padding-right: 10px;
+}
+.notice {
+	margin-bottom: 10px;
+	border-radius: 5px;
+	padding: 5px;
+	border: 1px red solid;
+	background-color: #ff9999;
+	text-align: center;
+	color: black;
+	font-weight: bold;
+}
+</style>
 </head>
 
 <body>
 	<%= render template: "layouts/bar" %>
 	<div style="width:90%;margin:auto">
-		<br />
-
-		<%= link_to("Home", root_url) %>
-		<a href="javascript:history.back(-1)">Back </a>
+		<div id="toplink">
+			<%= link_to("Home", root_url) %>
+			<a href="javascript:history.back(-1)">Back </a>
+		</div>
+		<h2>Details</h2>
+		<% if !flash[:notice].blank? %>
+			<div class = "notice">
+				<%= flash[:notice] %>
+			</div>
+		<% end %>
 		<% if @bookinfo.number > 0 %>
-			<h1><%=@bookinfo.book_title %></h1>
-			<div>Author: <%= @bookinfo.author %></div>
-			<div>
+			<div class="option"><%=@bookinfo.book_title %></div>
+			<div class="option">
 				<% if @bookinfo.course_name.split(',').count > 1 %>
 					Courses: 
 				<% else %>
@@ -35,17 +74,16 @@
 				<% end %>
 			</div>
 			<% if user_signed_in? %>
-				<a href="<%=root_url%>postto?book=<%=@bookinfo.book_title%>">Post</a>
+				<div class="postlink"><a href="<%=root_url%>postto?from=show&book=<%=@bookinfo.book_title%>">Post</a></div>
 			<% end %>
 			<% if @bookinfo.number == 1 %>
 				<% has = 'has' %>
 			<% else %>
 				<% has = 'have' %>
 			<% end %>
-					<h2><%= pluralize(@bookinfo.number, 'person') %> <%= has %> the book</h2>
+					<h3><%= pluralize(@bookinfo.number, 'person') %> <%= has %> the book</h3>
 			<% if user_signed_in? %>
-				<div>Chat with them:</div>
-				<div>
+				<span class="users">
 					<% @book.each do |bk| %>
 						<% if bk.username != current_user.username%>
 							<% if bk.msgcount.last_update > 2.minutes.ago %>
@@ -54,10 +92,9 @@
 								<%= image_tag('offline.png', size:"12x12") %>
 							<% end %>
 							<a href="<%=root_url%>chat?receiver=<%=bk.username%>"><%=bk.username%></a>
-							&nbsp;	
 						<% end %>			
 					<% end %>
-				</div>
+				</span>
 			<% else %>
 				<div><%=link_to('Sign in', new_session_path(resource_name)) %> or <%=link_to('Sign up', new_registration_path(resource_name)) %> to see who has it.</div>
 			<% end %>

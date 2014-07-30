@@ -1,9 +1,7 @@
 <script type="text/javascript">
-$.ajaxSetup({
-  headers: {
-    'X-CSRF-Token': '<%= form_authenticity_token.to_s %>'
-  }
-});
+	$( document ).ready(function(){	
+		$('[name=authenticity_token]').each(function(){this.value = "<%= form_authenticity_token.to_s %>"});
+	});
 <% if user_signed_in? %>
 	var flashing = null
 	$( document ).ready(function(){	
@@ -33,7 +31,15 @@ $.ajaxSetup({
 	}
 <% end %>
 </script>
-
+<style>
+.login_info {
+	padding: 10px;
+	float:right;
+}
+#msgblock{
+	float: left;
+}
+</style>
 <!-- Top Navigation Bar -->
 <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
 	<div class="container-fluid">
@@ -45,22 +51,16 @@ $.ajaxSetup({
 				<span class="icon-bar"></span>
 				<span class="icon-bar"></span>
 			</button>
-	 		<a class="navbar-brand" href="/"><strong>Mysterion</strong></a>
+	 		<a class="navbar-brand" href="/"><strong>Tebook</strong></a>
+			<ul id="msgblock" class="nav">
+			<% if user_signed_in? %>
+				<li id="chatmsg" class="active"><a href="/chat">Message(<span id='msgct'><%= @msgc ? @msgc.unread : 0 %></span>)</a></li>
+			<% end %>
+			</ul>
 		</div>
 		<!-- Collect the nav links, forms, and other content for toggling -->
 		<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-			<ul class="nav navbar-nav">
-			<% if user_signed_in? %>
-				<li id = "chatmsg"class="active"><a href="/chat">Message(<span id='msgct'><%= @msgc ? @msgc.unread : 0 %></span>)</a></li>
-			<% end %>
-			</ul>
-			<ul class="nav navbar-nav">
-			<% if !flash[:notice].blank? %>
-				<div class = "notice">
-					<%= flash[:notice] %>
-				</div>
-			<% end %>
-			</ul>
+
 			<!-- Preference Dropdown -->
 			<ul class="nav navbar-nav navbar-right">
 				<li class="dropdown">
