@@ -75,6 +75,8 @@ h2, h3 {
 			</div>
 			<% if user_signed_in? %>
 				<div class="postlink"><a href="<%=root_url%>postto?from=show&book=<%=@bookinfo.book_title%>">Post</a></div>
+			<% else %>
+				<div class="postlink"><%=link_to('Sign in', new_session_path(resource_name)) %> to post this book</div>
 			<% end %>
 			<% if @bookinfo.number == 1 %>
 				<% has = 'has' %>

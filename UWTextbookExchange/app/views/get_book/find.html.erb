@@ -21,8 +21,24 @@ h2 {
 	margin: 10px;
 	clear:both;
 }
-</style>
+.postlink {
+	font-size: 1.2em;
+	padding-left: 5px;
+	vertical-align: middle;
+	font-weight: bold;
+}
 
+.notice {
+	margin-bottom: 10px;
+	border-radius: 5px;
+	padding: 5px;
+	border: 1px red solid;
+	background-color: #ff9999;
+	text-align: center;
+	color: black;
+	font-weight: bold;
+}
+</style>
 </head>
 
 <body>
@@ -34,9 +50,23 @@ h2 {
 			<a href="javascript:history.back(-1)">Back </a>
 		</div>
 		<h2>Search Result for <%= @course.course_name %></h2>
+
+		<% if !flash[:notice].blank? %>
+			<div class = "notice">
+				<%= flash[:notice] %>
+			</div>
+		<% end %>
+		<% if !user_signed_in? %>
+			<div>Sign in to post</div>
+		<% end %>
 		<% @course.attributes.each do |attr_name, attr_value| %>
 			<% if attr_name != "id" && attr_name != "course_name" && attr_name != "number" && attr_value != nil %>
-				<div class="bookresult"><a href="<%=root_url%>show?book=<%=attr_value%>&course=<%= @course.course_name %>"><%=attr_value%></a></div>
+				<div class="bookresult">
+					<a href="<%=root_url%>show?book=<%=attr_value%>"><%=attr_value%></a>
+					<% if user_signed_in? %>
+						<span class="postlink"><a href="<%=root_url%>postto?from=find&book=<%=attr_value%>">Post</a></span>
+					<% end %>
+				</div>
 			<% end %>
 		<% end %>
 	</div>

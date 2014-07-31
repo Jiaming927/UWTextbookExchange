@@ -5,10 +5,8 @@
 <% if user_signed_in? %>
 	var flashing = null
 	$( document ).ready(function(){	
-	<% if !( params[:action] == 'chat' && params[:controller] == 'init') %>
 		updateCount();
 		setInterval(updateCount,30000);
-	<% end %>
 		if (<%= @msgc ? @msgc.unread : 0 %> > 0){
 			flashing = setInterval(function(){ $("#chatmsg").fadeOut(300).fadeIn(300); },600);
 		}

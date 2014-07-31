@@ -27,13 +27,7 @@ class InitController < ApplicationController
 
 
  def chatlist
-	@msgc = Msgcount.where(:username => current_user.username).first
-	if @msgc
-		@msgc.last_update = Time.now
-		@msgc.save
-	end
 	@chnls = Channel.where("channel_name LIKE ? OR channel_name LIKE ?", current_user.username + "%", "%" + current_user.username).order("updated_at DESC")
-
  end
 
  def showcount
@@ -41,23 +35,26 @@ class InitController < ApplicationController
 	if msgc
 		msgc.last_update = Time.now
 		msgc.save
-		if params[:receiver] && !params[:receiver].strip.blank?
-			msgc_receiver = Msgcount.where(:username => params[:receiver].strip).first
-			if msgc_receiver
-				if msgc_receiver.last_update > 2.minutes.ago
-					render :json => { :count => msgc.unread, :online => 1}
-				else
-					render :json => { :count => msgc.unread, :online => 0}
-				end
-			else
-				render :json => { :count => msgc.unread}
-			end
-
-		else
-			render :json => { :count => msgc.unread}
-		end
+		render :json => { :count => msgc.unread}
 	else
 		render :json => { :count => 0}
+	end
+ end
+
+ def showstatus
+	if params[:receiver] && !params[:receiver].strip.blank?
+		msgc_receiver = Msgcount.where(:username => params[:receiver].strip).first
+		if msgc_receiver
+			if msgc_receiver.last_update > 2.minutes.ago
+				render :json => {:online => 1}
+			else
+				render :json => {:online => 0}
+			end
+		else
+			render status: :bad_request
+		end
+	else
+		render status: :bad_request
 	end
  end
 

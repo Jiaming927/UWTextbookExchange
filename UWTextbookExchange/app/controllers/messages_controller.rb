@@ -6,48 +6,54 @@ class MessagesController < ApplicationController
 # first_side message 'first' sent that 'second' hasn't read
 # second_side message 'second' send that 'first' hasn't read
 
-  def index
+  def getmessage
+	if params[:receiver]
+		messages = Message.where("(sender = ? AND receiver = ?) OR (sender = ? AND receiver = ?)", current_user.username,params[:receiver].strip,params[:receiver].strip, current_user.username)
+		render messages
+	else
+		render status: :bad_request
+	end
+  end
+
+  def subscribe
 	if params[:receiver] && !params[:receiver].blank? && params[:receiver].strip != current_user.username && user_exist_create(params[:receiver].strip)
 		@channel = return_asc(current_user.username, params[:receiver].strip)
 		if user_channel_exist(@channel)
 			ch = Channel.where(:channel_name => @channel).first
 			if ch
 				if is_small(current_user.username, params[:receiver].strip)
-					@msg_number = ch.second_side
+					msg_number = ch.second_side
 					#mark msg from other side to read
 					ch.second_side = 0
 				else
-					@msg_number = ch.first_side
+					msg_number = ch.first_side
 					#mark msg from other side to read
 					ch.first_side = 0
 				end
-				@msgc = Msgcount.where(:username => current_user.username).first
-				if @msgc
-					@msgc.unread = @msgc.unread - @msg_number
-					if @msgc.save
-						if ch.save
-							@messages = Message.where("(sender = ? AND receiver = ?) OR (sender = ? AND receiver = ?)", current_user.username,params[:receiver].strip,params[:receiver].strip, current_user.username)
-						else
-							#database error
+				msgc = Msgcount.where(:username => current_user.username).first
+				if msgc
+					msgc.unread = msgc.unread - msg_number
+					if msgc.save
+						if !ch.save							#database error
 							#retrieve database
-							@msgc.unread = @msgc.unread + @msg_number
-							@msgc.save
-							return database_error
+							msgc.unread = msgc.unread + msg_number
+							msgc.save
+							render status: :bad_request
 						end
 					else
-						return database_error
+						render status: :bad_request
 					end
 				else
-					return database_error
+					render status: :bad_request
 				end
 			else
-				return database_error
+				render status: :bad_request
 			end
 		else
-			return database_error
+			render status: :bad_request
 		end
 	else
-		return database_error
+		return render status: :bad_request
 	end
   end
 
@@ -87,28 +93,26 @@ class MessagesController < ApplicationController
 				if msgc_other_db
 					msgc_other_db.unread = msgc_other_db.unread + 1
 					if !msgc_other_db.save
-						return database_error
+						render status: :internal_server_error
 					end
 				else
-					return database_error
+					render status: :internal_server_error
 				end
 			else
-				return database_error
+				render status: :internal_server_error
 			end
 		else
-			return database_error
+			render status: :bad_request
 		end
-
-
 	else
-		redirect_to('/chatlist')
+		render status: :bad_request
 	end
   end
 
   def markread
 	#clear all channels
-	@chnls = Channel.where("channel_name LIKE ? OR channel_name LIKE ?", current_user.username + "%", "%" + current_user.username)
-	@chnls.each do |ch|
+	chnls = Channel.where("channel_name LIKE ? OR channel_name LIKE ?", current_user.username + "%", "%" + current_user.username)
+	chnls.each do |ch|
 		if (current_user.username + current_user.username) > ch.channel_name
 			ch.first_side = 0
 		else	
@@ -174,9 +178,5 @@ private
 
     def is_small(a, b)
 	return (a<b ? true : false)
-    end
-
-    def database_error
-	render plain: "Ooops... Error occurs. Try to refresh the page."
     end
 end

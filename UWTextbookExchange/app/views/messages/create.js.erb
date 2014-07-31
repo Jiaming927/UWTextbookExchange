@@ -1,10 +1,13 @@
 <% if params[:message] && params[:message][:sender] && params[:message][:receiver] %>
 	<% chnl = params[:message][:sender].strip < params[:message][:receiver].strip ? (params[:message][:sender].strip + params[:message][:receiver].strip) : (params[:message][:receiver].strip + params[:message][:sender].strip) %>
 	<% publish_to "/messages/" + chnl do %>
-		$("#chat").append("<%= j render(@message) %>");
-		convertTime();
-		$("#chat").scrollTop($('#chat')[0].scrollHeight);
+		<% if params[:message][:sender] != current_user.username %>
+			$("#chat").append("<%= j render(@message) %>");
+			convertTime();
+			$("#chat").scrollTop($('#chat')[0].scrollHeight);
+		<% else %>
+			clearInterval(window.senddots);
+			$('.sendstatus').empty();
+		<% end %>
 	<% end %>
-	$("#new_message")[0].reset();
-	$("#loading").hide();
 <% end %>

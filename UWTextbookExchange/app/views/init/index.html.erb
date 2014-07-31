@@ -49,11 +49,7 @@
 			<%= flash[:notice] %>
 		</div>
 	<% end %>
-	<!-- Main BackGround Image  -->
 
-
-
-	<!-- Main Search Center -->
 	<div class="jumbotron center" id="main-search-area">
 		<%= form_for(:course, :url=>'find', html:{class: "form-signin", role: "search"}) do |f| %>
 			<div class="form-group nav-search">
@@ -61,8 +57,7 @@
 				<a style="color:white;" href="http://www.washington.edu/students/reg/curricabbr.html" onclick="javascript:openWin('http://www.washington.edu/students/reg/curricabbr.html','list',540,400);return false">Curriculum Abbreviation List</a>
 				<%= f.text_field(:class, :placeholder => "Course Number", class: "form-control", id: "main-search-class-field", value: session[:last_class]) %>
 			</div>
-			<%= submit_tag("Find", id: "main-search-find-btn", class: "btn btn-custom-light-blue", :name => 'find')%>
-			<%= submit_tag("Post", id: "main-search-post-btn", class: "btn btn-custom-light-orange", :name => 'post') %>
+			<%= submit_tag("Search", id: "main-search-find-btn", class: "btn btn-custom-light-blue")%>
 		<% end %>
 	</div>
 

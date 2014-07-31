@@ -12,15 +12,11 @@
 	<%= csrf_meta_tags %>
 
 <style>
-	#toplink {
-		margin-top:50px;
-		font-size: 1.2em;
-		font-weight: bold;
-		margin-left: 15px;
+	#chatoverall {
+		margin-top: 40px;
 	}
 	#chatlist{
 		border-right: 1px #eeeeee solid;
-		border-top: 1px #eeeeee solid;
 		height: 82vh;
 		float:left;
 		width:220px;
@@ -35,14 +31,90 @@
 		text-align:center;
 		margin:10px;
 	}
+	.status {
+		vertical-align: initial;
+	}
+	.sendstatus {
+		color: #CACACA;
+		float:right;
+		padding-right: 5px;
+		width: 70px;
+	}
+	#chat {
+		border: 1px solid black;
+		min-width:450px;
+		height:300px;
+		overflow-y: auto;
+		word-wrap: break-word;
+		margin-top: 10px;
+		margin-bottom: 10px;
+	}
+	#content {
+		width: 85%;
+		min-width:350px;
+		height:80px;
+		resize:none;
+		border:1px solid #808080;
+		overflow-y: auto;
+	}
+	#submitbutton {
+		margin-top: 25px;
+		float:right;
+		margin-right:1.5%;
+	}
+	.sender {
+		color:red;
+	}
+	.msg {
+		color:blue;
+	}
+	.msgtime {
+		color:black;
+		float:right;
+	}
+	.msg_bundle {
+		clear:both;
+	}
+	#chatmain {
+		width:85%;
+		margin:auto;
+		margin-top:10px;
+	}
+	#messageloading {
+		font-size: 4em;
+		float:right;
+		width: 8em;
+	}
 </style>
 <script>
 	$( document ).ready(function(){	
 		getchatlist('0');
-		<% if @receiver && !@receiver.blank? %>
+		<% if  @receiver && !@receiver.blank? %>
 			showchatting("<%=@receiver%>");
 		<% end %>
 		setInterval( function() { getchatlist('1'); }, 30000);
+
+		$("#submitbutton").click(function(event) {
+			$("#message_content")[0].value = $("#content").text();
+			if ($("#content").text().trim() != ""){
+				a = $('<div class="msg_bundle"><span class="sender"><%=current_user.username%>: </span><span class="msg">' + $("#content").text() + '</span><span class="msgtime timezone">' + new Date().strftime("%I:%M %p") + '</span><span class="sendstatus"><span style="float:left;">Sending<span class="dots">.</span></span></span></div>');
+				$("#chat").append(a);
+				$("#chat").scrollTop($('#chat')[0].scrollHeight);
+				$("#content").empty();
+				window.senddots = setInterval(dotdotdot, 500);
+			} else {
+				event.preventDefault();
+				$("#content").empty();
+				$("#content").fadeOut(200).fadeIn(200).fadeOut(200).fadeIn(200);
+			}
+		});
+
+		$(document).keydown(function(event){
+			if(event.keyCode==13){
+				$("#submitbutton").click();
+				return false;
+			}
+		});
 	});
 
 	function getchatlist(num){
@@ -56,21 +128,40 @@
 	}
 
 	function showchatting(receiver){
-		$("#chatting").empty();
-		var div = $('<div></div>');
-		div.attr("id","imgdiv")
-		$('#chatting').append(div);
-		var img = $('<img id="largeloading">');
-		img.attr('src', "/assets/largeloading.gif");
-		$('#imgdiv').append(img);
+		$("#chat").empty();
+		clearInterval(window.status);
+		$('#chat').append($('<div id="messageloading"><span style="float:left;">Loading<span class="dots">.</span></span></div>'));
+		loaddots = setInterval(dotdotdot, 500);
+		$("#offline").show();
+		$("#online").hide();
+		$('#receiver').html(receiver);
 		$.ajax({
-		url:  "/messages?receiver=" + receiver,
+		url:  "/getmessage?receiver=" + receiver,
+		type: "GET",
+		dataType: 'html'
+		}).success(function(data){
+			clearInterval(loaddots);			
+			$("#chat").html(data);
+			convertTime();
+			$("#chat").scrollTop($('#chat')[0].scrollHeight);
+			$('#message_receiver').attr('value', receiver);
+			getSign(receiver);
+			window.status = setInterval(function(){updatestatus(receiver)},30000);
+		}).fail(function (jqXHR, textStatus) {
+			clearInterval(loaddots);
+			$("#chat").html("Ooops... Error occurs. Try to refresh the page.");
+		});
+	}
+
+	function getSign(receiver){
+		$.ajax({
+		url:  "/subscribe?receiver=" + receiver,
 		type: "GET",
 		dataType: 'html'
 		}).success(function(data){			
-			$("#chatting").html(data);
+			$("#sign").html(data);
 		}).fail(function (jqXHR, textStatus) {
-			$("#chatting").html("Ooops... Error occurs. Try to refresh the page.");
+			$("#chat").html("Ooops... Error occurs. Try to refresh the page.");
 		});
 	}
 	function setread(){
@@ -96,20 +187,66 @@
 		});
 	}
 
+	function convertTime(){
+		$(".timezone").each(function(){
+			$(this).text(new Date($(this).html()).strftime("%I:%M %p"));
+			$(this).removeClass("timezone");
+		});
+	}
+
+	function dotdotdot(){
+		if ($('.dots').text().length >= 3){
+   			$('.dots').text('');
+    		} else {
+        			$('.dots').text($('.dots').text() + '.');
+		}
+	}
+
+	function updatestatus(rec){
+		$.ajax({
+		url:  "/showstatus",
+		type: "GET",
+		dataType: 'json',
+		data: {receiver: rec}
+		}).success(function(data){
+			if (data.hasOwnProperty("online")){
+				if (data.online == 0){
+					$("#offline").show();
+					$("#online").hide();
+				} else {
+					$("#offline").hide();
+					$("#online").show();
+				}
+			}
+		});
+	}
+
 </script>
 </head>
 <body>
 	<%= render template: "layouts/bar" %>
-		<div id="toplink">
-			<%= link_to("Home", root_url) %>
-			<a href="javascript:history.back(-1)">Back </a>
-		</div>
 <div id="chatoverall">
-	<div id="chatlist" style="">
-	</div>
+	<div id="chatlist"></div>
 
 	<div id="chatting">
-		
+		<div id="chatmain">
+			<div style="font-size:20px;min-width:400px;">
+				<span id="receiver"></span><span style="margin:5px;"><%= image_tag('offline.png', size:"12x12", id: "offline", class: "status", :style => "display: none") %><%= image_tag('online.png', size:"12x12", id: "online", class: "status", :style => "display: none") %></span>
+			</div>
+
+			<div id="chat"></div>
+
+			<%= form_for Message.new, :remote => true do |f| %>
+				<div style="min-width:450px;">
+					<%= f.hidden_field :content, autofocus: true %>
+					<%= f.hidden_field :sender, :value => current_user.username %>
+					<%= f.hidden_field :receiver %>
+					<%= f.submit "Send", id: 'submitbutton'%>
+					<div contentEditable="true" id="content"></div>
+				</div>
+			<% end %>
+			<span id="sign"></span>
+		</div>
 	</div>
 </div>
 </body>
