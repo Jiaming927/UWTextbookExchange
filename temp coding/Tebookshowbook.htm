@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<!-- saved from url=(0109)http://54.187.227.13/show?book=Name:%20BUILDING%20JAVA%20PROGRAMS%20(3E%2014)*Author:%20REGES*Price:%20138.25 -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<title>Tebook</title>
+	<link  href="./Tebook_files/bootstrap.min.css"  rel="stylesheet">
+	<link  href="./Tebook_files/index-e787352e7b75d45de29ce41469c4f1f1.css"  media="all"  rel="stylesheet">
+	<script src="./Tebookshowbook_files/jquery-1.11.1.min.js"></script>
+	<script src="./Tebookshowbook_files/bootstrap.min.js"></script>
+	<meta content="authenticity_token" name="csrf-param">
+<meta content="cwEBjBe2Y5EJZWgkP1Fa05Pfyob1dr5uJ6AAA676EcY=" name="csrf-token">
+<style>
+#toplink {
+	margin-top:0px;
+	margin-bottom:50px;
+	font-size: 1.2em;
+	font-weight: bold;
+}
+
+h2, h3 {
+	margin-top: 40px;
+	margin-bottom: 5px;
+	padding-left: 5px;
+	color:orange;
+}
+.postlink {
+	font-size: 1.2em;
+	padding: 5px;
+	vertical-align: middle;
+	font-weight: bold;
+}
+.option {
+	margin: 10px;
+	clear:both;
+	color:white;
+}
+.users {
+	margin: 5px;
+	float: left;
+	padding-right: 10px;
+}
+.notice {
+	margin-bottom: 10px;
+	border-radius: 5px;
+	padding: 5px;
+	border: 1px red solid;
+	background-color: #ff9999;
+	text-align: center;
+	color: black;
+	font-weight: bold;
+}
+</style>
+<style type="text/css" id="_om_css_global">._om_hidden {
+	visibility: hidden;
+}</style><style type="text/css" id="_om_css_twenga">._om_twenga_widget {
+	text-align: left;
+	box-sizing: border-box;
+	background-color: white;
+	display: none;
+}
+
+._om_twenga_widget_header strong {
+	font-weight: 700;
+}
+
+._om_twenga_widget_viewport {
+	overflow: hidden;
+	white-space: nowrap;
+	width: 100%;
+	height: 100%;
+}
+._om_twenga_widget_viewport_container {
+	position: relative;
+	text-align: center;
+}
+
+.vertical ._om_twenga_widget_viewport {
+	overflow: hidden;
+	white-space: normal;
+}
+
+._om_twenga_back_arrow {
+	z-index: 10;
+	display: none;
+	border: none;
+	cursor: pointer;
+	position: absolute;
+	right: 100%;
+	top: 50%;
+	margin-top: -24px;
+}
+
+.vertical ._om_twenga_back_arrow {
+	top: inherit;
+	right: inherit;
+	left: 50%;
+	bottom: 100%;
+	margin-left: -24px;
+	margin-top: 0;
+}
+
+._om_twenga_forward_arrow {
+	z-index: 10;
+	display: none;
+	border: none;
+	cursor: pointer;
+	position: absolute;
+	left: 100%;
+	top: 50%;
+	margin-top: -24px;
+}
+
+.vertical ._om_twenga_forward_arrow {
+	left: 50%;
+	top: 100%;
+	margin-left: -24px;
+	margin-top: 0;
+}
+
+body._om_twenga_tb_visible #Body {
+	margin-top: 37px !important;
+}
+
+body._om_twenga_tb_visible #gb {
+	top: 37px;
+}
+
+._om_widget_product > table {
+	border: none;
+	border-collapse: collapse;
+	border-spacing: 0;
+	cursor: pointer;
+	text-align: center;
+	display: table;
+	margin: 10px;
+	width: 100px !important;
+}
+
+._om_widget_product tr {
+	vertical-align: middle !important;
+}
+
+._om_widget_product td {
+	vertical-align: inherit !important;
+}
+
+._om_twenga_price {
+	display: block;
+	font-size: 11px;
+	width: 100px;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	height: 16px;
+	white-space: nowrap;
+	font-weight: normal;
+}
+
+._om_widget_product_image {
+	max-width: 100px;
+	max-height: 100px;
+}
+
+._om_widget_merchant_logo_domain {
+	height: 28px;
+	display: block;
+	width: 100px;
+	text-overflow: ellipsis;
+	overflow: hidden;
+	white-space: nowrap;
+}
+
+._om_widget_merchant_logo_domain > a {
+	color: green;
+	text-overflow: ellipsis;
+	overflow: hidden;
+	text-decoration: none;
+	white-space: nowrap;
+}
+
+._om_widget_merchant_logo_image {
+	text-align: center;
+	display: block;
+	min-height: 28px;
+}</style></head>
+
+<body>
+	<script type="text/javascript">
+	$( document ).ready(function(){	
+		$('[name=authenticity_token]').each(function(){this.value = "cwEBjBe2Y5EJZWgkP1Fa05Pfyob1dr5uJ6AAA676EcY="});
+	});
+	var flashing = null
+	$( document ).ready(function(){	
+		updateCount();
+		setInterval(updateCount,30000);
+		if (0 > 0){
+			flashing = setInterval(function(){ $("#chatmsg").fadeOut(300).fadeIn(300); },600);
+		}
+	});
+
+	function updateCount(){
+		$.ajax({
+		url:  "/showcount",
+		type: "GET",
+		dataType: 'json',
+		}).success(function(data){
+			$("#msgct").html(data.count);
+			if (data.count != 0){
+				clearInterval(flashing);
+				flashing = setInterval(function(){ $("#chatmsg").fadeOut(300).fadeIn(300); },600);
+			} else {
+				clearInterval(flashing);
+			}
+		});
+	}
+</script>
+<style>
+.login_info {
+	padding: 10px;
+	float:right;
+}
+#msgblock{
+	float: left;
+}
+</style>
+<!-- Top Navigation Bar -->
+<style>
+.login_info {
+	padding: 10px;
+	float:right;
+}
+#msgblock{
+	float: left;
+}
+</style>
+
+<nav  class="navbar navbar-default navbar-fixed-top"  role="navigation">
+	<div  class="container-fluid">
+		
+		<div  class="navbar-header">
+			<button  type="button"  class="navbar-toggle"  data-toggle="collapse"  data-target="#bs-example-navbar-collapse-1">
+				<span  class="sr-only">Toggle navigation</span>
+				<span  class="icon-bar"></span>
+				<span  class="icon-bar"></span>
+				<span  class="icon-bar"></span>
+			</button>
+	 		<a  class="navbar-brand"  href="http://54.187.227.13/"><strong>Tebook</strong></a>
+			<ul  id="msgblock"  class="nav">
+			</ul>
+		</div>
+		
+		<div  class="collapse navbar-collapse"  id="bs-example-navbar-collapse-1">
+
+			
+			<ul  class="nav navbar-nav navbar-right">
+				<li  class="dropdown">
+						<a  href="http://54.187.227.13/#"  class="dropdown-toggle"  data-toggle="dropdown"  style="float: right;">More <b  class="caret"></b></a>
+						<ul  class="dropdown-menu"> 
+								<li><a  href="http://54.187.227.13/passreset">Forgot your password?</a></li>
+
+								<li><a  href="http://54.187.227.13/resend">Didn't receive confirmation instructions?</a></li>
+
+								<li><a  href="http://54.187.227.13/unlockresend">Didn't receive unlock instructions?</a></li>
+						</ul>
+				</li>
+			</ul>
+
+
+			
+				<form  accept-charset="UTF-8"  action="http://54.187.227.13/login"  class="navbar-form navbar-right"  id="new_user"  method="post"  role="form"><div  style="display:none"><input  name="utf8"  type="hidden"  value="✓"><input  name="authenticity_token"  type="hidden"  value="QRMgYyB7WZMIstVFPKJR4yygSj5dod1USscjyrGc31U="></div>
+					<div  class="form-group">
+						<input  autofocus="autofocus"  class="form-control"  id="exampleInputEmail2"  name="user[email]"  placeholder="Email"  type="email"  value="">
+					</div>
+
+					<div  class="form-group">
+						<input  autocomplete="off"  class="form-control"  id="exampleInputPassword2"  name="user[password]"  placeholder="Password"  type="password">
+					</div>
+
+						<div  class="checkbox">
+							<div><input  name="user[remember_me]"  type="hidden"  value="0"><input  id="user_remember_me"  name="user[remember_me]"  type="checkbox"  value="1"> <label  for="user_remember_me">Remember me</label></div>
+						</div>
+
+					<input  class="btn-sm btn-default"  name="commit"  type="submit"  value="Sign in">
+</form>		</div>
+	</div>
+</nav>
+	<div style="width:90%;margin:auto">
+		<h2>Details</h2>
+			<div class="option">Name: BUILDING JAVA PROGRAMS (3E 14)*Author: REGES*Price: 138.25</div>
+			<div class="option">
+					Courses: 
+
+					<a href="http://54.187.227.13/find?coursename=CSE142">CSE142</a>
+					<a href="http://54.187.227.13/find?coursename=CSE143">CSE143</a>
+			</div>
+				<div class="postlink"><a href="http://54.187.227.13/postto?from=show&book=Name:%20BUILDING%20JAVA%20PROGRAMS%20(3E%2014)*Author:%20REGES*Price:%20138.25">Post</a></div>
+					<h3>2 people have the book</h3>
+				<span class="users">
+								<img alt="Offline" height="12" src="./Tebookshowbook_files/offline-6ede13928734cc53983c1cab7be97d4f.png" width="12">
+							<a href="http://54.187.227.13/chat?receiver=computist">computist</a>
+				</span>
+	</div>
+
+	<footer>
+        <div class="container navbar-fixed-bottom">
+            <div class="row">
+                <div class="col-lg-12">
+                    <ul class="list-inline">
+                        <li><a href="#home"><strong>Home</strong></a>
+                        </li>
+                        <li class="footer-menu-divider">&sdot;</li>
+                        <li><a href="#contact"><strong>Contact</strong></a>
+                        </li>
+                    </ul>
+                    <p class="copyright text-muted small"><strong>Copyright &copy; Tebook 2013. All Rights Reserved</strong></p>
+                </div>
+            </div>
+        </div>
+    </footer>
+	
+</body></html>

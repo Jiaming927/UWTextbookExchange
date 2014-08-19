@@ -1,0 +1,631 @@
+<!DOCTYPE html>
+<!-- saved from url=(0025)http://54.187.227.13/chat -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<title>Tebook</title>
+	<link  href="./Tebook_files/bootstrap.min.css"  rel="stylesheet">
+	<link  href="./Tebook_files/index-e787352e7b75d45de29ce41469c4f1f1.css"  media="all"  rel="stylesheet">
+	<script src="./Tebookchat_files/jquery-1.11.1.min.js"></script>
+	<script src="./Tebookchat_files/jquery_ujs-8861d6c72ac55591ba7336eb8f102f7b.js"></script>
+	<script src="./Tebookchat_files/bootstrap.min.js"></script>
+	<script type="text/javascript" src="./Tebookchat_files/strftime-min.js"></script>
+	<script src="./Tebookchat_files/private_pub-7e59be8dc401f15ff2a1483956c407ea.js"></script>
+	<meta content="authenticity_token" name="csrf-param">
+<meta content="cwEBjBe2Y5EJZWgkP1Fa05Pfyob1dr5uJ6AAA676EcY=" name="csrf-token">
+
+<style>
+	#chatoverall {
+		margin-top: 40px;
+	}
+	#chatlist{
+		border-right: 1px #eeeeee solid;
+		height: 82vh;
+		float:left;
+		width:220px;
+		overflow-x:hidden;
+		overflow-y:auto;
+	}
+	#chatting{
+		margin: 15px;
+		overflow: hidden;
+	}
+	#imgdiv, #smallimgdiv {
+		text-align:center;
+		margin:10px;
+	}
+	.status {
+		vertical-align: initial;
+	}
+	.sendstatus {
+		color: #CACACA;
+		float:right;
+		padding-right: 5px;
+		width: 70px;
+	}
+	#chat {
+		border: 1px solid black;
+		min-width:450px;
+		height:300px;
+		overflow-y: auto;
+		word-wrap: break-word;
+		margin-top: 10px;
+		margin-bottom: 10px;
+	}
+	#content {
+		width: 85%;
+		min-width:350px;
+		height:80px;
+		resize:none;
+		border:1px solid #808080;
+		overflow-y: auto;
+	}
+	#submitbutton {
+		margin-top: 25px;
+		float:right;
+		margin-right:1.5%;
+	}
+	.sender {
+		color:red;
+	}
+	.msg {
+		color:blue;
+	}
+	.msgtime {
+		color:black;
+		float:right;
+	}
+	.msg_bundle {
+		clear:both;
+	}
+	#chatmain {
+		width:85%;
+		margin:auto;
+		margin-top:10px;
+	}
+	#messageloading {
+		font-size: 4em;
+		float:right;
+		width: 8em;
+	}
+</style>
+<script>
+	$( document ).ready(function(){	
+		getchatlist('0');
+		setInterval( function() { getchatlist('1'); }, 30000);
+
+		$("#submitbutton").click(function(event) {
+			$("#message_content")[0].value = $("#content").text();
+			if ($("#content").text().trim() != ""){
+				a = $('<div class="msg_bundle"><span class="sender">aapredator: </span><span class="msg">' + $("#content").text() + '</span><span class="msgtime timezone">' + new Date().strftime("%I:%M %p") + '</span><span class="sendstatus"><span style="float:left;">Sending<span class="dots">.</span></span></span></div>');
+				$("#chat").append(a);
+				$("#chat").scrollTop($('#chat')[0].scrollHeight);
+				$("#content").empty();
+				window.senddots = setInterval(dotdotdot, 500);
+			} else {
+				event.preventDefault();
+				$("#content").empty();
+				$("#content").fadeOut(200).fadeIn(200).fadeOut(200).fadeIn(200);
+			}
+		});
+
+		$(document).keydown(function(event){
+			if(event.keyCode==13){
+				$("#submitbutton").click();
+				return false;
+			}
+		});
+	});
+
+	function getchatlist(num){
+		$.ajax({
+		url:  "/chatlist?remote="+ num,
+		type: "GET",
+		dataType: 'html'
+		}).success(function(data){			
+			$("#chatlist").html(data);
+		});
+	}
+
+	function showchatting(receiver){
+		$("#chat").empty();
+		clearInterval(window.status);
+		$('#chat').append($('<div id="messageloading"><span style="float:left;">Loading<span class="dots">.</span></span></div>'));
+		loaddots = setInterval(dotdotdot, 500);
+		$("#offline").show();
+		$("#online").hide();
+		$('#receiver').html(receiver);
+		$.ajax({
+		url:  "/getmessage?receiver=" + receiver,
+		type: "GET",
+		dataType: 'html'
+		}).success(function(data){
+			clearInterval(loaddots);			
+			$("#chat").html(data);
+			convertTime();
+			$("#chat").scrollTop($('#chat')[0].scrollHeight);
+			$('#message_receiver').attr('value', receiver);
+			getSign(receiver);
+			window.status = setInterval(function(){updatestatus(receiver)},30000);
+		}).fail(function (jqXHR, textStatus) {
+			clearInterval(loaddots);
+			$("#chat").html("Ooops... Error occurs. Try to refresh the page.");
+		});
+	}
+
+	function getSign(receiver){
+		$.ajax({
+		url:  "/subscribe?receiver=" + receiver,
+		type: "GET",
+		dataType: 'html'
+		}).success(function(data){			
+			$("#sign").html(data);
+		}).fail(function (jqXHR, textStatus) {
+			$("#chat").html("Ooops... Error occurs. Try to refresh the page.");
+		});
+	}
+	function setread(){
+		$("#chatlist").empty();
+		var div = $('<div></div>');
+		div.attr("id","smallimgdiv")
+		$("#chatlist").append(div);
+		var img = $('<img id="largeloading">');
+		img.attr('src', "/assets/largeloading.gif");
+		$('#smallimgdiv').append(img);
+		$.ajax({
+		url:  "/markread",
+		type: "GET",
+		dataType: 'json'
+		}).success(function(data){
+			if (data.success == 1) {
+				getchatlist(1);
+			} else {
+				$("#chatlist").html("Ooops... Error occurs. Try to refresh the page.");
+			}
+		}).fail(function (jqXHR, textStatus) {
+			$("#chatlist").html("Ooops... Error occurs. Try to refresh the page.");
+		});
+	}
+
+	function convertTime(){
+		$(".timezone").each(function(){
+			$(this).text(new Date($(this).html()).strftime("%I:%M %p"));
+			$(this).removeClass("timezone");
+		});
+	}
+
+	function dotdotdot(){
+		if ($('.dots').text().length >= 3){
+   			$('.dots').text('');
+    		} else {
+        			$('.dots').text($('.dots').text() + '.');
+		}
+	}
+
+	function updatestatus(rec){
+		$.ajax({
+		url:  "/showstatus",
+		type: "GET",
+		dataType: 'json',
+		data: {receiver: rec}
+		}).success(function(data){
+			if (data.hasOwnProperty("online")){
+				if (data.online == 0){
+					$("#offline").show();
+					$("#online").hide();
+				} else {
+					$("#offline").hide();
+					$("#online").show();
+				}
+			}
+		});
+	}
+
+</script>
+<style type="text/css" id="_om_css_global">._om_hidden {
+	visibility: hidden;
+}</style><style type="text/css" id="_om_css_twenga">._om_twenga_widget {
+	text-align: left;
+	box-sizing: border-box;
+	background-color: white;
+	display: none;
+}
+
+._om_twenga_widget_header strong {
+	font-weight: 700;
+}
+
+._om_twenga_widget_viewport {
+	overflow: hidden;
+	white-space: nowrap;
+	width: 100%;
+	height: 100%;
+}
+._om_twenga_widget_viewport_container {
+	position: relative;
+	text-align: center;
+}
+
+.vertical ._om_twenga_widget_viewport {
+	overflow: hidden;
+	white-space: normal;
+}
+
+._om_twenga_back_arrow {
+	z-index: 10;
+	display: none;
+	border: none;
+	cursor: pointer;
+	position: absolute;
+	right: 100%;
+	top: 50%;
+	margin-top: -24px;
+}
+
+.vertical ._om_twenga_back_arrow {
+	top: inherit;
+	right: inherit;
+	left: 50%;
+	bottom: 100%;
+	margin-left: -24px;
+	margin-top: 0;
+}
+
+._om_twenga_forward_arrow {
+	z-index: 10;
+	display: none;
+	border: none;
+	cursor: pointer;
+	position: absolute;
+	left: 100%;
+	top: 50%;
+	margin-top: -24px;
+}
+
+.vertical ._om_twenga_forward_arrow {
+	left: 50%;
+	top: 100%;
+	margin-left: -24px;
+	margin-top: 0;
+}
+
+body._om_twenga_tb_visible #Body {
+	margin-top: 37px !important;
+}
+
+body._om_twenga_tb_visible #gb {
+	top: 37px;
+}
+
+._om_widget_product > table {
+	border: none;
+	border-collapse: collapse;
+	border-spacing: 0;
+	cursor: pointer;
+	text-align: center;
+	display: table;
+	margin: 10px;
+	width: 100px !important;
+}
+
+._om_widget_product tr {
+	vertical-align: middle !important;
+}
+
+._om_widget_product td {
+	vertical-align: inherit !important;
+}
+
+._om_twenga_price {
+	display: block;
+	font-size: 11px;
+	width: 100px;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	height: 16px;
+	white-space: nowrap;
+	font-weight: normal;
+}
+
+._om_widget_product_image {
+	max-width: 100px;
+	max-height: 100px;
+}
+
+._om_widget_merchant_logo_domain {
+	height: 28px;
+	display: block;
+	width: 100px;
+	text-overflow: ellipsis;
+	overflow: hidden;
+	white-space: nowrap;
+}
+
+._om_widget_merchant_logo_domain > a {
+	color: green;
+	text-overflow: ellipsis;
+	overflow: hidden;
+	text-decoration: none;
+	white-space: nowrap;
+}
+
+._om_widget_merchant_logo_image {
+	text-align: center;
+	display: block;
+	min-height: 28px;
+}</style></head>
+<body>
+	<script type="text/javascript">
+	$( document ).ready(function(){	
+		$('[name=authenticity_token]').each(function(){this.value = "cwEBjBe2Y5EJZWgkP1Fa05Pfyob1dr5uJ6AAA676EcY="});
+	});
+	var flashing = null
+	$( document ).ready(function(){	
+		updateCount();
+		setInterval(updateCount,30000);
+		if (0 > 0){
+			flashing = setInterval(function(){ $("#chatmsg").fadeOut(300).fadeIn(300); },600);
+		}
+	});
+
+	function updateCount(){
+		$.ajax({
+		url:  "/showcount",
+		type: "GET",
+		dataType: 'json',
+		}).success(function(data){
+			$("#msgct").html(data.count);
+			if (data.count != 0){
+				clearInterval(flashing);
+				flashing = setInterval(function(){ $("#chatmsg").fadeOut(300).fadeIn(300); },600);
+			} else {
+				clearInterval(flashing);
+			}
+		});
+	}
+</script>
+<style>
+.login_info {
+	padding: 10px;
+	float:right;
+}
+#msgblock{
+	float: left;
+}
+</style>
+<!-- Top Navigation Bar -->
+<style>
+.login_info {
+	padding: 10px;
+	float:right;
+}
+#msgblock{
+	float: left;
+}
+</style>
+
+<nav  class="navbar navbar-default navbar-fixed-top"  role="navigation">
+	<div  class="container-fluid">
+		
+		<div  class="navbar-header">
+			<button  type="button"  class="navbar-toggle"  data-toggle="collapse"  data-target="#bs-example-navbar-collapse-1">
+				<span  class="sr-only">Toggle navigation</span>
+				<span  class="icon-bar"></span>
+				<span  class="icon-bar"></span>
+				<span  class="icon-bar"></span>
+			</button>
+	 		<a  class="navbar-brand"  href="http://54.187.227.13/"><strong>Tebook</strong></a>
+			<ul  id="msgblock"  class="nav">
+			</ul>
+		</div>
+		
+		<div  class="collapse navbar-collapse"  id="bs-example-navbar-collapse-1">
+
+			
+			<ul  class="nav navbar-nav navbar-right">
+				<li  class="dropdown">
+						<a  href="http://54.187.227.13/#"  class="dropdown-toggle"  data-toggle="dropdown"  style="float: right;">More <b  class="caret"></b></a>
+						<ul  class="dropdown-menu"> 
+								<li><a  href="http://54.187.227.13/passreset">Forgot your password?</a></li>
+
+								<li><a  href="http://54.187.227.13/resend">Didn't receive confirmation instructions?</a></li>
+
+								<li><a  href="http://54.187.227.13/unlockresend">Didn't receive unlock instructions?</a></li>
+						</ul>
+				</li>
+			</ul>
+
+
+			
+				<form  accept-charset="UTF-8"  action="http://54.187.227.13/login"  class="navbar-form navbar-right"  id="new_user"  method="post"  role="form"><div  style="display:none"><input  name="utf8"  type="hidden"  value="✓"><input  name="authenticity_token"  type="hidden"  value="QRMgYyB7WZMIstVFPKJR4yygSj5dod1USscjyrGc31U="></div>
+					<div  class="form-group">
+						<input  autofocus="autofocus"  class="form-control"  id="exampleInputEmail2"  name="user[email]"  placeholder="Email"  type="email"  value="">
+					</div>
+
+					<div  class="form-group">
+						<input  autocomplete="off"  class="form-control"  id="exampleInputPassword2"  name="user[password]"  placeholder="Password"  type="password">
+					</div>
+
+						<div  class="checkbox">
+							<div><input  name="user[remember_me]"  type="hidden"  value="0"><input  id="user_remember_me"  name="user[remember_me]"  type="checkbox"  value="1"> <label  for="user_remember_me">Remember me</label></div>
+						</div>
+
+					<input  class="btn-sm btn-default"  name="commit"  type="submit"  value="Sign in">
+</form>		</div>
+	</div>
+</nav>
+<div id="chatoverall">
+	<div id="chatlist"><script>
+	$( document ).ready(function(){	
+		$(".friends").click(function(){
+			showchatting($(this).text().trim());
+		});
+		$("#markread").click(function(){
+			setread();
+		});
+	});
+</script>
+<style>
+	.column {
+		font-size: 1.2em;
+		font-weight: bold;
+	}
+	.column, .friends, #markread {
+		text-align: center;
+	}
+	.friends:hover{
+		background-color:cyan;
+		cursor:pointer;
+	}
+	#markread:hover{
+		background-color:yellow;
+		cursor:pointer;
+	}
+</style>
+<div style="margin:15px;">
+	<div class="column">Unread</div>
+	<div id="markread">Mark all as read</div>
+
+	<br>
+	<div class="column">Recent Messages </div>
+					<script>showchatting("computist");</script>
+				<div class="friends">computist</div>
+				<div class="friends">testuser</div>
+
+</div></div>
+
+	<div id="chatting">
+		<div id="chatmain">
+			<div style="font-size:20px;min-width:400px;">
+				<span id="receiver">computist</span><span style="margin:5px;"><img alt="Offline" class="status" height="12" id="offline" src="./Tebookchat_files/offline-6ede13928734cc53983c1cab7be97d4f.png" style="" width="12"><img alt="Online" class="status" height="12" id="online" src="./Tebookchat_files/online-d5e02acd7e50812779d05f24ee1c03d1.png" style="display: none;" width="12"></span>
+			</div>
+
+			<div id="chat"><div class="msg_bundle">
+	<span class="sender">aapredator:</span>
+	<span class="msg">测试</span>
+	<span class="msgtime">07:42 AM</span>
+</div><div class="msg_bundle">
+	<span class="sender">aapredator:</span>
+	<span class="msg">测试</span>
+	<span class="msgtime">07:42 AM</span>
+</div><div class="msg_bundle">
+	<span class="sender">aapredator:</span>
+	<span class="msg">我只发了一条，现实出来四条</span>
+	<span class="msgtime">07:43 AM</span>
+</div><div class="msg_bundle">
+	<span class="sender">aapredator:</span>
+	<span class="msg">我只发了一条，现实出来四条</span>
+	<span class="msgtime">07:43 AM</span>
+</div><div class="msg_bundle">
+	<span class="sender">computist:</span>
+	<span class="msg">test</span>
+	<span class="msgtime">07:59 AM</span>
+</div><div class="msg_bundle">
+	<span class="sender">aapredator:</span>
+	<span class="msg">。。</span>
+	<span class="msgtime">01:42 AM</span>
+</div><div class="msg_bundle">
+	<span class="sender">aapredator:</span>
+	<span class="msg">行了</span>
+	<span class="msgtime">01:42 AM</span>
+</div><div class="msg_bundle">
+	<span class="sender">aapredator:</span>
+	<span class="msg">对话框会闪一下</span>
+	<span class="msgtime">01:42 AM</span>
+</div><div class="msg_bundle">
+	<span class="sender">aapredator:</span>
+	<span class="msg">测试</span>
+	<span class="msgtime">01:55 AM</span>
+</div><div class="msg_bundle">
+	<span class="sender">aapredator:</span>
+	<span class="msg">English</span>
+	<span class="msgtime">01:55 AM</span>
+</div><div class="msg_bundle">
+	<span class="sender">aapredator:</span>
+	<span class="msg">0</span>
+	<span class="msgtime">01:55 AM</span>
+</div><div class="msg_bundle">
+	<span class="sender">aapredator:</span>
+	<span class="msg">su du</span>
+	<span class="msgtime">01:55 AM</span>
+</div><div class="msg_bundle">
+	<span class="sender">aapredator:</span>
+	<span class="msg">a</span>
+	<span class="msgtime">01:55 AM</span>
+</div><div class="msg_bundle">
+	<span class="sender">aapredator:</span>
+	<span class="msg">a</span>
+	<span class="msgtime">01:55 AM</span>
+</div><div class="msg_bundle">
+	<span class="sender">aapredator:</span>
+	<span class="msg">对话框能不能就闪一下</span>
+	<span class="msgtime">01:56 AM</span>
+</div><div class="msg_bundle">
+	<span class="sender">computist:</span>
+	<span class="msg">闪</span>
+	<span class="msgtime">03:50 AM</span>
+</div><div class="msg_bundle">
+	<span class="sender">computist:</span>
+	<span class="msg">test</span>
+	<span class="msgtime">03:53 AM</span>
+</div><div class="msg_bundle">
+	<span class="sender">computist:</span>
+	<span class="msg">shan</span>
+	<span class="msgtime">03:54 AM</span>
+</div><div class="msg_bundle">
+	<span class="sender">computist:</span>
+	<span class="msg">test</span>
+	<span class="msgtime">04:01 AM</span>
+</div><div class="msg_bundle">
+	<span class="sender">computist:</span>
+	<span class="msg">test</span>
+	<span class="msgtime">04:47 AM</span>
+</div><div class="msg_bundle">
+	<span class="sender">computist:</span>
+	<span class="msg">ha</span>
+	<span class="msgtime">05:17 AM</span>
+</div><div class="msg_bundle">
+	<span class="sender">computist:</span>
+	<span class="msg">work now</span>
+	<span class="msgtime">08:54 AM</span>
+</div><div class="msg_bundle">
+	<span class="sender">aapredator:</span>
+	<span class="msg">shan</span>
+	<span class="msgtime">07:37 AM</span>
+</div><div class="msg_bundle">
+	<span class="sender">aapredator:</span>
+	<span class="msg">可以了</span>
+	<span class="msgtime">07:38 AM</span>
+</div></div>
+
+			<form accept-charset="UTF-8" action="http://54.187.227.13/messages" class="new_message" data-remote="true" id="new_message" method="post"><div style="display:none"><input name="utf8" type="hidden" value="✓"></div>
+				<div style="min-width:450px;">
+					<input autofocus="autofocus" id="message_content" name="message[content]" type="hidden">
+					<input id="message_sender" name="message[sender]" type="hidden" value="aapredator">
+					<input id="message_receiver" name="message[receiver]" type="hidden" value="computist">
+					<input id="submitbutton" name="commit" type="submit" value="Send">
+					<div contenteditable="true" id="content"></div>
+				</div>
+</form>			<span id="sign">	<script type="text/javascript">PrivatePub.sign({"server":"http://54.187.227.13:9292/faye/faye","timestamp":1407163179777,"channel":"/messages/aapredatorcomputist","signature":"d8c81e23cf3cbc120741ee55b85c0dcd8291fdeb"});</script>
+</span>
+		</div>
+	</div>
+</div>
+
+	<footer>
+        <div class="container navbar-fixed-bottom">
+            <div class="row">
+                <div class="col-lg-12">
+                    <ul class="list-inline">
+                        <li><a href="#home"><strong>Home</strong></a>
+                        </li>
+                        <li class="footer-menu-divider">&sdot;</li>
+                        <li><a href="#contact"><strong>Contact</strong></a>
+                        </li>
+                    </ul>
+                    <p class="copyright text-muted small"><strong>Copyright &copy; Tebook 2013. All Rights Reserved</strong></p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+
+</body><script type="text/javascript" src="./Tebookchat_files/faye.js"></script></html>

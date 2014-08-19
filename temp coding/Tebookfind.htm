@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<!-- saved from url=(0025)http://54.187.227.13/find -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<title>Tebook</title>
+	<link href="./Tebook_files/bootstrap.min.css" rel="stylesheet">
+	<link href="./Tebook_files/index-e787352e7b75d45de29ce41469c4f1f1.css" media="all" rel="stylesheet">
+	<script src="./Tebookfind_files/jquery-1.11.1.min.js"></script>
+	<script src="./Tebookfind_files/bootstrap.min.js"></script>
+	<meta content="authenticity_token" name="csrf-param">
+<meta content="clexNl7XGi7gyacGSNDUbEAHv7rLmxLj2FrCoIOvGWE=" name="csrf-token">
+<style>
+#toplink {
+	margin-top:100px;
+	font-size: 1.2em;
+	font-weight: bold;
+}
+
+h1 {
+	margin-top: 5%;
+	color:rgb(68, 68, 68);
+}
+
+.bookresult {
+	margin: 10px;
+	clear:both;
+	type:buttom;
+}
+.postlink {
+	font-size: 1.2em;
+	padding-left: 5px;
+	vertical-align: middle;
+	font-weight: bold;
+}
+
+ul#msgblock.nav{
+	color:white;
+}
+
+li#chatmsg.active{
+	color:white;
+}
+
+.notice {
+	margin-bottom: 10px;
+	border-radius: 5px;
+	padding: 5px;
+	border: 1px red solid;
+	background-color: #ff9999;
+	text-align: center;
+	color: black;
+	font-weight: bold;
+}
+
+a {
+	color: rgb(29, 67, 168);
+}
+
+</style>
+<style type="text/css" id="_om_css_global">._om_hidden {
+	visibility: hidden;
+}</style></head>
+
+<body>
+	<script type="text/javascript">
+	$( document ).ready(function(){	
+		$('[name=authenticity_token]').each(function(){this.value = "clexNl7XGi7gyacGSNDUbEAHv7rLmxLj2FrCoIOvGWE="});
+	});
+	var flashing = null
+	$( document ).ready(function(){	
+		updateCount();
+		setInterval(updateCount,30000);
+		if (0 > 0){
+			flashing = setInterval(function(){ $("#chatmsg").fadeOut(300).fadeIn(300); },600);
+		}
+	});
+
+	function updateCount(){
+		$.ajax({
+		url:  "/showcount",
+		type: "GET",
+		dataType: 'json',
+		}).success(function(data){
+			$("#msgct").html(data.count);
+			if (data.count != 0){
+				clearInterval(flashing);
+				flashing = setInterval(function(){ $("#chatmsg").fadeOut(300).fadeIn(300); },600);
+			} else {
+				clearInterval(flashing);
+			}
+		});
+	}
+</script>
+<style>
+.login_info {
+	padding: 10px;
+	float:right;
+}
+#msgblock{
+	float: left;
+}
+</style>
+
+<nav  class="navbar navbar-default navbar-fixed-top"  role="navigation">
+	<div  class="container-fluid">
+		
+		<div  class="navbar-header">
+			<button  type="button"  class="navbar-toggle"  data-toggle="collapse"  data-target="#bs-example-navbar-collapse-1">
+				<span  class="sr-only">Toggle navigation</span>
+				<span  class="icon-bar"></span>
+				<span  class="icon-bar"></span>
+				<span  class="icon-bar"></span>
+			</button>
+	 		<a  class="navbar-brand"  href="http://54.187.227.13/"><strong>Tebook</strong></a>
+			<ul  id="msgblock"  class="nav">
+			</ul>
+		</div>
+		
+		<div  class="collapse navbar-collapse"  id="bs-example-navbar-collapse-1">
+
+			
+			<ul  class="nav navbar-nav navbar-right">
+				<li  class="dropdown">
+						<a  href="http://54.187.227.13/#"  class="dropdown-toggle"  data-toggle="dropdown"  style="float: right;">More <b  class="caret"></b></a>
+						<ul  class="dropdown-menu"> 
+								<li><a  href="http://54.187.227.13/passreset">Forgot your password?</a></li>
+
+								<li><a  href="http://54.187.227.13/resend">Didn't receive confirmation instructions?</a></li>
+
+								<li><a  href="http://54.187.227.13/unlockresend">Didn't receive unlock instructions?</a></li>
+						</ul>
+				</li>
+			</ul>
+
+
+			
+				<form  accept-charset="UTF-8"  action="http://54.187.227.13/login"  class="navbar-form navbar-right"  id="new_user"  method="post"  role="form"><div  style="display:none"><input  name="utf8"  type="hidden"  value="✓"><input  name="authenticity_token"  type="hidden"  value="QRMgYyB7WZMIstVFPKJR4yygSj5dod1USscjyrGc31U="></div>
+					<div  class="form-group">
+						<input  autofocus="autofocus"  class="form-control"  id="exampleInputEmail2"  name="user[email]"  placeholder="Email"  type="email"  value="">
+					</div>
+
+					<div  class="form-group">
+						<input  autocomplete="off"  class="form-control"  id="exampleInputPassword2"  name="user[password]"  placeholder="Password"  type="password">
+					</div>
+
+						<div  class="checkbox">
+							<div><input  name="user[remember_me]"  type="hidden"  value="0"><input  id="user_remember_me"  name="user[remember_me]"  type="checkbox"  value="1"> <label  for="user_remember_me">Remember me</label></div>
+						</div>
+
+					<input  class="btn-sm btn-default"  name="commit"  type="submit"  value="Sign in">
+</form>		</div>
+	</div>
+</nav>
+
+	<div style="width:90%;margin:auto;">
+		<h1>Search Result for MATH307</h1>
+				<div class="bookresult">
+					<a href="http://54.187.227.13/show?book=Name:%20INTRO%20TO%20DIFFERENTIAL%20EQUATIONS%20(10E%2013)%20(CUSTOM)*Author:%20BOYCE*Price:%2056.75">Name: INTRO TO DIFFERENTIAL EQUATIONS (10E 13) (CUSTOM)*Author: BOYCE*Price: 56.75</a>
+						<span class="postlink"><a href="http://54.187.227.13/postto?from=find&book=Name:%20INTRO%20TO%20DIFFERENTIAL%20EQUATIONS%20(10E%2013)%20(CUSTOM)*Author:%20BOYCE*Price:%2056.75">Post</a></span>
+				</div>
+				<div class="bookresult">
+					<a href="http://54.187.227.13/show?book=Name:%20SSM%20T/A%20ELEMENTARY%20DIFFERENTIAL%20EQUATIONS%20(10E%2013)*Author:%20BOYCE*Price:%2070.75">Name: SSM T/A ELEMENTARY DIFFERENTIAL EQUATIONS (10E 13)*Author: BOYCE*Price: 70.75</a>
+						<span class="postlink"><a href="http://54.187.227.13/postto?from=find&book=Name:%20SSM%20T/A%20ELEMENTARY%20DIFFERENTIAL%20EQUATIONS%20(10E%2013)*Author:%20BOYCE*Price:%2070.75">Post</a></span>
+				</div>
+	</div>
+
+	<footer>
+        <div class="container navbar-fixed-bottom">
+            <div class="row">
+                <div class="col-lg-12">
+                    <ul class="list-inline">
+                        <li><a href="#home"><strong>Home</strong></a>
+                        </li>
+                        <li class="footer-menu-divider">&sdot;</li>
+                        <li><a href="#contact"><strong>Contact</strong></a>
+                        </li>
+                    </ul>
+                    <p class="copyright text-muted small"><strong>Copyright &copy; Tebook 2013. All Rights Reserved</strong></p>
+                </div>
+            </div>
+        </div>
+    </footer>
+	
+</body></html>
