@@ -8,10 +8,8 @@
 	<script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
 	<%= csrf_meta_tags %>
 <style>
-#toplink {
-	margin-top:50px;
-	font-size: 1.2em;
-	font-weight: bold;
+body {
+	min-width: 768px;
 }
 
 h2 {
@@ -38,6 +36,14 @@ h2 {
 	color: black;
 	font-weight: bold;
 }
+#result {
+	color:rgb(68, 68, 68);
+	margin-top: 10%;
+}
+
+.bookresult a {
+	color: rgb(29, 67, 168);
+}
 </style>
 </head>
 
@@ -45,11 +51,8 @@ h2 {
 	<%= render template: "layouts/bar" %>
 
 	<div style="width:90%;margin:auto">
-		<div id="toplink">
-			<%= link_to("Home", root_url) %>
-			<a href="javascript:history.back(-1)">Back </a>
-		</div>
-		<h2>Search Result for <%= @course.course_name %></h2>
+
+		<h1 id="result">Search Result for <%= @course.course_name %></h1>
 
 		<% if !flash[:notice].blank? %>
 			<div class = "notice">
@@ -70,5 +73,6 @@ h2 {
 			<% end %>
 		<% end %>
 	</div>
+	<%= render template: "layouts/foot" %>
 </body>
 </html>

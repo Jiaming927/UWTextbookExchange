@@ -23,16 +23,11 @@
 	});
 	</script>
 <style>
-#toplink {
-	margin-top:50px;
-	font-size: 1.2em;
-	font-weight: bold;
-}
-
 h2 {
 	margin-top: 5px;
 	margin-bottom: 5px;
 	padding-left: 5px;
+	color: orange;
 }
 .option {
 	margin: 10px;
@@ -64,18 +59,21 @@ fieldset {
 	border: 5px ridge rgb(255, 204, 0);
 	border-radius: 5px;
 }
-</style>
+#bottomlink{
+	padding-bottom:30px;
+	margin-left:10px;
+}
+div>a {
+	color: orange;
+}
 
+</style>
 </head>
 
 <body>
 
 	<%= render template: "layouts/bar" %>
-	<div style="width:90%;margin:auto">
-	<div id="toplink">
-		<%= link_to("Home", root_url) %>
-		<a href="javascript:history.back(-1)">Back </a>
-	</div>
+	<div style="width:90%;margin:auto;margin-top: 50px;">
 	<h2>Personal Information</h2>
 	<% if !flash[:notice].blank? %>
 		<div class = "notice">
@@ -117,5 +115,6 @@ fieldset {
 	</div>
 </fieldset>
 	</div>
+	<%= render template: "layouts/foot" %>
 </body>
 </html>

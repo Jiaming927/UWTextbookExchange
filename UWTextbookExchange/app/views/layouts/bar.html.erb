@@ -37,6 +37,45 @@
 #msgblock{
 	float: left;
 }
+.nav>li>a:hover, .nav>li>a:focus {
+text-decoration: none;
+background-color: #A9BEFF;
+}
+.navbar-toggle {
+	margin-right: 20px;
+}
+.navbar-default .navbar-collapse, .navbar-default .navbar-form {
+	background-color: orange;
+}
+.container-fluid {
+	padding: 0px;
+}
+
+
+.navbar-fixed-top {
+	border-width: 0 0 0px;
+}
+
+.navbar-header{
+	background-color:transparent;
+}
+.navbar-header {
+	background-color: orange;
+}
+.navbar-brand strong {
+	padding-left: 18%;
+}
+.navbar-brand {
+font-size: 24px;
+}
+
+.navbar-fixed-bottom a {
+	color:orange;
+}
+.navbar-fixed-bottom{
+	background-color:white;
+	width:100%
+}
 </style>
 <!-- Top Navigation Bar -->
 <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -72,6 +111,9 @@
 					<% else %>
 						<a href="#" class="dropdown-toggle" data-toggle="dropdown" style="float: right;">More <b class="caret"></b></a>
 						<ul class="dropdown-menu"> 
+							<% if devise_mapping.registerable? && controller_name != 'registrations' %>
+								<li><%= link_to "Sign up", new_registration_path(resource_name) %></li>
+							<% end %>
 							<% if devise_mapping.recoverable? && controller_name != 'passwords' && controller_name != 'registrations' %>
 								<li><%= link_to "Forgot your password?", '/passreset' %></li>
 							<% end %>

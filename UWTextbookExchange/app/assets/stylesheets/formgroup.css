@@ -16,6 +16,10 @@ body {
 	float: inherit;
 }
 
+a {
+	color:orange !important;
+}
+
 .btn-custom-light-blue {
   background-color: hsl(196, 100%, 41%) !important;
   background-repeat: repeat-x;

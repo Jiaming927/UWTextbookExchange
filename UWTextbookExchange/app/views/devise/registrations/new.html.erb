@@ -105,7 +105,6 @@
         <div class="row">
             <div class="col-xs-12 col-sm-12 col-md-4 well well-sm" id="form-box">
                 <legend><a href="#"><i class="glyphicon glyphicon-user"></i></a> Sign up!</legend>
-				<div class="link"><%= link_to("Home", root_url) %></div>
 				<div id="message" hidden="true"></div>
 				<%= form_for(resource, as: resource_name, url: registration_path(resource_name), html:{id: "sign-form", class: "form", role: "form"}) do |f| %>
 					<%= devise_error_messages! %>
@@ -134,6 +133,8 @@
 			</div>
 		</div>
 	</div>
+
+	<%= render template: "layouts/foot" %>
 </body>
 </html>
 

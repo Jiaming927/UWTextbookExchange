@@ -1,26 +1,126 @@
-body { 
-	padding-top: 30px; 
-	background-image: url('http://cdn8.openculture.com/wp-content/uploads/2014/04/intelligent-books-to-read.jpg');
-	background-size: contain;
+html{
+	height:100%;
+	margin:0;
+	padding:0;
 }
 
-@media (min-width: 640px){ body {
-	background-size: cover;
-}}
+#wrapper{
+	min-height:100%;
+	position:relative;
+}
 
+body { 
+	padding-top: 100px; 
+	height:100%;
+}
+
+body.landing-page{
+	background: url('/assets/backgroundblue.jpg') center center;
+	height:100%;
+}
+
+body.chat-page{
+	padding-top:1px;
+	height:100%;
+}
+
+
+@media (max-width: 480px) { h1,h2,h3,.h1.h2.h3 {
+	font-size:20px;
+} }
+
+@media (min-width: 1200px) {body {
+	width:100%;
+	height:100%;
+} }
+@media (min-width: 768px) and (max-width: 979px) { body {
+	width:100%;
+	height:100%;
+}}
+@media (max-width: 767px) { body {
+	width:100%;
+	height:100%;
+}}
+@media (max-width: 480px) { body {
+	padding-top:50px;
+	width:100%;
+	height:100%;
+}
+#signup-btn{
+	visibility:hidden;
+} }
 
 .center {
 	text-align: center;
 }
 
+.intro-message > h1 {
+	margin: 0;
+	font-size: 5em;
+	text-shadow: 2px 2px 3px rgba(0, 0, 0, 0.6);
+	color:orange;
+	text-align: center;
+}
+
+.intro-divider {
+	width: 400px;
+	border-top: 1px solid #f8f8f8;
+	border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+}
+
+.intro-message > h3 {
+	text-shadow: 2px 2px 3px rgba(0, 0, 0, 0.6);
+	color:orange;
+	text-align: center;
+}
+
+@media (max-width: 767px) {
+	.intro-message {
+		padding-bottom: 0;
+	}
+
+	.intro-message > h1 {
+		font-size: 3em;
+	}
+
+	ul.intro-social-buttons > li {
+		display: block;
+		margin-bottom: 20px;
+		padding: 0;
+	}
+
+	.intro-divider {
+		width: 70%;
+	}
+}
+
+#form-box{
+	padding-right: 25px;
+	padding-left: 25px;
+	margin-left:auto;
+	margin-right:auto;
+	float:inherit;
+}
+
 .jumbotron {
 	background-color:rgba(0, 0, 0, 0);
-	margin: 14% 0 0 0;
-	padding-top: 5%;
-	padding-bottom: 9%;
+	margin: 0 0 0 0;
+	padding-top: 0;
+	padding-bottom: 0;
+}
+
+footer{
+	position:relative center;
+	background-color:white;
+}
+
+
+.row.footer{
+	text-decoration: bold;
 }
 
 #main-search-department-field {
+	margin-top: 0;
 	margin-bottom: -1px;
     border-bottom-left-radius: 0;
     border-bottom-right-radius: 0;
@@ -34,13 +134,22 @@ body {
     height: 44px;
 }
 
-#main-search-find-btn, #main-search-post-btn {
+#main-search-find-btn, #main-search-signup-btn {
 	padding-left: 0px;
 	padding-right: 0px;
 	margin-left: 0px;
 	margin-right: 0px;
 	width: 148px;
 	height: 36px;
+}
+
+#msgblock.nav{
+	color:white;
+}
+
+
+.toplink.h2{
+	color: white;
 }
 
 .form-signin
@@ -67,7 +176,7 @@ body {
 	background: rgba(0,0,0,0.66);
 	position: fixed;
 	left: 5%;
-	bottom: 5%;
+	bottom: 15%;
 }
 
 
@@ -87,6 +196,7 @@ body {
   text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.06);
   -webkit-font-smoothing: antialiased;
 }
+
 
 .btn-custom-light-orange {
   background-color: hsl(37, 100%, 48%) !important;
@@ -110,7 +220,7 @@ body {
 	float:right;
 }
 .notice {
-	margin-top: 11px;
+	margin-top: -60px;
 	padding: 5px;
 	border: 1px red solid;
 	background-color: #ff9999;

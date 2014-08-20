@@ -41,7 +41,7 @@
 		}
 	</script>
 </head>
-<body>
+<body class="landing-page">
 
 	<%= render template: "layouts/bar" %>
 	<% if !flash[:notice].blank? %>
@@ -49,6 +49,11 @@
 			<%= flash[:notice] %>
 		</div>
 	<% end %>
+				<div class="col-lg-12" id="main-box">
+					<div class="intro-message">
+						<h1>Tebook</h1>
+						<h3>Design.Simple</h3>
+						<hr class="intro-divider">
 
 	<div class="jumbotron center" id="main-search-area">
 		<%= form_for(:course, :url=>'find', html:{class: "form-signin", role: "search"}) do |f| %>
@@ -59,15 +64,16 @@
 			</div>
 			<%= submit_tag("Search", id: "main-search-find-btn", class: "btn btn-custom-light-blue")%>
 		<% end %>
-	</div>
+	</div></div></div>
 
 	<!-- SignUp button Form -->
 	<% if !user_signed_in? %>
 		<% if devise_mapping.registerable? && controller_name != 'registrations' %>
 		  <%= form_tag(new_registration_path(resource_name), :method => "get") do %>
-				<button type="submit" class="btn-sm btn-info" id="signup-btn">SignUp</button>
+				<button type="submit" class="btn-sm btn-info btn-custom-light-orange" id="signup-btn">SignUp</button>
 		  <% end %>
 		<% end %>
 	<% end %>
+	<%= render template: "layouts/foot" %>
 </body>
 </html>
