@@ -89,6 +89,8 @@
 <script>
 	$( document ).ready(function(){	
 		getchatlist('0');
+		$('#submitbutton')[0].disabled = true
+		$('#content').attr('contenteditable', false)
 		<% if  @receiver && !@receiver.blank? %>
 			showchatting("<%=@receiver%>");
 		<% end %>
@@ -128,6 +130,8 @@
 	}
 
 	function showchatting(receiver){
+		$('#submitbutton')[0].disabled = false;
+		$('#content').attr('contenteditable', true)
 		$("#chat").empty();
 		clearInterval(window.status);
 		$('#chat').append($('<div id="messageloading"><span style="float:left;">Loading<span class="dots">.</span></span></div>'));
