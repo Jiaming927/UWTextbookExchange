@@ -190,7 +190,9 @@ body._om_twenga_tb_visible #gb {
 			</div>
 		<% end %>
 		<% if @bookinfo.number > 0 %>
-			<div class="option"><%=@bookinfo.book_title %></div>
+			<div class="option">Name: <%=@bookinfo.book_title %></div>
+			<div class="option">Author: <%=@bookinfo.author %></div>
+			<div class="option">Price: <%=@bookinfo.price %></div>
 			<div class="option">
 				<% if @bookinfo.course_name.split(',').count > 1 %>
 					Courses: 
@@ -230,7 +232,9 @@ body._om_twenga_tb_visible #gb {
 				<div><%=link_to('Sign in', new_session_path(resource_name)) %> or <%=link_to('Sign up', new_registration_path(resource_name)) %> to see who has it.</div>
 			<% end %>
 		<% else %>
-			<div><strong><%=@bookinfo.book_title%></strong></div>
+			<div class="option">Name: <%=@bookinfo.book_title %></div>
+			<div class="option">Author: <%=@bookinfo.author %></div>
+			<div class="option">Price: <%=@bookinfo.price %></div>
 			<div>Sorry, no one has posted this book yet.</div>
 			<% if !user_signed_in? %>
 				<div><%=link_to('Sign in', new_session_path(resource_name)) %> or <%=link_to('Sign up', new_registration_path(resource_name)) %> to post it.</div>

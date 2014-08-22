@@ -8,8 +8,6 @@ class GetBookController < ApplicationController
 		  flash[:notice] = "This course is not held in this quarter, or misspell anything?"
 		  return redirect_to(root_url)
 		end
-		createInfo(@course)
-		messagehelper
 	elsif params[:course]
 		session[:last_dep] = params[:course]["department"].strip
 		session[:last_class] = params[:course]["class"].strip
@@ -19,8 +17,6 @@ class GetBookController < ApplicationController
 			flash[:notice] = "This course is not held in this quarter, or misspell anything?"
 			return redirect_to(root_url)
 		end
-		createInfo(@course)
-		messagehelper
 	else
 		redirect_to(root_url)
 	end
@@ -30,7 +26,6 @@ class GetBookController < ApplicationController
 	if params[:book]
 		@book = Book.where(:book_title => params[:book].strip).includes("msgcount").order("msgcounts.last_update DESC")
 		@bookinfo = Bookinfo.where(:book_title => params[:book].strip).first
-		messagehelper
 	else
 		redirect_to(root_url)
 	end
@@ -76,29 +71,4 @@ class GetBookController < ApplicationController
 	end
 	redirect_to(root_url)
   end
-
-private
-    def messagehelper
-	if user_signed_in?
-		@msgc = Msgcount.where(:username => current_user.username).first
-		if @msgc
-			@msgc.last_update = Time.now
-			@msgc.save
-		end
-	end
-    end
-
-    def createInfo(course)
-	course.attributes.each do |attr_name, attr_value|
-		if attr_name != "id" && attr_name != "course_name" && attr_name != "number" && attr_value != nil
-			binfo = Bookinfo.where(:book_title => attr_value).first
-			if !binfo
-				Bookinfo.create(:book_title => attr_value, :course_name => course.course_name)
-			elsif !binfo.course_name.split(',').include?course.course_name
-				binfo.course_name = (binfo.course_name + "," + course.course_name).split(',').sort.join(',')
-				binfo.save
-			end
-		end
-	end
-    end
 end
