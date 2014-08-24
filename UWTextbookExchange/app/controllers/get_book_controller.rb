@@ -14,7 +14,7 @@ class GetBookController < ApplicationController
 		courseName = params[:course]["department"].strip.upcase + params[:course]["class"].strip
 		@course = Course.where(:course_name => courseName).first
 		if !@course
-			flash[:notice] = "This course is not held in this quarter, or misspell anything?"
+			flash[:notice] = "This course is not held in this quarter. Misspell anything? Or you can <a href='/newbook'>submit a request</a> for this new book.".html_safe
 			return redirect_to(root_url)
 		end
 	else

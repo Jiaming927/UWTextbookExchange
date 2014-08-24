@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140726171514) do
+ActiveRecord::Schema.define(version: 20140824044519) do
 
   create_table "bookinfos", force: true do |t|
     t.text    "book_title",                         null: false
@@ -88,6 +88,20 @@ ActiveRecord::Schema.define(version: 20140726171514) do
 
   add_index "msgcounts", ["username"], name: "index_msgcounts_on_username", unique: true
 
+  create_table "newbooks", force: true do |t|
+    t.text     "book_title",                             null: false
+    t.string   "author",      limit: 50
+    t.decimal  "price"
+    t.string   "course_name",                            null: false
+    t.string   "email",                  default: "",    null: false
+    t.boolean  "reviewed",               default: false, null: false
+    t.boolean  "passed"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "newbooks", ["book_title"], name: "index_newbooks_on_book_title", unique: true
+
   create_table "ownedbooks", force: true do |t|
     t.string   "username",   null: false
     t.text     "book_title", null: false
@@ -105,13 +119,13 @@ ActiveRecord::Schema.define(version: 20140726171514) do
   add_index "tradedbooks", ["username"], name: "index_tradedbooks_on_username"
 
   create_table "users", force: true do |t|
-    t.string   "email",                  default: "", null: false
-    t.string   "username",               default: "", null: false
-    t.string   "encrypted_password",     default: "", null: false
+    t.string   "email",                  default: "",    null: false
+    t.string   "username",               default: "",    null: false
+    t.string   "encrypted_password",     default: "",    null: false
     t.string   "reset_password_token"
     t.datetime "reset_password_sent_at"
     t.datetime "remember_created_at"
-    t.integer  "sign_in_count",          default: 0,  null: false
+    t.integer  "sign_in_count",          default: 0,     null: false
     t.datetime "current_sign_in_at"
     t.datetime "last_sign_in_at"
     t.string   "current_sign_in_ip"
@@ -120,11 +134,12 @@ ActiveRecord::Schema.define(version: 20140726171514) do
     t.datetime "confirmed_at"
     t.datetime "confirmation_sent_at"
     t.string   "unconfirmed_email"
-    t.integer  "failed_attempts",        default: 0,  null: false
+    t.integer  "failed_attempts",        default: 0,     null: false
     t.string   "unlock_token"
     t.datetime "locked_at"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.boolean  "admin",                  default: false, null: false
   end
 
   add_index "users", ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true

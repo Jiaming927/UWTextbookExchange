@@ -19,4 +19,35 @@ class ApplicationController < ActionController::Base
     end
   end
 
+ def sendout(to, from, subject, content)
+	options = { :address              => "smtp.gmail.com",
+            :port                 => 587,
+            :domain               => 'hustees.com',
+            :user_name            => ENV["GMAIL_USERNAME"],
+            :password             => ENV["GMAIL_PASSWORD"],
+            :authentication       => 'plain',
+            :enable_starttls_auto => true  }
+            
+	Mail.defaults do
+	  delivery_method :smtp, options
+	end
+
+	Mail.deliver do
+		to to
+		from from
+		subject subject
+		html_part do
+			content_type 'text/html; charset=UTF-8'
+			body content
+		end
+
+	end
+ end
+
+end
+
+class String
+  def numeric?
+    Float(self) != nil rescue false
+  end
 end

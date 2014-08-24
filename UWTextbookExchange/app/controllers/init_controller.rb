@@ -1,4 +1,5 @@
 class InitController < ApplicationController
+ require 'mail'
  layout false 
  before_filter :authenticate_user!, :except => [:index, :terms]
 
@@ -207,4 +208,52 @@ class InitController < ApplicationController
 		return redirect_to(root_url)
 	end
  end
+
+ def newbook
+	@newbook = Newbook.new
+ end
+
+ def addnew
+	if params[:newbook] && params[:newbook]["book_title"] && !params[:newbook]["book_title"].blank? && params[:newbook]["course_name"] && !params[:newbook]["course_name"].blank?
+		if params[:newbook]["price"] && !params[:newbook]["price"].blank?
+			if !params[:newbook]["price"].numeric?
+				flash[:notice] = "The price must be a number."
+				return redirect_to('/newbook')
+			end
+		end
+		newbook_temp = Newbook.where(:book_title => params[:newbook]["book_title"].strip).first
+		if newbook_temp
+			flash[:notice] = "Someone has already submitted a request for this book"
+			return redirect_to('/newbook')
+		end
+		@newbook = Newbook.new(params.require(:newbook).permit(:book_title, :author, :price, :course_name))
+		@newbook.email = current_user.email
+		@newbook.course_name = @newbook.course_name.upcase
+		if @newbook.save
+			newbooksubmit(@newbook)
+			flash[:notice] = "Request submitted. We are reviewing your request."
+     			redirect_to(root_url)
+		else
+			flash[:notice] = "Someone has already submitted a request for this book"
+			redirect_to('/newbook')
+		end
+	else
+		flash[:notice] = "Missing required fields."
+		redirect_to('/newbook')
+	end
+ end
+ private
+
+ def newbooksubmit(newbook)
+	content = <<MESSAGE_END
+<h1>New book submitted</h1>
+<div>Submit by: #{newbook.email}</div>
+<div>Title: #{newbook.book_title}</div>
+<div>Course: #{newbook.course_name}</div>
+<div><a href='#{root_url}/reviewnew'>Click</a> here to review the request.</div>
+MESSAGE_END
+	sendout('tebookglobal@gmail.com', 'tebookglobal@gmail.com', 'Someone submit a new book', content.html_safe)
+ end
+
 end
+

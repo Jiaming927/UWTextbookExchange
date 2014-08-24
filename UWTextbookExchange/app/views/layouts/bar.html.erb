@@ -62,19 +62,20 @@ background-color: #A9BEFF;
 .navbar-header {
 	background-color: orange;
 }
-.navbar-brand strong {
-	padding-left: 18%;
-}
 .navbar-brand {
 font-size: 24px;
+margin-left: 0px !important;
 }
-
 .navbar-fixed-bottom a {
 	color:orange;
 }
 .navbar-fixed-bottom{
 	background-color:white;
 	width:100%
+}
+
+.navbar-form .form-control {
+	margin-bottom:0px;
 }
 </style>
 <!-- Top Navigation Bar -->
@@ -91,7 +92,7 @@ font-size: 24px;
 	 		<a class="navbar-brand" href="/"><strong>Tebook</strong></a>
 			<ul id="msgblock" class="nav">
 			<% if user_signed_in? %>
-				<li id="chatmsg" class="active"><a href="/chat">Message(<span id='msgct'><%= @msgc ? @msgc.unread : 0 %></span>)</a></li>
+				<li id="chatmsg" class="active"><a href="/chat" class="dif">Message(<span id='msgct'><%= @msgc ? @msgc.unread : 0 %></span>)</a></li>
 			<% end %>
 			</ul>
 		</div>

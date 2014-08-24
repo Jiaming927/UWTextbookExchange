@@ -16,8 +16,8 @@ body {
 	float: inherit;
 }
 
-a {
-	color:orange !important;
+a:not(.dif) {
+	color:orange;
 }
 
 .btn-custom-light-blue {

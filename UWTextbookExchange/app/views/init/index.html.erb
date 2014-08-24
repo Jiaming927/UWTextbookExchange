@@ -46,7 +46,7 @@
 	<%= render template: "layouts/bar" %>
 	<% if !flash[:notice].blank? %>
 		<div class = "notice">
-			<%= flash[:notice] %>
+			<%= flash[:notice].html_safe %>
 		</div>
 	<% end %>
 				<div class="col-lg-12" id="main-box">

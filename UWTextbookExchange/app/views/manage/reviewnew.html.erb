@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Request list</title>
+	<link href="//netdna.bootstrapcdn.com/bootswatch/3.1.1/simplex/bootstrap.min.css" rel="stylesheet">    
+	<%= stylesheet_link_tag('formgroup', :media => 'all') %>
+	<script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
+	<script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.js"></script>
+</head>
+<body>
+	<%= render template: "layouts/bar" %>
+	<h1 style="text-align: center;">Add book requests</h1>
+		<% if !flash[:notice].blank? %>
+			<div id="message">
+				<%= flash[:notice] %>
+			</div>
+		<% end %>
+<table border=1 style="width:80%;margin:auto;border-collapse: collapse;">
+<tr>
+  <th>Reviewed</th>
+  <th>Title</th> 
+  <th>Author</th>
+  <th>Price</th>
+  <th>Course</th>
+  <th>Email</th>
+  <th>Submit time</th>
+  <th>Passed</th>
+</tr>
+<% @allrequest.each do |r| %>
+	<tr>
+		<% if r.reviewed %>
+	  		<td>Yes</td>
+		<% else %>
+			<td></td>
+		<% end %>
+		<td><a href="/newdetails?book_title=<%=r.book_title%>"><%=r.book_title%></a></td>
+		<td><%=r.author%></td>
+		<td><%=r.price%></td>
+		<td><%=r.course_name%></td>
+		<td><%=r.email%></td> 
+		<td><%=r.created_at%></td>
+		<% if !r.passed.present? %>
+	  		<td></td>
+		<% elsif r.passed %>
+			<td>Yes</td>
+		<% else %>
+			<td>No</td>
+		<% end %>
+	</tr>
+<% end %>
+</table>
+<%= render template: "layouts/foot" %>
+</body>
+</html>

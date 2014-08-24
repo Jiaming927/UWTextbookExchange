@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Tebook</title>
+	<link href="//netdna.bootstrapcdn.com/bootswatch/3.1.1/simplex/bootstrap.min.css" rel="stylesheet">    
+	<%= stylesheet_link_tag('formgroup', :media => 'all') %>
+	<script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
+	<script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.js"></script>
+</head>
+<body>
+	<%= render template: "layouts/bar" %>
+    <div class="container" style="margin-top:50px;">
+        <div class="row">
+            <div class="col-xs-12 col-sm-12 col-md-4 well well-sm" id="form-box">
+                <legend><a href="#"><i class="glyphicon glyphicon-user"></i></a> Add new book!</legend>
+				<%= form_for(:newbook, :url => {:action => 'addnew'}, html:{class: "form", role: "form"}) do |f| %>
+					<% if !flash[:notice].blank? %>
+						<div id="message">
+							<%= flash[:notice] %>
+						</div>
+					<% end %>
+					<div class="row">
+						<%= f.text_field :book_title, placeholder: "Book Title", class: "form-control",  :required => true %>	
+						<%= f.text_field :author, placeholder: "Author", class: "form-control" %>
+						<%= f.text_field :price, placeholder: "Price", class: "form-control" %>
+						<%= f.text_field :course_name, :placeholder => "Course Name", class: "form-control",  :required => true %>
+					</div>
+					<div><%= f.submit "Submit" ,id: "submit-button", class: "btn btn-block btn-custom-light-blue" %></div>
+				<% end %>
+			</div>
+		</div>
+	</div>
+
+	<%= render template: "layouts/foot" %>
+
+</body>
+</html>
