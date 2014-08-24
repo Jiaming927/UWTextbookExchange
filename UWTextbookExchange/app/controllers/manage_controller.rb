@@ -1,16 +1,56 @@
 class ManageController < ApplicationController
  require 'mail'
-
  layout false 
  before_filter :authenticate_user!
 
+ # admin dashboard
+ def manage
+	if !current_user.admin
+		return redirect_to(root_url)
+	end
+ end
+
+ def overview
+	if !current_user.admin
+		return redirect_to(root_url)
+	end
+	@users_today = User.where("current_sign_in_at >= ?", 1.day.ago)
+	@users_thisweek = User.where("current_sign_in_at >= ?", 1.week.ago)
+	@msg_today = Message.where("created_at >= ?", 1.day.ago)
+	@msg_thisweek = Message.where("created_at >= ?", 1.week.ago)
+ end
+
+ def usermanage
+	if !current_user.admin
+		return redirect_to(root_url)
+	end
+	if params["page"].present? && params["page"].numeric?
+		@page = params["page"].to_i
+		if @page > 1 && (@page  - 1) * 50 > User.count
+			@users = User.last(50)
+			@page = User.count/50+(User.count%50==0 ? 0 : 1)
+		else
+			@users = User.limit(50).offset((@page-1)*50)
+		end
+	else
+		@users = User.limit(50)
+		@page = 1
+	end
+ end
+
+ # manage new book request
  def reviewnew
-	authenticate_admin
+	if !current_user.admin
+		return redirect_to(root_url)
+	end
 	@allrequest = Newbook.all.order('created_at DESC')
  end
 
  def newdetails
-	authenticate_admin
+	if !current_user.admin
+		return redirect_to(root_url)
+	end
+
 	if params["book_title"].present? && !params["book_title"].blank?
 		@request = Newbook.where(:book_title => params["book_title"].strip).first
 		if !@request
@@ -24,7 +64,10 @@ class ManageController < ApplicationController
  end
 
  def passnew
-	authenticate_admin
+	if !current_user.admin
+		return redirect_to(root_url)
+	end
+
 	if params[:request] && params[:request]["id"] && !params[:request]["id"].blank? && params[:request]["book_title"] && !params[:request]["book_title"].blank? && params[:request]["course_name"] && !params[:request]["course_name"].blank?
 		if params[:request]["price"] && !params[:request]["price"].blank?
 			if !params[:request]["price"].numeric?
@@ -79,10 +122,6 @@ class ManageController < ApplicationController
 	end
  end
 
- def usermanage
-	authenticate_admin
- end
-
  private
 
  def newbookpass(newbook)
@@ -132,11 +171,5 @@ class ManageController < ApplicationController
 MESSAGE_END
 
 	sendout(newbook.email, 'tebookglobal@gmail.com', 'Your requested book is on now!', content.html_safe)
- end
-
- def authenticate_admin
-	if !current_user.admin
-		return redirect_to(root_url)
-	end
  end
 end

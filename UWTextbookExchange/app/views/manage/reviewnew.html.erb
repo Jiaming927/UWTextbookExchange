@@ -10,6 +10,7 @@
 <body>
 	<%= render template: "layouts/bar" %>
 	<h1 style="text-align: center;">Add book requests</h1>
+	<div style="text-align:center;margin: 5px;"><a href="manage">Back to Dashboard</a></div>
 		<% if !flash[:notice].blank? %>
 			<div id="message">
 				<%= flash[:notice] %>

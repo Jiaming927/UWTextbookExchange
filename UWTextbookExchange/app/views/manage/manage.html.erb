@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Admin Dashboard</title>
+	<link href="//netdna.bootstrapcdn.com/bootswatch/3.1.1/simplex/bootstrap.min.css" rel="stylesheet">    
+	<%= stylesheet_link_tag('formgroup', :media => 'all') %>
+	<script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
+	<script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.js"></script>
+<style>
+.option {
+padding: 5px;
+font-weight: bold;
+text-align: center;
+}
+</style>
+</head>
+<body>
+	<%= render template: "layouts/bar" %>
+	<h1 style="text-align: center;">Administrator Dashboard</h1>
+	<% if !flash[:notice].blank? %>
+		<div id="message">
+			<%= flash[:notice] %>
+		</div>
+	<% end %>
+	<div style="width:90%;margin:auto">
+		<div class="option"><a href='/overview'>Overview</a></div>
+		<div class="option"><a href='/usermanage'>User Management</a></div>
+		<div class="option"><a href='/reviewnew'>New book requests</a></div>
+	</div>
+
+<%= render template: "layouts/foot" %>
+</body>
+</html>

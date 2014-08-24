@@ -20,6 +20,12 @@ a:not(.dif) {
 	color:orange;
 }
 
+.option1 {
+padding: 5px;
+font-weight: bold;
+text-align: center;
+}
+
 .btn-custom-light-blue {
   background-color: hsl(196, 100%, 41%) !important;
   background-repeat: repeat-x;

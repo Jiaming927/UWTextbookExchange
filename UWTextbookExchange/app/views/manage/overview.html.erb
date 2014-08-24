@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Overview</title>
+	<link href="//netdna.bootstrapcdn.com/bootswatch/3.1.1/simplex/bootstrap.min.css" rel="stylesheet">    
+	<%= stylesheet_link_tag('formgroup', :media => 'all') %>
+	<script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
+	<script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.js"></script>
+
+</head>
+<body>
+	<%= render template: "layouts/bar" %>
+	<h1 style="text-align: center;">Overview</h1>
+	<div style="text-align:center;margin: 5px;"><a href="manage">Back to Dashboard</a></div>
+	<% if !flash[:notice].blank? %>
+		<div id="message">
+			<%= flash[:notice] %>
+		</div>
+	<% end %>
+	<div style="width:90%;margin:auto">
+		<div class="option1">Total Users: <%=User.count%></div>
+		<div class="option1">Login in 24 hours: <%=@users_today.count%></div>
+		<div class="option1">Login this week: <%=@users_thisweek.count%></div>
+		<div class="option1">Books information: <%=Bookinfo.count%></div>
+		<div class="option1">Total books posted: <%=Book.count%></div>
+		<div class="option1">Total books traded: <%=Tradedbook.count%></div>
+		<div class="option1">Total messages: <%=Message.count%></div>
+		<div class="option1">Messages in 24 hours: <%=@msg_today.count%></div>
+		<div class="option1">Messages this week: <%=@msg_thisweek.count%></div>	
+	</div>
+
+<%= render template: "layouts/foot" %>
+</body>
+</html>
