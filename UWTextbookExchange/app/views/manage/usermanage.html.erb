@@ -17,40 +17,29 @@
 			<%= flash[:notice] %>
 		</div>
 	<% end %>
+
 <form action="/usermanage">
 <div class="option1"><%=50*(@page-1)+1%> - <%=User.count < 50*(@page) ? User.count : 50*(@page)%> out of <%=User.count%> Users | Page <%=@page%>/<%=User.count/50+(User.count%50==0 ? 0 : 1)%><span style="margin: 5px;">Goto Page <input type="number" name="page" min="1" style="width:40px;"></span><span><input type="submit" value="Go"></span></div>
 </form>
+
+<form action="/userdetails">
+<div class="option1">
+	<input type="search" name="username" placeholder="Username" style="width: 150px;">
+	<input type="submit" value="Search">
+</div>
+</form>
+
 <table border=1 style="width:80%;margin:auto;border-collapse:collapse;text-align: center;">
 <tr>
   <th>ID</th>
   <th>Email</th> 
   <th>Username</th>
-  <th>Signin count</th>
-  <th>Current signin</th>
-  <th>Last signin</th>
-  <th>Current IP</th>
-  <th>Last IP</th>
-  <th>Books posted</th>
-  <th>Books borrowed</th>
-  <th>Messages</th>
 </tr>
 <% @users.each do |u| %>
 	<tr>
-		<td><%=u.id%></td>
-		<td><%=u.email%></td>
-		<td><%=u.username%></td>
-		<td><%=u.sign_in_count%></td> 
-		<td><%=u.current_sign_in_at%></td>
-		<td><%=u.last_sign_in_at%></td>
-		<td><%=u.current_sign_in_ip%></td>
-		<td><%=u.last_sign_in_ip%></td>
-		<% ob = Ownedbook.where(:username => u.username) %>
-		<% msgc = Msgcount.where(:username => u.username).first %>
-		<% bb = Borrowedbook.where(:username => u.username) %>
-		<td><%=ob.count%></td> 
-		<td><%=bb.count%></td>
-		<td><%=msgc ? msgc.count : 0 %></td>
-
+		<td><a href="/userdetails?id=<%=u.id%>"><%=u.id%></a></td>
+		<td><a href="/userdetails?id=<%=u.id%>"><%=u.email%></a></td>
+		<td><a href="/userdetails?id=<%=u.id%>"><%=u.username%></a></td>
 	</tr>
 <% end %>
 </table>

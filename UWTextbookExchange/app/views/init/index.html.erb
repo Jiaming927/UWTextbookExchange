@@ -44,6 +44,7 @@
 <body class="landing-page">
 
 	<%= render template: "layouts/bar" %>
+	<div>
 	<% if !flash[:notice].blank? %>
 		<div class = "notice">
 			<%= flash[:notice].html_safe %>
@@ -74,6 +75,7 @@
 		  <% end %>
 		<% end %>
 	<% end %>
+	</div>
 	<%= render template: "layouts/foot" %>
 </body>
 </html>

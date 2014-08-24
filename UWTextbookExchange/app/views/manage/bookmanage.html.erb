@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Book Management</title>
+	<link href="//netdna.bootstrapcdn.com/bootswatch/3.1.1/simplex/bootstrap.min.css" rel="stylesheet">    
+	<%= stylesheet_link_tag('formgroup', :media => 'all') %>
+	<script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
+	<script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.js"></script>
+
+</head>
+<body>
+	<%= render template: "layouts/bar" %>
+<div class='main'>
+	<h1 style="text-align: center;">Book Management</h1>
+	<div style="text-align:center;margin: 5px;"><a href="manage">Back to Dashboard</a></div>
+	<% if !flash[:notice].blank? %>
+		<div id="message">
+			<%= flash[:notice] %>
+		</div>
+	<% end %>
+<% if @page %>
+	<form action="/bookmanage">
+	<div class="option1"><%=50*(@page-1)+1%> - <%=Bookinfo.count < 50*(@page) ? Bookinfo.count : 50*(@page)%> out of <%=Bookinfo.count%> Books | Page <%=@page%>/<%=Bookinfo.count/50+(Bookinfo.count%50==0 ? 0 : 1)%><span style="margin: 5px;">Goto Page <input type="number" name="page" min="1" style="width:40px;"></span><span><input type="submit" value="Go"></span></div>
+	</form>
+<% else %>
+	<div style="text-align:center;margin: 5px;"><a href="bookmanage">Back to all books</a></div>
+<% end %>
+
+<form action="/bookmanage">
+<div class="option1">
+	<input type="search" name="course" placeholder="Course" style="width: 150px;">
+	<input type="submit" value="Search">
+</div>
+</form>
+
+<table border=1 style="width:95%;margin:auto;border-collapse:collapse;text-align: center;">
+<tr>
+  <th>ID</th>
+  <th>Title</th> 
+  <th>Author</th>
+  <th>Price</th>
+  <th>Course</th>
+  <th>People Own</th>
+  <th>Option</th>
+</tr>
+<% @binfos.each do |bi| %>
+	<tr>
+		<td><%=bi.id%></td>
+		<td><%=bi.book_title%></td>
+		<td><%=bi.author%></td>
+		<td><%=bi.price%></td>
+		<td><%=bi.course_name%></td>
+		<td><%=bi.number%></td>
+		<td><a href="bookedit?id=<%=bi.id%>">Edit</a></td>
+	</tr>
+<% end %>
+</table>
+<div>
+<%= render template: "layouts/foot" %>
+</body>
+</html>

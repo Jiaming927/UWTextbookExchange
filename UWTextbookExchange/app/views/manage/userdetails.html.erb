@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>User Details</title>
+	<link href="//netdna.bootstrapcdn.com/bootswatch/3.1.1/simplex/bootstrap.min.css" rel="stylesheet">    
+	<%= stylesheet_link_tag('formgroup', :media => 'all') %>
+	<script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
+	<script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.js"></script>
+
+</head>
+<body>
+	<%= render template: "layouts/bar" %>
+	<h1 style="text-align: center;">User Details</h1>
+	<div style="text-align:center;margin: 5px;"><a href="usermanage">Back to users list</a></div>
+	<% if !flash[:notice].blank? %>
+		<div id="message">
+			<%= flash[:notice] %>
+		</div>
+	<% end %>
+<table border=1 style="width:80%;margin:auto;border-collapse:collapse;text-align: center;">
+<tr>
+  <th>ID</th>
+  <th>Email</th> 
+  <th>Username</th>
+  <th>Signin count</th>
+  <th>Current signin</th>
+  <th>Last signin</th>
+  <th>Current IP</th>
+  <th>Last IP</th>
+  <th>Books posted</th>
+  <th>Books borrowed</th>
+  <th>Messages</th>
+</tr>
+<tr>
+	<td><%=@user.id%></td>
+	<td><%=@user.email%></td>
+	<td><%=@user.username%></td>
+	<td><%=@user.sign_in_count%></td> 
+	<td><%=@user.current_sign_in_at%></td>
+	<td><%=@user.last_sign_in_at%></td>
+	<td><%=@user.current_sign_in_ip%></td>
+	<td><%=@user.last_sign_in_ip%></td>
+	<% ob = Ownedbook.where(:username => @user.username) %>
+	<% msgc = Msgcount.where(:username => @user.username).first %>
+	<% bb = Borrowedbook.where(:username => @user.username) %>
+	<td><%=ob.count%></td> 
+	<td><%=bb.count%></td>
+	<td><%=msgc ? msgc.count : 0 %></td>
+</tr>
+</table>
+
+<%= render template: "layouts/foot" %>
+</body>
+</html>

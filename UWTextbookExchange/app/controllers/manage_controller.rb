@@ -14,12 +14,14 @@ class ManageController < ApplicationController
 	if !current_user.admin
 		return redirect_to(root_url)
 	end
+	@msgcs = Msgcount.where("last_update >= ?", 2.minutes.ago)
 	@users_today = User.where("current_sign_in_at >= ?", 1.day.ago)
 	@users_thisweek = User.where("current_sign_in_at >= ?", 1.week.ago)
 	@msg_today = Message.where("created_at >= ?", 1.day.ago)
 	@msg_thisweek = Message.where("created_at >= ?", 1.week.ago)
  end
 
+ # manage all users
  def usermanage
 	if !current_user.admin
 		return redirect_to(root_url)
@@ -36,6 +38,103 @@ class ManageController < ApplicationController
 		@users = User.limit(50)
 		@page = 1
 	end
+ end
+
+ def userdetails
+	if !current_user.admin
+		return redirect_to(root_url)
+	end
+
+	if params["id"].present? && params["id"].numeric?
+		@user = User.find(params["id"].to_i)
+		if !@user
+			flash[:notice] = "The user does not exist"
+			return redirect_to('/usermanage')
+		end
+	elsif params["username"].present?
+		@user = User.where(:username => params["username"].strip).first
+		if !@user
+			flash[:notice] = "The user does not exist"
+			return redirect_to('/usermanage')
+		end
+	else
+		flash[:notice] = "The user does not exist"
+		return redirect_to('/usermanage')
+	end
+ end
+
+ def bookmanage
+	if !current_user.admin
+		return redirect_to(root_url)
+	end
+	if params["page"].present? && params["page"].numeric?
+		@page = params["page"].to_i
+		if @page > 1 && (@page  - 1) * 50 > Bookinfo.count
+			@binfos = Bookinfo.last(50)
+			@page = Bookinfo.count/50+(Bookinfo.count%50==0 ? 0 : 1)
+		else
+			@binfos = Bookinfo.limit(50).offset((@page-1)*50)
+		end
+	elsif params["course"].present?
+		@binfos = Bookinfo.where(:course_name => params["course"].strip.upcase)
+		if !(@binfos && @binfos.count > 0)
+			flash[:notice] = "The course does not exist"
+			return redirect_to('/bookmanage')
+		end
+	else
+		@binfos = Bookinfo.limit(50)
+		@page = 1
+	end
+ end
+
+ def bookedit
+	if !current_user.admin
+		return redirect_to(root_url)
+	end
+
+	if params["id"].present? && params["id"].numeric?
+		@binfo = Bookinfo.find(params["id"].to_i)
+		if !@binfo
+			flash[:notice] = "The book does not exist"
+			return redirect_to('/bookmanage')
+		end
+	else
+		flash[:notice] = "Missing parameters"
+		redirect_to('/bookmanage')
+	end
+ end
+
+ def bookchangesave
+	if !current_user.admin
+		return redirect_to(root_url)
+	end
+
+	if params[:binfo] && params[:binfo]["id"] && !params[:binfo]["id"].blank? && params[:binfo]["id"].numeric? && params[:binfo]["book_title"] && !params[:binfo]["book_title"].blank? && params[:binfo]["course_name"] && !params[:binfo]["course_name"].blank?
+		if params[:binfo]["price"] && !params[:binfo]["price"].blank?
+			if !params[:binfo]["price"].numeric?
+				flash[:notice] = "The price must be a number."
+				return redirect_to('/bookedit?id=' + params[:binfo]["id"].strip)
+			end
+		end
+		binfo = Bookinfo.find(params[:binfo]["id"].to_i)
+		if binfo
+			binfo.book_title = params[:binfo]["book_title"].strip
+			binfo.author = params[:binfo]["author"].strip
+			binfo.price = params[:binfo]["price"].strip
+			binfo.course_name = params[:binfo]["course_name"].strip
+			if binfo.save
+				flash[:notice] = "Book information updates successfully"
+				return redirect_to('/bookmanage')
+			else
+				flash[:notice] = "Book information updates failed. Database error."
+				return redirect_to('/bookmanage')
+			end
+		end
+	else
+		flash[:notice] = "Missing parameters"
+		return redirect_to('/bookmanage')
+	end
+
  end
 
  # manage new book request
@@ -68,11 +167,11 @@ class ManageController < ApplicationController
 		return redirect_to(root_url)
 	end
 
-	if params[:request] && params[:request]["id"] && !params[:request]["id"].blank? && params[:request]["book_title"] && !params[:request]["book_title"].blank? && params[:request]["course_name"] && !params[:request]["course_name"].blank?
+	if params[:request] && params[:request]["id"] && !params[:request]["id"].blank? && params[:binfo]["id"].numeric? && params[:request]["book_title"] && !params[:request]["book_title"].blank? && params[:request]["course_name"] && !params[:request]["course_name"].blank?
 		if params[:request]["price"] && !params[:request]["price"].blank?
 			if !params[:request]["price"].numeric?
 				flash[:notice] = "The price must be a number."
-				return redirect_to('/newdetails?book_title=' + params[:request]["book_title"])
+				return redirect_to('/newdetails?book_title=' + params[:request]["book_title"].strip)
 			end
 		end
 		newbook = Newbook.find(params[:request]["id"].strip)

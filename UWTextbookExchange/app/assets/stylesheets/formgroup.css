@@ -20,6 +20,11 @@ a:not(.dif) {
 	color:orange;
 }
 
+th {
+	text-align: center;
+}
+
+
 .option1 {
 padding: 5px;
 font-weight: bold;
