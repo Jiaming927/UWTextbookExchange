@@ -36,14 +36,14 @@ class InitController < ApplicationController
 	if msgc
 		msgc.last_update = Time.now
 		msgc.save
-		render :json => { :count => msgc.unread}
+		render :json => {:count => msgc.unread}
 	else
-		render :json => { :count => 0}
+		render :json => {:count => 0}
 	end
  end
 
  def showstatus
-	if params[:receiver] && !params[:receiver].strip.blank?
+	if params[:receiver] && !params[:receiver].blank?
 		msgc_receiver = Msgcount.where(:username => params[:receiver].strip).first
 		if msgc_receiver
 			if msgc_receiver.last_update > 2.minutes.ago
@@ -73,7 +73,7 @@ class InitController < ApplicationController
  end
 
  def unlist
-	if params[:book]
+	if params[:book].present? && !params[:book].blank?
 		bookname = params[:book].strip
 
 		#if book exist
@@ -108,7 +108,7 @@ class InitController < ApplicationController
  end
 
  def traded
-	if params[:book]
+	if params[:book].present? && !params[:book].blank?
 		bookname = params[:book].strip
 
 		#if book exist
@@ -145,7 +145,7 @@ class InitController < ApplicationController
  end
 
  def resume
-	if params[:book]
+	if params[:book].present? && !params[:book].blank?
 		bookname = params[:book].strip
 
 		#if book exist
@@ -186,7 +186,7 @@ class InitController < ApplicationController
  end
 
  def delete
-	if params[:book]
+	if params[:book].present? && !params[:book].blank?
 		bookname = params[:book].strip
 
 		#if book exist
@@ -214,8 +214,8 @@ class InitController < ApplicationController
  end
 
  def addnew
-	if params[:newbook] && params[:newbook]["book_title"] && !params[:newbook]["book_title"].blank? && params[:newbook]["course_name"] && !params[:newbook]["course_name"].blank?
-		if params[:newbook]["price"] && !params[:newbook]["price"].blank?
+	if params[:newbook] && params[:newbook]["book_title"].present? && !params[:newbook]["book_title"].blank? && params[:newbook]["course_name"].present? && !params[:newbook]["course_name"].blank?
+		if params[:newbook]["price"].present? && !params[:newbook]["price"].blank?
 			if !params[:newbook]["price"].numeric?
 				flash[:notice] = "The price must be a number."
 				return redirect_to('/newbook')

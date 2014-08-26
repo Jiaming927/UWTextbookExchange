@@ -167,7 +167,7 @@ class ManageController < ApplicationController
 		return redirect_to(root_url)
 	end
 
-	if params[:request] && params[:request]["id"] && !params[:request]["id"].blank? && params[:binfo]["id"].numeric? && params[:request]["book_title"] && !params[:request]["book_title"].blank? && params[:request]["course_name"] && !params[:request]["course_name"].blank?
+	if params[:request] && params[:request]["id"] && !params[:request]["id"].blank? && params[:request]["id"].numeric? && params[:request]["book_title"] && !params[:request]["book_title"].blank? && params[:request]["course_name"] && !params[:request]["course_name"].blank?
 		if params[:request]["price"] && !params[:request]["price"].blank?
 			if !params[:request]["price"].numeric?
 				flash[:notice] = "The price must be a number."

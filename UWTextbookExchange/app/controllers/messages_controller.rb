@@ -7,7 +7,7 @@ class MessagesController < ApplicationController
 # second_side message 'second' send that 'first' hasn't read
 
   def getmessage
-	if params[:receiver]
+	if params[:receiver].present? && !params[:receiver].blank?
 		messages = Message.where("(sender = ? AND receiver = ?) OR (sender = ? AND receiver = ?)", current_user.username,params[:receiver].strip,params[:receiver].strip, current_user.username)
 		render messages
 	else
@@ -16,7 +16,7 @@ class MessagesController < ApplicationController
   end
 
   def subscribe
-	if params[:receiver] && !params[:receiver].blank? && params[:receiver].strip != current_user.username && user_exist_create(params[:receiver].strip)
+	if params[:receiver].present? && !params[:receiver].blank? && params[:receiver].strip != current_user.username && user_exist_create(params[:receiver].strip)
 		@channel = return_asc(current_user.username, params[:receiver].strip)
 		if user_channel_exist(@channel)
 			ch = Channel.where(:channel_name => @channel).first

@@ -2,13 +2,13 @@ class GetBookController < ApplicationController
  layout false 
  before_filter :authenticate_user!, :except => [:find, :show]
   def find
-	if params["coursename"]
+	if params["coursename"].present? && !params["coursename"].blank?
 		@course = Course.where(:course_name => params[:coursename].strip.upcase).first
 		if !@course
 		  flash[:notice] = "This course is not held in this quarter, or misspell anything?"
 		  return redirect_to(root_url)
 		end
-	elsif params[:course]
+	elsif params[:course].present? && !params[:course].blank?
 		session[:last_dep] = params[:course]["department"].strip
 		session[:last_class] = params[:course]["class"].strip
 		courseName = params[:course]["department"].strip.upcase + params[:course]["class"].strip
@@ -23,16 +23,20 @@ class GetBookController < ApplicationController
   end
 
   def show
-	if params[:book]
+	if params[:book].present? && !params[:book].blank?
 		@book = Book.where(:book_title => params[:book].strip).includes("msgcount").order("msgcounts.last_update DESC")
 		@bookinfo = Bookinfo.where(:book_title => params[:book].strip).first
+		if !@bookinfo
+			flash[:notice] = "The book does not exist."
+			return redirect_to(root_url)
+		end
 	else
 		redirect_to(root_url)
 	end
   end
 
   def postto
-	if params[:book] && params[:from] && (params[:from].strip == 'find' || params[:from].strip == 'show')
+	if params[:book].present? && !params[:book].blank? && params[:from].present? && !params[:from].blank? && (params[:from].strip == 'find' || params[:from].strip == 'show')
 		bookname = params[:book].strip
 		#if book in bookinfo
 		binfo = Bookinfo.where(:book_title => bookname).first
