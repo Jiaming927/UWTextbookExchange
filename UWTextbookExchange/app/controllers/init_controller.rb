@@ -228,7 +228,8 @@ class InitController < ApplicationController
 		end
 		@newbook = Newbook.new(params.require(:newbook).permit(:book_title, :author, :price, :course_name))
 		@newbook.email = current_user.email
-		@newbook.course_name = @newbook.course_name.upcase
+		@newbook.book_title = @newbook.book_title.strip.upcase
+		@newbook.course_name = @newbook.course_name.strip.upcase
 		if @newbook.save
 			newbooksubmit(@newbook)
 			flash[:notice] = "Request submitted. We are reviewing your request."
