@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Tebook</title>
+	<title>Hustees</title>
 	<link href="//netdna.bootstrapcdn.com/bootswatch/3.1.1/simplex/bootstrap.min.css" rel="stylesheet">    
 	<%= stylesheet_link_tag('formgroup', :media => 'all') %>
 	<script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
@@ -23,7 +23,7 @@
 					<div class="row">
 						<%= f.text_field :book_title, placeholder: "Book Title", class: "form-control",  :required => true %>	
 						<%= f.text_field :author, placeholder: "Author", class: "form-control" %>
-						<%= f.text_field :price, placeholder: "Price", class: "form-control" %>
+						<%= f.text_field :price, placeholder: "Price (Printed on the Book)", class: "form-control" %>
 						<%= f.text_field :course_name, :placeholder => "Course Name", class: "form-control",  :required => true %>
 					</div>
 					<div><%= f.submit "Submit" ,id: "submit-button", class: "btn btn-block btn-custom-light-blue" %></div>

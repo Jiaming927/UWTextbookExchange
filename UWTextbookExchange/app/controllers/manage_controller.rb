@@ -109,8 +109,8 @@ class ManageController < ApplicationController
 		return redirect_to(root_url)
 	end
 
-	if params[:binfo] && params[:binfo]["id"] && !params[:binfo]["id"].blank? && params[:binfo]["id"].numeric? && params[:binfo]["book_title"] && !params[:binfo]["book_title"].blank? && params[:binfo]["course_name"] && !params[:binfo]["course_name"].blank?
-		if params[:binfo]["price"] && !params[:binfo]["price"].blank?
+	if params[:binfo].present? && params[:binfo]["id"].present? && !params[:binfo]["id"].blank? && params[:binfo]["id"].numeric? && params[:binfo]["book_title"].present? && !params[:binfo]["book_title"].blank? && params[:binfo]["course_name"].present? && !params[:binfo]["course_name"].blank?
+		if params[:binfo]["price"].present? && !params[:binfo]["price"].blank?
 			if !params[:binfo]["price"].numeric?
 				flash[:notice] = "The price must be a number."
 				return redirect_to('/bookedit?id=' + params[:binfo]["id"].strip)
@@ -153,7 +153,7 @@ class ManageController < ApplicationController
 	if params["book_title"].present? && !params["book_title"].blank?
 		@request = Newbook.where(:book_title => params["book_title"].strip).first
 		if !@request
-			redirect_to('/reviewnew')
+			return redirect_to('/reviewnew')
 		end
 		@request.reviewed = true
 		@request.save
@@ -167,8 +167,8 @@ class ManageController < ApplicationController
 		return redirect_to(root_url)
 	end
 
-	if params[:request] && params[:request]["id"] && !params[:request]["id"].blank? && params[:request]["id"].numeric? && params[:request]["book_title"] && !params[:request]["book_title"].blank? && params[:request]["course_name"] && !params[:request]["course_name"].blank?
-		if params[:request]["price"] && !params[:request]["price"].blank?
+	if params[:request].present? && params[:request]["id"].present? && !params[:request]["id"].blank? && params[:request]["id"].numeric? && params[:request]["book_title"].present? && !params[:request]["book_title"].blank? && params[:request]["course_name"].present? && !params[:request]["course_name"].blank?
+		if params[:request]["price"].present? && !params[:request]["price"].blank?
 			if !params[:request]["price"].numeric?
 				flash[:notice] = "The price must be a number."
 				return redirect_to('/newdetails?book_title=' + params[:request]["book_title"].strip)
