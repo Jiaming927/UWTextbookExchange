@@ -14,12 +14,12 @@ Rails.application.configure do
   config.consider_all_requests_local       = false
   config.action_controller.perform_caching = true
 
-    config.action_mailer.default_url_options = { :host => '5.231.68.144' } 
+    config.action_mailer.default_url_options = { :host => 'hustees.com' } 
   config.action_mailer.delivery_method = :smtp 
 config.action_mailer.smtp_settings = {
   address: "smtp.gmail.com",
   port: 587,
-  domain: 'tebook.net',
+  domain: 'hustees.com',
   authentication: "plain",
   enable_starttls_auto: true,
   user_name: ENV["GMAIL_USERNAME"],

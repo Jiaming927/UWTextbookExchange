@@ -75,8 +75,8 @@ class ManageController < ApplicationController
 		else
 			@binfos = Bookinfo.limit(50).offset((@page-1)*50)
 		end
-	elsif params["course"].present?
-		@binfos = Bookinfo.where(:course_name => params["course"].strip.upcase)
+	elsif params["course"].present? && !params["course"].blank?
+		@binfos = Bookinfo.where("course_name LIKE ?", "%" + params["course"].strip.upcase + "%")
 		if !(@binfos && @binfos.count > 0)
 			flash[:notice] = "The course does not exist"
 			return redirect_to('/bookmanage')
@@ -118,10 +118,10 @@ class ManageController < ApplicationController
 		end
 		binfo = Bookinfo.find(params[:binfo]["id"].to_i)
 		if binfo
-			binfo.book_title = params[:binfo]["book_title"].strip
-			binfo.author = params[:binfo]["author"].strip
+			binfo.book_title = params[:binfo]["book_title"].strip.upcase
+			binfo.author = params[:binfo]["author"].strip.upcase
 			binfo.price = params[:binfo]["price"].strip
-			binfo.course_name = params[:binfo]["course_name"].strip
+			binfo.course_name = params[:binfo]["course_name"].upcase.split(',').sort.join(',')
 			if binfo.save
 				flash[:notice] = "Book information updates successfully"
 				return redirect_to('/bookmanage')
@@ -176,10 +176,10 @@ class ManageController < ApplicationController
 		end
 		newbook = Newbook.find(params[:request]["id"].strip)
 		if newbook
-			newbook.book_title = params[:request]["book_title"].strip
-			newbook.author = params[:request]["author"].strip
+			newbook.book_title = params[:request]["book_title"].strip.upcase
+			newbook.author = params[:request]["author"].strip.upcase
 			newbook.price = params[:request]["price"].strip
-			newbook.course_name = params[:request]["course_name"].strip
+			newbook.course_name = params[:request]["course_name"].strip.upcase
 			newbook.passed = params[:request]["passed"].strip
 			if newbook.save
 				if newbook.passed

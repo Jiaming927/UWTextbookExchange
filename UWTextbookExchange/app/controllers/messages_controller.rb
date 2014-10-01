@@ -59,7 +59,9 @@ class MessagesController < ApplicationController
 
   def create
 	if params[:message] && params[:message][:sender] && params[:message][:receiver] && params[:message][:content] && !params[:message][:sender].blank? && !params[:message][:receiver].blank? && !params[:message][:content].blank? && user_exist_create(params[:message][:receiver].strip) && params[:message][:sender].blank? != params[:message][:receiver]
-		@message = Message.create!(params[:message].permit(:content, :sender, :receiver))		
+		@message = Message.new(params[:message].permit(:content, :sender, :receiver))
+		@message.content = @message.content.force_encoding("UTF-8")
+		@message.save
 		chnl = return_asc(current_user.username, params[:message][:receiver].strip)
 		PrivatePub.publish_to("/messages/" + chnl, message: @message)
 		chnl_db = Channel.where(:channel_name => chnl).first
@@ -73,7 +75,7 @@ class MessagesController < ApplicationController
 				@msg_number = chnl_db.second_side
 				chnl_db.second_side = 0
 			else
-				#increment self-count in channel db
+				#increment self-count in channel db 
 				chnl_db.second_side = chnl_db.second_side + 1
 				#mark msg from other side to read
 				@msg_number = chnl_db.first_side
